@@ -1,6 +1,6 @@
-[fabrician.org](http://fabrician.org/) - Silver Fabric Maven Plugin
+[fabrician.org](http://fabrician.org/)
+==========================================================================
+Silver Fabric Maven Plugin
 ==========================================================================
 
-Introduction
---------------------------------------
-TBD
+Maven Plugin for creating Silver Fabric Components and Stacks.
