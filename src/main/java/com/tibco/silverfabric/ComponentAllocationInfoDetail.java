@@ -12,7 +12,7 @@ import java.util.List;
  * User: franck
  * Date: 1/31/13
  */
-public class componentAllocationInfoDetail {
+public class ComponentAllocationInfoDetail {
     private String name;
     private String priority;
     private String max;
