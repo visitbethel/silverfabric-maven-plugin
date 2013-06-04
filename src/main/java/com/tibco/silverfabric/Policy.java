@@ -14,7 +14,7 @@ import java.util.List;
  */
 public class Policy {
     private String scheduleName="";
-    private List<componentAllocationInfoDetail> componentAllocationInfo;
+    private List<ComponentAllocationInfoDetail> componentAllocationInfo;
     private boolean scheduled;
 
     public String getScheduleName() {
@@ -25,11 +25,11 @@ public class Policy {
         this.scheduleName = scheduleName;
     }
 
-    public List<componentAllocationInfoDetail> getComponentAllocationInfo() {
+    public List<ComponentAllocationInfoDetail> getComponentAllocationInfo() {
         return componentAllocationInfo;
     }
 
-    public void setComponentAllocationInfo(List<componentAllocationInfoDetail> componentAllocationInfo) {
+    public void setComponentAllocationInfo(List<ComponentAllocationInfoDetail> componentAllocationInfo) {
         this.componentAllocationInfo = componentAllocationInfo;
     }
 
