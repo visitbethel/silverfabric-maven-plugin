@@ -8,10 +8,6 @@ package com.tibco.silverfabric;
 
 import java.util.List;
 
-/**
- * User: franck
- * Date: 1/24/13
- */
 public class Feature {
     private String name;
     private List<Property> properties;

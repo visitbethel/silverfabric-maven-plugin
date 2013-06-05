@@ -20,10 +20,6 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.LinkedList;
 
-/**
- * User: franck
- * Date: 1/18/13
- */
 public abstract class AbstractSilverFabricMojo extends AbstractMojo {
 
     ApplicationContext ctx = new AnnotationConfigApplicationContext(SilverFabricConfig.class);

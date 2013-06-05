@@ -8,10 +8,6 @@ package com.tibco.silverfabric;
 
 import java.net.URL;
 
-/**
- * User: franck
- * Date: 1/15/13
- */
 public class BrokerConfig {
 
     private URL brokerURL;

@@ -6,10 +6,6 @@
  */
 package com.tibco.silverfabric;
 
-/**
- * User: franck
- * Date: 1/23/13
- */
 public class RuntimeContextVariable {
     private String name;
     private String value;

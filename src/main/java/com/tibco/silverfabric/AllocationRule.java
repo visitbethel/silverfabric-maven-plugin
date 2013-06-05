@@ -8,10 +8,6 @@ package com.tibco.silverfabric;
 
 import java.util.List;
 
-/**
- * User: franck
- * Date: 1/31/13
- */
 public class AllocationRule {
     private List<Property> properties;
     private String type;

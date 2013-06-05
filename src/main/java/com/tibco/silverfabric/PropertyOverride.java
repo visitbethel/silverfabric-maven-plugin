@@ -9,10 +9,6 @@ package com.tibco.silverfabric;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * User: franck
- * Date: 2/4/13
- */
 public class PropertyOverride {
     private String name;
     private String value;

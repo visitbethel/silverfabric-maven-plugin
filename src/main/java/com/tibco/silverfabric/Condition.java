@@ -8,10 +8,6 @@ package com.tibco.silverfabric;
 
 import java.util.List;
 
-/**
- * User: franck
- * Date: 1/24/13
- */
 public class Condition {
     private List<Property> properties;
     private String type;

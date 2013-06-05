@@ -32,43 +32,12 @@ import java.util.*;
 @Mojo(name = "gridlibs")
 public class Gridlibs extends AbstractSilverFabricMojo {
 
-    private static final RequestCallback ACCEPT_CALLBACK =
-            new RequestCallback()
-            {
-                @Override
-                public void doWithRequest ( ClientHttpRequest request ) throws IOException
-                {
-                    request.getHeaders().set( "Accept", "application/zip" );
-                }
-            };
-
-    private static class FileResponseExtractor implements ResponseExtractor<Object>
-    {
-        private final File file;
-        private       File file () { return this.file; }
-
-        private FileResponseExtractor ( File file )
-        {
-            this.file = file;
-        }
-
+    private static final RequestCallback ACCEPT_CALLBACK = new RequestCallback() {
         @Override
-        public Object extractData ( ClientHttpResponse response ) throws IOException
-        {
-            InputStream  is = response.getBody();
-            OutputStream os = new BufferedOutputStream( new FileOutputStream( file()));
-
-            IOUtils.copyLarge( is, os );
-            IOUtils.closeQuietly( is );
-            IOUtils.closeQuietly(os);
-
-            return null;
+        public void doWithRequest(ClientHttpRequest request) throws IOException {
+            request.getHeaders().set("Accept", "application/zip");
         }
-    }
-
-
-
-
+    };
 
     @Parameter(defaultValue = "all")
     private String getType;
@@ -224,5 +193,29 @@ public class Gridlibs extends AbstractSilverFabricMojo {
         if (urls != null) request.put("urls", urls);
 
         return request;
+    }
+    
+    private static class FileResponseExtractor implements ResponseExtractor<Object> {
+        private final File file;
+
+        private File file() {
+            return this.file;
+        }
+
+        private FileResponseExtractor(File file) {
+            this.file = file;
+        }
+
+        @Override
+        public Object extractData(ClientHttpResponse response) throws IOException {
+            InputStream is = response.getBody();
+            OutputStream os = new BufferedOutputStream(new FileOutputStream(file()));
+
+            IOUtils.copyLarge(is, os);
+            IOUtils.closeQuietly(is);
+            IOUtils.closeQuietly(os);
+
+            return null;
+        }
     }
 }

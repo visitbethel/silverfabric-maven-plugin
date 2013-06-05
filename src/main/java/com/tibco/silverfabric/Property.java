@@ -6,10 +6,6 @@
  */
 package com.tibco.silverfabric;
 
-/**
- * User: franck
- * Date: 1/24/13
- */
 public class Property {
     private String name;
     private String value = "";
