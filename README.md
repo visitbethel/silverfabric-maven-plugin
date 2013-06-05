@@ -15,7 +15,9 @@ Maven Plugin for creating Silver Fabric Components and Stacks.
 
 #### Description:
 
-TBD
+Display help for the supported goals.
+
+`mvn silverfabric:help -Ddetail=true -Dgoal=stacks`
 
 
 ## Stacks
