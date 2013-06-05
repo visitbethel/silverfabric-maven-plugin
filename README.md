@@ -20,24 +20,6 @@ Display help for the supported goals.
 `mvn silverfabric:help -Ddetail=true -Dgoal=stacks`
 
 
-
-## Grid Libararies
-
-`silverfabric:gridlibs`
-
-#### Full name:
-
-`com.tibco.silverfabric:silverfabric-maven-plugin:0.16:gridlibs`
-
-#### Description:
-
-TBD
-
-#### Example:
-```xml
-
-```
-
 ## Components
 
 `silverfabric:components`
@@ -230,4 +212,22 @@ Perform the following actions on Stacks: publish, unpublish, update, delete, get
         </execution>
     </executions>
 </plugin>
+```
+
+
+## Grid Libararies
+
+`silverfabric:gridlibs`
+
+#### Full name:
+
+`com.tibco.silverfabric:silverfabric-maven-plugin:0.16:gridlibs`
+
+#### Description:
+
+Needed
+
+#### Example:
+```xml
+Needed
 ```
