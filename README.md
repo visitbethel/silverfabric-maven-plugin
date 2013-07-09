@@ -229,5 +229,30 @@ Needed
 
 #### Example:
 ```xml
-Needed
+<plugin>
+    <groupId>com.tibco.silverfabric</groupId>
+    <artifactId>silverfabric-maven-plugin</artifactId>
+    <version>0.16</version>
+    <executions>
+        <execution>
+            <id>gridlib upload</id>
+            <phase>test</phase>
+            <goals>
+                <goal>gridlibs</goal>
+            </goals>
+            <configuration>
+                <actions>
+                    <action>add</action>
+                </actions>
+                <archives>
+                    <archive>
+                        <path>/opt/tibco/SilverFabric/5.5/fabric/webapps/livecluster/deploy/resources/gridlib/</path>
+                        <name>SilverFabric_as_2.0.2.66_linux24gl23_x86_64_distribution_gridlib.tar.gz</name>
+                    </archive>
+                </archives>
+                <!--<overWrite>true</overWrite>-->
+            </configuration>
+        </execution>
+    </executions>
+</plugin>
 ```
