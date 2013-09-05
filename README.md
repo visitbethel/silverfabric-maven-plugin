@@ -38,6 +38,13 @@ Perform the following actions on Components: publish, unpublish, update, delete,
     <groupId>com.tibco.silverfabric</groupId>
     <artifactId>silverfabric-maven-plugin</artifactId>
     <version>0.16</version>
+    <configuration>
+        <brokerConfig>
+            <brokerURL>http://localhost:8080</brokerURL>
+            <username>admin</username>
+            <password>admin</password>
+        </brokerConfig>
+    </configuration>
     <executions>
         <execution>
             <id>Create Component</id>
@@ -46,11 +53,6 @@ Perform the following actions on Components: publish, unpublish, update, delete,
                 <goal>components</goal>
             </goals>
             <configuration>
-            <brokerConfig>
-                <brokerURL>http://localhost:8080</brokerURL>
-                <username>admin</username>
-                <password>admin</password>
-            </brokerConfig>
                 <actions>
                     <action>create</action>
                     <action>publish</action>
@@ -112,6 +114,13 @@ Perform the following actions on Stacks: publish, unpublish, update, delete, get
     <groupId>com.tibco.silverfabric</groupId>
     <artifactId>silverfabric-maven-plugin</artifactId>
     <version>0.16</version>
+    <configuration>
+        <brokerConfig>
+            <brokerURL>http://localhost:8080</brokerURL>
+            <username>admin</username>
+            <password>admin</password>
+        </brokerConfig>
+    </configuration>
     <executions>
         <execution>
             <id>My Example Stack</id>
@@ -120,11 +129,6 @@ Perform the following actions on Stacks: publish, unpublish, update, delete, get
                 <goal>stacks</goal>
             </goals>
             <configuration>
-                <brokerConfig>
-                    <brokerURL>http://localhost:8080</brokerURL>
-                    <username>admin</username>
-                    <password>admin</password>
-                </brokerConfig>
                 <actions>
                     <action>create</action>
                     <action>publish</action>
