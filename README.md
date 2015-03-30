@@ -34,64 +34,153 @@ Perform the following actions on Components: publish, unpublish, update, delete,
 
 #### Example:
 ```xml
-<plugin>
-    <groupId>com.tibco.silverfabric</groupId>
-    <artifactId>silverfabric-maven-plugin</artifactId>
-    <version>0.16</version>
-    <configuration>
-        <brokerConfig>
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>com.fedex.scm.sf</groupId>
+  <artifactId>silverfabric-maven-plugin-test</artifactId>
+  <version>0.16</version>
+
+  <packaging>jar</packaging>
+
+  <name>Silver Fabric Maven Plugin Test</name>
+  <description>Maven Plugin for creating Silver Fabric Components Test.</description>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>com.tibco.silverfabric</groupId>
+        <artifactId>silverfabric-maven-plugin</artifactId>
+        <version>0.16</version>
+        <configuration>
+          <brokerConfig>
             <brokerURL>http://localhost:8080</brokerURL>
             <username>admin</username>
             <password>admin</password>
-        </brokerConfig>
-    </configuration>
-    <executions>
-        <execution>
+          </brokerConfig>
+        </configuration>
+        <executions>
+          <execution>
             <id>Create Component</id>
             <phase>install</phase>
             <goals>
-                <goal>components</goal>
+              <goal>components</goal>
             </goals>
             <configuration>
-                <actions>
-                    <action>create</action>
-                    <action>publish</action>
-                </actions>
-                <componentName>My Component</componentName>
-                <componentType>J2EE:5.5.0.0</componentType>
-                <enablerName>Tomcat 6.0 Enabler</enablerName>
-                <enablerVersion>5.5</enablerVersion>
-                <description>My New Component</description>
-                <defaultSettings>
-                    <defaultSetting>
-                        <name>Default Priority</name>
-                        <value>5</value>
-                    </defaultSetting>
-                </defaultSettings>
-                <options>
-                    <option>
-                        <name>Maximum Activation Time in seconds</name>
-                        <value>60</value>
-                    </option>
-                </options>
-                <runtimeContextVariables>
-                    <runtimeContextVariable>
-                        <name>Example RCV</name>
-                        <value>bar</value>
-                        <type>1</type>
-                        <export>true</export>
-                    </runtimeContextVariable>
-                </runtimeContextVariables>
-                <features>
-                    <feature>
-                        <name>HTTP Support</name>
-                        <description>Support for HTTP routing</description>
-                    </feature>
-                </features>
+              <plan>plan-1.xml</plan>
             </configuration>
-        </execution>
-    </executions>
-</plugin>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+</project>
+```
+
+Where the plan consists of the configuration that needs to be created.
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<component xmlns="http://www.example.org/SilverLining"
+  xmlns:tns="http://admin.fabric.webservices.datasynapse.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.example.org/SilverLining SilverLining.xsd ">
+  
+  
+  <enablerName>enablerName</enablerName>
+  <enablerVersion>enablerVersion</enablerVersion>
+  <componentType>componentType</componentType>
+  <MiddlewarVersions>MiddlewarVersions</MiddlewarVersions>
+  <Department>Department</Department>
+  <Location>Location</Location>
+  <Partition>Partition</Partition>
+  <EngineBlacklisting>EngineBlacklisting</EngineBlacklisting>
+  <FailuresPerDayBeforeBlacklist>FailuresPerDayBeforeBlacklist</FailuresPerDayBeforeBlacklist>
+
+  <feature>
+    <tns:description>Application Logging Support</tns:description>
+    <tns:infoDescription>Support for handling of custom application logs
+    </tns:infoDescription>
+    <tns:name>applicationloggingsupport</tns:name>
+    <tns:properties>
+      <tns:name>Checkpoint Frequency In Seconds</tns:name>
+      <tns:value>300</tns:value>
+    </tns:properties>
+    <tns:properties>
+      <tns:name>Archive Application Logs</tns:name>
+      <tns:value>true</tns:value>
+    </tns:properties>
+    <tns:properties>
+      <tns:name>Log File Pattern</tns:name>
+      <tns:value>/../domaindata/tra/${TIBCO_DOMAIN_NAME}/logs/*.log,/./tibco/tra/5.8/logs/*.log,/../domaindata/tra/${TIBCO_DOMAIN_NAME}/application/logs/.*.log
+      </tns:value>
+    </tns:properties>
+  </feature>
+  <feature>
+    <tns:description>HTTP Support</tns:description>
+    <tns:infoDescription>Support for HTTP routing
+    </tns:infoDescription>
+    <tns:name>httpsupport</tns:name>
+    <tns:properties>
+      <tns:name>Relative Url</tns:name>
+      <tns:value></tns:value>
+    </tns:properties>
+    <tns:properties>
+      <tns:name>Routing Prefix</tns:name>
+      <tns:value></tns:value>
+    </tns:properties>
+    <tns:properties>
+      <tns:name>HTTPS Enabled</tns:name>
+      <tns:value>false</tns:value>
+    </tns:properties>
+    <tns:properties>
+      <tns:name>HTTP Enabled</tns:name>
+      <tns:value>true</tns:value>
+    </tns:properties>
+    <tns:properties>
+      <tns:name>Routing Directly To Endpoints</tns:name>
+      <tns:value>false</tns:value>
+    </tns:properties>
+  </feature>
+
+  <runtime-variable>
+    <tns:autoIncrementType>0</tns:autoIncrementType>
+    <tns:description>External Jar Files</tns:description>
+    <tns:export>false</tns:export>
+    <tns:name>WITHOUT_TRA</tns:name>
+    <tns:type>1</tns:type>
+    <tns:value>false</tns:value>
+  </runtime-variable>
+
+
+  <allocation-rule>
+    <tns:condition>
+      <tns:description>tns:description</tns:description>
+      <tns:properties>
+        <tns:name>tns:name</tns:name>
+        <tns:value>tns:value</tns:value>
+      </tns:properties>
+      <tns:type>tns:type</tns:type>
+    </tns:condition>
+    <tns:description>tns:description</tns:description>
+    <tns:properties>
+      <tns:name>tns:name</tns:name>
+      <tns:value>tns:value</tns:value>
+    </tns:properties>
+    <tns:ruleAction>tns:ruleAction</tns:ruleAction>
+    <tns:type>tns:type</tns:type>
+  </allocation-rule>
+  <allocation-constraint>
+    <currentValue>0</currentValue>
+    <description>tns:description</description>
+    <lastModified>0</lastModified>
+    <maxValue>0</maxValue>
+    <modifiedBy>tns:modifiedBy</modifiedBy>
+    <name>tns:name</name>
+    <type>tns:type</type>
+  </allocation-constraint>
+</component>
 ```
 
 

@@ -16,46 +16,85 @@ import org.apache.maven.plugins.annotations.Parameter;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
+import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 import org.springframework.web.client.RestTemplate;
 
+import java.io.File;
 import java.util.LinkedList;
+
+import javax.xml.transform.stream.StreamSource;
 
 public abstract class AbstractSilverFabricMojo extends AbstractMojo {
 
-    ApplicationContext ctx = new AnnotationConfigApplicationContext(SilverFabricConfig.class);
+	@Parameter
+	private LinkedList<String> actions;
 
-    RestTemplate restTemplate = ctx.getBean(RestTemplate.class);
+	@Parameter(required = true)
+	private BrokerConfig brokerConfig;
+	
 
-    HttpComponentsClientHttpRequestFactory httpComponentsClientHttpRequestFactory = (HttpComponentsClientHttpRequestFactory) restTemplate.getRequestFactory();
-    DefaultHttpClient httpClient = (DefaultHttpClient) httpComponentsClientHttpRequestFactory.getHttpClient();
+	/**
+	 * 
+	 */
+	ApplicationContext ctx = new AnnotationConfigApplicationContext(
+			SilverFabricConfig.class);
+	/**
+	 * 
+	 */
+	public RestTemplate restTemplate = ctx.getBean(RestTemplate.class);
 
-    @Parameter (required = true)
-    private BrokerConfig brokerConfig;
+	/**
+	 * 
+	 */
+	HttpComponentsClientHttpRequestFactory httpComponentsClientHttpRequestFactory = (HttpComponentsClientHttpRequestFactory) restTemplate
+			.getRequestFactory();
 
-    @Parameter
-    private LinkedList<String> actions;
+	/**
+	 * 
+	 */
+	DefaultHttpClient httpClient = (DefaultHttpClient) httpComponentsClientHttpRequestFactory
+			.getHttpClient();
+	
+	/**
+	 * 
+	 */
+	protected Jaxb2Marshaller marshaller = ctx.getBean(Jaxb2Marshaller.class);
 
-    public LinkedList<String> getActions() {
-        return actions;
-    }
+	
+	
+	
+	public AbstractSilverFabricMojo() {
+		super();
+		
+	}
+	
+	@Override
+	public void execute() throws MojoExecutionException, MojoFailureException {
+		httpClient.getCredentialsProvider().setCredentials(
+				new AuthScope(brokerConfig.getBrokerURL().getHost(),
+						brokerConfig.getBrokerURL().getPort(),
+						AuthScope.ANY_REALM),
+				new UsernamePasswordCredentials(brokerConfig.getUsername(),
+						brokerConfig.getPassword()));
+		executeMojo();
+	}
 
-    public void setActions(LinkedList<String> actions) {
-        this.actions = actions;
-    }
+	public abstract void executeMojo() throws MojoExecutionException,
+			MojoFailureException;
 
-    public BrokerConfig getBrokerConfig() {
-        return brokerConfig;
-    }
+	public LinkedList<String> getActions() {
+		return actions;
+	}
 
-    public void setBrokerConfig(BrokerConfig brokerConfig) {
-        this.brokerConfig = brokerConfig;
-    }
+	public BrokerConfig getBrokerConfig() {
+		return brokerConfig;
+	}
 
-    @Override
-    public void execute() throws MojoExecutionException, MojoFailureException {
-        httpClient.getCredentialsProvider().setCredentials(new AuthScope(brokerConfig.getBrokerURL().getHost(),brokerConfig.getBrokerURL().getPort(),AuthScope.ANY_REALM),new UsernamePasswordCredentials(brokerConfig.getUsername(), brokerConfig.getPassword()));
-        executeMojo();
-    }
+	public void setActions(LinkedList<String> actions) {
+		this.actions = actions;
+	}
 
-    public abstract void executeMojo() throws MojoExecutionException, MojoFailureException;
+	public void setBrokerConfig(BrokerConfig brokerConfig) {
+		this.brokerConfig = brokerConfig;
+	}
 }

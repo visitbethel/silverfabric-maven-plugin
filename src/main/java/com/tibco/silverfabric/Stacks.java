@@ -35,33 +35,45 @@ import org.springframework.web.client.HttpClientErrorException;
 @Mojo(name = "stacks")
 public class Stacks extends AbstractSilverFabricMojo {
     @Parameter
-    private List<String> components;
-    @Parameter
-    private String stackName;
-    @Parameter
-    private String mode;
-    @Parameter (defaultValue = "--")
-    private String templateLevel;
-    @Parameter
-    private List<Policy> policies;
-    @Parameter
     private String accountName;
-    @Parameter
-    private String runMode;
-    @Parameter
-    private List<PropertyOverride> propertyOverrides;
-    @Parameter
-    private String owner;
-    @Parameter
-    private String technology;
-    @Parameter(defaultValue = "/livecluster/admin/images/icons/stackIcons/defaults/6_Skyway_Generic_Default_Icon.png")
-    private String icon;
-    @Parameter(defaultValue = "Default Template Description.")
+
+	@Parameter
+    private List<String> components;
+
+	@Parameter(defaultValue = "Default Template Description.")
     private String description;
-    @Parameter
+
+	@Parameter(defaultValue = "/livecluster/admin/images/icons/stackIcons/defaults/6_Skyway_Generic_Default_Icon.png")
+    private String icon;
+
+	@Parameter
+    private String mode;
+
+	@Parameter
+    private String owner;
+
+	@Parameter
+    private List<Policy> policies;
+
+	@Parameter
+    private List<PropertyOverride> propertyOverrides;
+
+	@Parameter
+    private String runMode;
+
+	@Parameter
+    private String stackName;
+
+	@Parameter
+    private String technology;
+
+	@Parameter (defaultValue = "--")
+    private String templateLevel;
+
+	@Parameter
     private List<Map> urls;
 
-    public void executeMojo() throws MojoExecutionException, MojoFailureException {
+	public void executeMojo() throws MojoExecutionException, MojoFailureException {
 
         List<String> actionList = getActions() != null ? getActions() : new ArrayList<String>();
         if (actionList.isEmpty()) actionList.add("get");
@@ -165,7 +177,66 @@ public class Stacks extends AbstractSilverFabricMojo {
             }
         }
     }
-
+    /**
+	 * @param accountName the accountName to set
+	 */
+	public final void setAccountName(String accountName) {
+		this.accountName = accountName;
+	}
+    /**
+	 * @param components the components to set
+	 */
+	public final void setComponents(List<String> components) {
+		this.components = components;
+	}
+    /**
+	 * @param description the description to set
+	 */
+	public final void setDescription(String description) {
+		this.description = description;
+	}
+    /**
+	 * @param icon the icon to set
+	 */
+	public final void setIcon(String icon) {
+		this.icon = icon;
+	}
+    /**
+	 * @param mode the mode to set
+	 */
+	public final void setMode(String mode) {
+		this.mode = mode;
+	}
+    /**
+	 * @param owner the owner to set
+	 */
+	public final void setOwner(String owner) {
+		this.owner = owner;
+	}
+    /**
+	 * @param policies the policies to set
+	 */
+	public final void setPolicies(List<Policy> policies) {
+		this.policies = policies;
+	}
+    /**
+	 * @param propertyOverrides the propertyOverrides to set
+	 */
+	public final void setPropertyOverrides(List<PropertyOverride> propertyOverrides) {
+		this.propertyOverrides = propertyOverrides;
+	}
+    /**
+	 * @param runMode the runMode to set
+	 */
+	public final void setRunMode(String runMode) {
+		this.runMode = runMode;
+	}
+    /**
+	 * @param stackName the stackName to set
+	 */
+	public final void setStackName(String stackName) {
+		this.stackName = stackName;
+	}
     private HashMap<Object, Object> setStackRequest() {
         if (policies == null || policies.isEmpty() || components==null || components.isEmpty()) return null;
         HashMap<Object, Object> request = new LinkedHashMap<Object, Object>();
@@ -184,4 +255,24 @@ public class Stacks extends AbstractSilverFabricMojo {
 
         return request;
     }
+    /**
+	 * @param technology the technology to set
+	 */
+	public final void setTechnology(String technology) {
+		this.technology = technology;
+	}
+
+    /**
+	 * @param templateLevel the templateLevel to set
+	 */
+	public final void setTemplateLevel(String templateLevel) {
+		this.templateLevel = templateLevel;
+	}
+
+    /**
+	 * @param urls the urls to set
+	 */
+	public final void setUrls(List<Map> urls) {
+		this.urls = urls;
+	}
 }
