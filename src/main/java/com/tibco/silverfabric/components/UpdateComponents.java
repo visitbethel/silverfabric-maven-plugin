@@ -20,21 +20,23 @@ import org.apache.maven.plugins.annotations.Mojo;
  *       engineId (only if info=blacklisted_names) * instance (only if
  *       info=blacklisted_names)
  */
-@Mojo(name = "delete-components")
-public class DeleteComponents extends AbstractSilverComponents {
+@Mojo(name = "update-components")
+public class UpdateComponents extends AbstractSilverComponents {
 
-	public DeleteComponents() {
+	public UpdateComponents() {
 		super();
 	}
 	public void initialize() {
 		super.initialize();
 		if (getActions() == null) {
 			LinkedList<String> list = new LinkedList<String>();
-			list.add("unpublish");
-			list.add("delete");
+			list.add("update");
+			list.add("publish");
 			setActions(list);
 		}
 		getLog().info("assign action " + getActions());
 	}
+
+	
 
 }
