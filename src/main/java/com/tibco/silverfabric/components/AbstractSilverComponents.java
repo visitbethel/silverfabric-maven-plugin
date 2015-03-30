@@ -379,7 +379,7 @@ public abstract class AbstractSilverComponents extends AbstractSilverFabricMojo 
 				valueOf(component.getEnablerVersion(), enablerVersion));
 		valueOf(request, "description", description, null);
 		valueOf(request, "trackedStatistics", trackedStatistics, null);
-		valueOf(request, "options", options, null);
+		valueOf(request, "options", component.getOption(), options);
 		valueOf(request, "runtimeContextVariables",
 				component.getRuntimeVariable(), runtimeContextVariables);
 		valueOf(request, "features", component.getFeature(), features);
@@ -401,7 +401,7 @@ public abstract class AbstractSilverComponents extends AbstractSilverFabricMojo 
 			Object a, Object b) {
 		Object value = valueOf(a, b);
 		if (value != null) {
-			getLog().info("adding[" + string + "] = " + value );
+			getLog().info("\n\nadding[" + string + "] \n\n\t= " + value );
 			request.put(string, value);
 		}
 	}

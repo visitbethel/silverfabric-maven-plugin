@@ -6,6 +6,7 @@
   xsi:schemaLocation="http://www.example.org/SilverLining SilverLining.xsd ">
 
 
+
   <enablerName>TIBCO BusinessEvents container</enablerName>
   <enablerVersion>2.5.0.1</enablerVersion>
   <componentType>TIBCO BusinessEvents:2.5.0</componentType>
@@ -14,8 +15,55 @@
   <Department></Department>
   <Location></Location>
   <Partition></Partition>
-  <EngineBlacklisting>false</EngineBlacklisting>
-  <FailuresPerDayBeforeBlacklist>0</FailuresPerDayBeforeBlacklist>
+
+  <option>
+    <name>Engine Blacklisting</name>
+    <value >false</value>
+  </option>
+  <option>
+    <name>Failures Per Day Before Blacklist</name>
+    <value>10</value>
+  </option>
+  <option>
+    <name>Archive Scale Up Timeout</name>
+    <value>320</value>
+  </option>
+  <option>
+    <name>Archive Scale Down Timeout</name>
+    <value>320</value>
+  </option>
+  <option>
+    <name>Maximum Activation Time</name>
+    <value>3300</value>
+  </option>
+  <option>
+    <name>Maximum Deactivation Time</name>
+    <value>300</value>
+  </option>
+  <option>
+    <name>Maximum Capture Time</name>
+    <value>380</value>
+  </option>
+  <option>
+    <name>Minimum Instances Per Host</name>
+    <value>0</value>
+  </option>
+  <option>
+    <name>Maximum Instances Per Host</name>
+    <value>0</value>
+  </option>
+  <option>
+    <name>Statistics Collection Frequency</name>
+    <value>30</value>
+  </option>
+  <option>
+    <name>Activation Delay</name>
+    <value>3</value>
+  </option>
+  <option>
+    <name>Engine Reservation Expiration</name>
+    <value>300</value>
+  </option>
 
   <feature>
     <tns:description>Application Logging Support</tns:description>
