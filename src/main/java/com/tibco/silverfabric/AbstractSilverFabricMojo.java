@@ -24,7 +24,7 @@ public abstract class AbstractSilverFabricMojo extends AbstractMojo {
 
     ApplicationContext ctx = new AnnotationConfigApplicationContext(SilverFabricConfig.class);
 
-    RestTemplate restTemplate = ctx.getBean(RestTemplate.class);
+    public RestTemplate restTemplate = ctx.getBean(RestTemplate.class);
 
     HttpComponentsClientHttpRequestFactory httpComponentsClientHttpRequestFactory = (HttpComponentsClientHttpRequestFactory) restTemplate.getRequestFactory();
     DefaultHttpClient httpClient = (DefaultHttpClient) httpComponentsClientHttpRequestFactory.getHttpClient();

@@ -4,19 +4,47 @@
  * Use is subject to the terms of the TIBCO license terms accompanying the download of this code.
  * In most instances, the license terms are contained in a file named license.txt.
  */
-package com.tibco.silverfabric;
+package com.tibco.silverfabric.components;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
+import javax.xml.bind.JAXBElement;
+import javax.xml.transform.stream.StreamSource;
+
+import org.apache.maven.model.PluginContainer;
+import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
-import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.springframework.core.io.FileSystemResource;
-import org.springframework.http.*;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpRequest;
+import org.springframework.http.MediaType;
+import org.springframework.http.client.ClientHttpRequestExecution;
+import org.springframework.http.client.ClientHttpRequestInterceptor;
+import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.HttpClientErrorException;
 
-import java.util.*;
+import com.fedex.scm.sf.Component;
+import com.tibco.silverfabric.AbstractSilverFabricMojo;
+import com.tibco.silverfabric.Archive;
+import com.tibco.silverfabric.Components;
+import com.tibco.silverfabric.DefaultAllocationSetting;
+import com.tibco.silverfabric.DefaultSetting;
+import com.tibco.silverfabric.Feature;
+import com.tibco.silverfabric.Option;
+import com.tibco.silverfabric.RuntimeContextVariable;
 
 /**
  * Actions related to components.
@@ -28,8 +56,12 @@ import java.util.*;
  * * engineId (only if info=blacklisted_names)
  * * instance (only if info=blacklisted_names)
  */
-@Mojo(name = "components")
-public class Components extends AbstractSilverFabricMojo {
+public abstract class AbstractSilverComponents extends Components {
+
+	@Parameter(required = true)
+	protected File plan;
+
+	
     @Parameter(defaultValue = "names")
     private String info;
     @Parameter
@@ -85,8 +117,25 @@ public class Components extends AbstractSilverFabricMojo {
     private String scriptName;
     @Parameter
     private String scriptFileRegex;
+    @Parameter
+    private boolean override = false;
 
+	/**
+     * 
+     */
+	private Component component;    
+    
+	public void initialize() {
+		getLog().info("loading plan " + this.plan);
+		JAXBElement<Component> _component = (JAXBElement<Component>) marshaller
+				.unmarshal(new StreamSource(this.plan));
+		component = _component.getValue();
+	}
+
+    
     public void executeMojo() throws MojoExecutionException, MojoFailureException {
+    	
+    	initialize();
 
         List<String> actionList = getActions() != null ? getActions() : new ArrayList<String>();
         if (actionList.isEmpty()) actionList.add("get");
@@ -320,27 +369,72 @@ public class Components extends AbstractSilverFabricMojo {
                 }
             } catch (HttpClientErrorException httpException) {
                 getLog().info("Error when running " + action + " on component " + componentName + " : " + httpException.getResponseBodyAsString());
+                throw new MojoExecutionException("Error when running " + action 
+                		+ " on component " + componentName + " : " + httpException.getResponseBodyAsString(), httpException);
             }
         }
     }
 
-    protected HashMap<Object, Object> setComponentRequest() {
-        if (componentType == null || enablerName == null || enablerVersion == null) return null;
-        HashMap<Object, Object> request = new LinkedHashMap<Object, Object>();
-        request.put("componentType", componentType);
-        request.put("name", componentName);
-        request.put("enablerName", enablerName);
-        request.put("enablerVersion", enablerVersion);
-        if (description != null) request.put("description", description);
-        if (trackedStatistics != null) request.put("trackedStatistics", trackedStatistics);
-        if (options != null) request.put("options", options);
-        if (runtimeContextVariables != null) request.put("runtimeContextVariables", runtimeContextVariables);
-        if (features != null) request.put("features", features);
-        if (defaultAllocationRuleSettings != null)
-            request.put("defaultAllocationRuleSettings", defaultAllocationRuleSettings);
-        if (defaultSettings != null) request.put("defaultSettings", defaultSettings);
-        if (allocationConstraints != null) request.put("allocationConstraints", allocationConstraints);
 
-        return request;
-    }
+	/**
+	 * 
+	 * @return
+	 */
+	protected HashMap<Object, Object> setComponentRequest() {
+		HashMap<Object, Object> request = new LinkedHashMap<Object, Object>();
+		request.put("componentType",
+				valueOf(component.getComponentType(), componentType));
+		request.put("name", componentName);
+		request.put("enablerName",
+				valueOf(component.getEnablerName(), enablerName));
+		request.put("enablerVersion",
+				valueOf(component.getEnablerVersion(), enablerVersion));
+		valueOf(request, "description", description, null);
+		valueOf(request, "trackedStatistics", trackedStatistics, null);
+		valueOf(request, "options", component.getOptions(), options);
+		valueOf(request, "runtimeContextVariables",
+				component.getRuntimeVariables(), runtimeContextVariables);
+		valueOf(request, "features", component.getFeatures(), features);
+		valueOf(request, "defaultAllocationRuleSettings",
+				defaultAllocationRuleSettings, null);
+		valueOf(request, "defaultSettings", defaultSettings, null);
+		valueOf(request, "allocationConstraints", allocationConstraints, component.getAllocationConstraints());
+		return request;
+	}
+
+	/**
+	 * 
+	 * @param request
+	 * @param string
+	 * @param description2
+	 * @param object
+	 */
+	protected Object valueOf(HashMap<Object, Object> request, String string,
+			Object a, Object b) {
+		Object value = override && "features".equals(string) ? valueOf(b, a) : valueOf(a, b);
+		if (value != null) {
+			getLog().info("\n\nadding[" + string + "] \n\n\t= " + value );
+			request.put(string, value);
+			return value;
+		}
+		return null;
+	}
+
+	/**
+	 * 
+	 * @param a
+	 * @param b
+	 * @return
+	 */
+	protected static Object valueOf(Object a, Object b) {
+		if (a == null && b == null) {
+			return null;
+		}
+		if (a == null) {
+			return b;
+		} else {
+			return a;
+		}
+	}
+
 }
