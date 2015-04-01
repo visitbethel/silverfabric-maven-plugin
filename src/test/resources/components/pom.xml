@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>com.tibco.silverfabric</groupId>
+  <artifactId>silverfabric-maven-plugin-test</artifactId>
+  <version>0.16</version>
+
+  <packaging>maven-plugin</packaging>
+
+  <name>Silver Fabric Maven Plugin</name>
+  <description>Maven Plugin for creating Silver Fabric Components and Stacks.</description>
+
+  <properties>
+    <spring.version>3.2.1.RELEASE</spring.version>
+    <maven.plugin.version>3.3</maven.plugin.version>
+    <maven.api.version>3.2.5</maven.api.version>
+  </properties>
+
+  <build>
+    <plugins>
+
+      <plugin>
+        <groupId>com.tibco.silverfabric</groupId>
+        <artifactId>silverfabric-maven-plugin</artifactId>
+        <version>0.16</version>
+        <configuration>
+          <brokerConfig>
+            <brokerURL>http://srh00611.ute.fedex.com:8080</brokerURL>
+            <username>sefsdev_operate</username>
+            <password>test123</password>
+          </brokerConfig>
+        </configuration>
+        <executions>
+          <execution>
+            <id>Create Component</id>
+            <phase>install</phase>
+            <goals>
+              <goal>components</goal>
+            </goals>
+            <configuration>
+              <actions>
+                <action>create</action>
+                <action>publish</action>
+              </actions>
+              <componentName>My Component</componentName>
+              <componentType>J2EE:5.5.0.0</componentType>
+              <enablerName>Tomcat 6.0 Enabler</enablerName>
+              <enablerVersion>5.5</enablerVersion>
+              <description>My New Component</description>
+              <defaultSettings>
+                <defaultSetting>
+                  <name>Default Priority</name>
+                  <value>5</value>
+                </defaultSetting>
+              </defaultSettings>
+              <options>
+                <option>
+                  <name>Maximum Activation Time in seconds</name>
+                  <value>60</value>
+                </option>
+              </options>
+              <runtimeContextVariables>
+                <runtimeContextVariable>
+                  <name>Example RCV</name>
+                  <value>bar</value>
+                  <type>1</type>
+                  <export>true</export>
+                </runtimeContextVariable>
+              </runtimeContextVariables>
+              <features>
+                <feature>
+                  <name>HTTP Support</name>
+                  <description>Support for HTTP routing</description>
+                </feature>
+              </features>
+            </configuration>
+          </execution>
+        </executions>
+<!--         <dependencies>
+
+          <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+            <version>${spring.version}</version>
+          </dependency>
+    <dependency>
+      <groupId>org.apache.httpcomponents</groupId>
+      <artifactId>httpclient</artifactId>
+      <version>4.2</version>
+    </dependency>
+    Parsing JSON
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-databind</artifactId>
+      <version>2.2.3</version>
+    </dependency>
+    <dependency>
+      <groupId>commons-io</groupId>
+      <artifactId>commons-io</artifactId>
+      <version>2.4</version>
+    </dependency>
+        </dependencies> -->
+      </plugin>
+    </plugins>
+  </build>
+</project>

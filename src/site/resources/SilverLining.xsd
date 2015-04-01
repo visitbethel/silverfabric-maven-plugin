@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.example.org/SilverLining"
+  xmlns:tns="http://www.example.org/SilverLining" elementFormDefault="qualified"
+  xmlns:ds="http://admin.fabric.webservices.datasynapse.com">
+
+  <import schemaLocation="ApplicationAdmin.xsd"
+    namespace="http://admin.fabric.webservices.datasynapse.com"></import>
+  <import schemaLocation="ApplicationComponentAdmin.xsd"
+    namespace="http://admin.fabric.webservices.datasynapse.com"></import>
+
+
+
+  <element name="component" type="tns:componentType"></element>
+
+  <complexType name="componentType">
+    <complexContent>
+      <restriction base="anyType">
+        <sequence>
+          <element name="enablerName" type="string"></element>
+          <element name="enablerVersion" type="string"></element>
+          <element name="componentType" type="string"></element>
+          <element name="MiddlewarVersions" type="string"></element>
+          <element name="Department" type="string"></element>
+          <element name="Location" type="string"></element>
+          <element name="Partition" type="string"></element>
+          <element name="EngineBlacklisting" type="string"></element>
+          <element name="FailuresPerDayBeforeBlacklist" type="string"></element>
+
+          <element name="feature" maxOccurs="unbounded"
+            minOccurs="0" type="ds:FeatureInfo">
+          </element>
+          <element name="runtime-variable" maxOccurs="unbounded"
+            minOccurs="0" type="ds:RuntimeContextVariableInfo">
+          </element>
+          <element name="allocation-rule" maxOccurs="unbounded"
+            minOccurs="0" type="ds:AllocationRuleInfo">
+          </element>
+          <element name="allocation-constraint" maxOccurs="unbounded"
+            minOccurs="0" type="tns:AllocationConstraintInfo">
+          </element>
+        </sequence>
+      </restriction>
+    </complexContent>
+  </complexType>
+
+  <complexType name="AllocationConstraintInfo">
+    <complexContent>
+      <restriction base="anyType">
+        <sequence>
+          <element name="currentValue" type="long" />
+          <element name="description" type="string" />
+          <element name="lastModified" type="long" />
+          <element name="maxValue" type="long" />
+          <element name="modifiedBy" type="string" />
+          <element name="name" type="string" />
+          <element name="type" type="string" />
+        </sequence>
+      </restriction>
+    </complexContent>
+  </complexType>
+
+</schema>

@@ -1,0 +1,423 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified"
+  targetNamespace="http://admin.fabric.webservices.datasynapse.com"
+  xmlns:tns1="http://admin.fabric.webservices.datasynapse.com"
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  
+  <element name="addApplication">
+    <complexType>
+      <sequence>
+        <element name="application" type="tns1:ApplicationInfo" />
+      </sequence>
+    </complexType>
+  </element>
+  <complexType name="Property">
+    <sequence>
+      <element name="name" nillable="true" type="xsd:string" />
+      <element name="value" nillable="true" type="xsd:string" />
+    </sequence>
+  </complexType>
+  <complexType name="RuleConditionInfo">
+    <sequence>
+      <element name="description" nillable="true" type="xsd:string" />
+      <element maxOccurs="unbounded" name="properties" nillable="true"
+        type="tns1:Property" />
+      <element name="type" nillable="true" type="xsd:string" />
+    </sequence>
+  </complexType>
+  <complexType name="AllocationRuleInfo">
+    <sequence>
+      <element name="condition" nillable="true"
+        type="tns1:RuleConditionInfo" />
+      <element name="description" nillable="true" type="xsd:string" />
+      <element maxOccurs="unbounded" name="properties" nillable="true"
+        type="tns1:Property" />
+      <element name="ruleAction" nillable="true" type="xsd:string" />
+      <element name="type" nillable="true" type="xsd:string" />
+    </sequence>
+  </complexType>
+  <complexType name="ApplicationComponentAllocationInfo">
+    <sequence>
+      <element maxOccurs="unbounded" name="allocationRules"
+        nillable="true" type="tns1:AllocationRuleInfo" />
+      <element name="max" type="xsd:int" />
+      <element name="min" type="xsd:int" />
+      <element name="name" nillable="true" type="xsd:string" />
+      <element name="priority" type="xsd:int" />
+    </sequence>
+  </complexType>
+  <complexType name="PolicyInfo">
+    <sequence>
+      <element maxOccurs="unbounded" name="applicationComponentAllocationInfo"
+        nillable="true" type="tns1:ApplicationComponentAllocationInfo" />
+      <element name="scheduleName" nillable="true" type="xsd:string" />
+      <element name="scheduled" type="xsd:boolean" />
+    </sequence>
+  </complexType>
+  <complexType name="ApplicationInfo">
+    <sequence>
+      <element maxOccurs="unbounded" name="applicationComponents"
+        nillable="true" type="xsd:string" />
+      <element name="description" nillable="true" type="xsd:string" />
+      <element name="lastModified" type="xsd:long" />
+      <element name="mode" nillable="true" type="xsd:string" />
+      <element name="modified" type="xsd:boolean" />
+      <element name="modifiedBy" nillable="true" type="xsd:string" />
+      <element name="name" nillable="true" type="xsd:string" />
+      <element maxOccurs="unbounded" name="policies" nillable="true"
+        type="tns1:PolicyInfo" />
+    </sequence>
+  </complexType>
+  <element name="addApplicationResponse">
+    <complexType />
+  </element>
+  <element name="getApplication">
+    <complexType>
+      <sequence>
+        <element name="name" type="xsd:string" />
+      </sequence>
+    </complexType>
+  </element>
+  <element name="getApplicationResponse">
+    <complexType>
+      <sequence>
+        <element name="getApplicationReturn" type="tns1:ApplicationInfo" />
+      </sequence>
+    </complexType>
+  </element>
+  <element name="getApplications">
+    <complexType />
+  </element>
+  <element name="getApplicationsResponse">
+    <complexType>
+      <sequence>
+        <element maxOccurs="unbounded" name="getApplicationsReturn"
+          type="tns1:ApplicationInfo" />
+      </sequence>
+    </complexType>
+  </element>
+  <element name="enableBatchMode">
+    <complexType />
+  </element>
+  <element name="enableBatchModeResponse">
+    <complexType />
+  </element>
+  <element name="disableBatchMode">
+    <complexType />
+  </element>
+  <element name="disableBatchModeResponse">
+    <complexType />
+  </element>
+  <element name="getEffectivePolicy">
+    <complexType />
+  </element>
+  <element name="getEffectivePolicyResponse">
+    <complexType>
+      <sequence>
+        <element name="getEffectivePolicyReturn" type="tns1:PolicyInfo" />
+      </sequence>
+    </complexType>
+  </element>
+  <element name="revertApplication">
+    <complexType>
+      <sequence>
+        <element name="name" type="xsd:string" />
+      </sequence>
+    </complexType>
+  </element>
+  <element name="revertApplicationResponse">
+    <complexType />
+  </element>
+  <element name="assignApplicationToAccount">
+    <complexType>
+      <sequence>
+        <element name="applicationName" type="xsd:string" />
+        <element name="account" type="xsd:string" />
+      </sequence>
+    </complexType>
+  </element>
+  <element name="assignApplicationToAccountResponse">
+    <complexType />
+  </element>
+  <element name="cloneApplicationForAccount">
+    <complexType>
+      <sequence>
+        <element name="applicationName" type="xsd:string" />
+        <element name="account" type="xsd:string" />
+      </sequence>
+    </complexType>
+  </element>
+  <element name="cloneApplicationForAccountResponse">
+    <complexType />
+  </element>
+  <element name="getAllocationMap">
+    <complexType />
+  </element>
+  <element name="getAllocationMapResponse">
+    <complexType>
+      <sequence>
+        <element name="getAllocationMapReturn" type="tns1:AllocationMapInfo" />
+      </sequence>
+    </complexType>
+  </element>
+  <complexType name="AllocationInfo">
+    <sequence>
+      <element name="name" nillable="true" type="xsd:string" />
+      <element maxOccurs="unbounded" name="properties" nillable="true"
+        type="tns1:Property" />
+    </sequence>
+  </complexType>
+  <complexType name="FabricEngineInfo">
+    <sequence>
+      <element name="allocationInfo" nillable="true"
+        type="tns1:AllocationInfo" />
+      <element name="busy" type="xsd:boolean" />
+      <element name="capturing" type="xsd:boolean" />
+      <element name="domain" nillable="true" type="xsd:string" />
+      <element name="elapsedTime" type="xsd:long" />
+      <element name="engineId" type="xsd:long" />
+      <element maxOccurs="unbounded" name="exportedVars"
+        nillable="true" type="tns1:Property" />
+      <element name="instance" nillable="true" type="xsd:string" />
+      <element name="invocationId" type="xsd:long" />
+      <element maxOccurs="unbounded" name="properties" nillable="true"
+        type="tns1:Property" />
+      <element name="serviceId" type="xsd:long" />
+      <element name="status" nillable="true" type="xsd:string" />
+      <element name="username" nillable="true" type="xsd:string" />
+    </sequence>
+  </complexType>
+  <complexType name="AllocationEntryInfo">
+    <sequence>
+      <element name="allocationSettings" nillable="true"
+        type="tns1:ApplicationComponentAllocationInfo" />
+      <element name="domainName" nillable="true" type="xsd:string" />
+      <element name="engineCount" type="xsd:int" />
+      <element maxOccurs="unbounded" name="engines" nillable="true"
+        type="tns1:FabricEngineInfo" />
+      <element name="expectedEngineCount" type="xsd:int" />
+    </sequence>
+  </complexType>
+  <complexType name="AllocationMapInfo">
+    <sequence>
+      <element name="allocatingEngineCount" type="xsd:int" />
+      <element maxOccurs="unbounded" name="allocationEntries"
+        nillable="true" type="tns1:AllocationEntryInfo" />
+      <element name="allocationEntryCount" type="xsd:int" />
+      <element name="expectedEngineCount" type="xsd:int" />
+      <element name="runningEngineCount" type="xsd:int" />
+    </sequence>
+  </complexType>
+  <element name="getApplicationNames">
+    <complexType />
+  </element>
+  <element name="getApplicationNamesResponse">
+    <complexType>
+      <sequence>
+        <element maxOccurs="unbounded" name="getApplicationNamesReturn"
+          type="xsd:string" />
+      </sequence>
+    </complexType>
+  </element>
+  <element name="copyApplication">
+    <complexType>
+      <sequence>
+        <element name="sourceApplicationName" type="xsd:string" />
+        <element name="targetApplicationName" type="xsd:string" />
+      </sequence>
+    </complexType>
+  </element>
+  <element name="copyApplicationResponse">
+    <complexType />
+  </element>
+  <element name="removeApplication">
+    <complexType>
+      <sequence>
+        <element name="name" type="xsd:string" />
+      </sequence>
+    </complexType>
+  </element>
+  <element name="removeApplicationResponse">
+    <complexType />
+  </element>
+  <element name="undeployApplication">
+    <complexType>
+      <sequence>
+        <element name="name" type="xsd:string" />
+      </sequence>
+    </complexType>
+  </element>
+  <element name="undeployApplicationResponse">
+    <complexType />
+  </element>
+  <element name="deployApplication">
+    <complexType>
+      <sequence>
+        <element name="name" type="xsd:string" />
+      </sequence>
+    </complexType>
+  </element>
+  <element name="deployApplicationResponse">
+    <complexType />
+  </element>
+  <element name="addApplicationComponent">
+    <complexType>
+      <sequence>
+        <element name="applicationName" type="xsd:string" />
+        <element name="componentName" type="xsd:string" />
+      </sequence>
+    </complexType>
+  </element>
+  <element name="addApplicationComponentResponse">
+    <complexType />
+  </element>
+  <element name="removeApplicationComponent">
+    <complexType>
+      <sequence>
+        <element name="applicationName" type="xsd:string" />
+        <element name="componentName" type="xsd:string" />
+      </sequence>
+    </complexType>
+  </element>
+  <element name="removeApplicationComponentResponse">
+    <complexType />
+  </element>
+  <element name="setApplicationMode">
+    <complexType>
+      <sequence>
+        <element name="name" type="xsd:string" />
+        <element name="mode" type="xsd:string" />
+      </sequence>
+    </complexType>
+  </element>
+  <element name="setApplicationModeResponse">
+    <complexType />
+  </element>
+  <element name="updateApplication">
+    <complexType>
+      <sequence>
+        <element name="application" type="tns1:ApplicationInfo" />
+      </sequence>
+    </complexType>
+  </element>
+  <element name="updateApplicationResponse">
+    <complexType />
+  </element>
+  <element name="cloneApplicationForCloud">
+    <complexType>
+      <sequence>
+        <element name="applicationName" type="xsd:string" />
+      </sequence>
+    </complexType>
+  </element>
+  <element name="cloneApplicationForCloudResponse">
+    <complexType />
+  </element>
+  <element name="getApplicationComponents">
+    <complexType>
+      <sequence>
+        <element name="applicationName" type="xsd:string" />
+      </sequence>
+    </complexType>
+  </element>
+  <element name="getApplicationComponentsResponse">
+    <complexType>
+      <sequence>
+        <element maxOccurs="unbounded" name="getApplicationComponentsReturn"
+          type="tns1:ApplicationComponentInfo" />
+      </sequence>
+    </complexType>
+  </element>
+  <complexType name="FeatureInfo">
+    <sequence>
+      <element name="description" nillable="true" type="xsd:string" />
+      <element name="infoDescription" nillable="true" type="xsd:string" />
+      <element name="name" nillable="true" type="xsd:string" />
+      <element maxOccurs="unbounded" name="properties" nillable="true"
+        type="tns1:Property" />
+    </sequence>
+  </complexType>
+  <complexType name="RuntimeContextVariableInfo">
+    <sequence>
+      <element name="autoIncrementType" type="xsd:int" />
+      <element name="description" nillable="true" type="xsd:string" />
+      <element name="export" type="xsd:boolean" />
+      <element name="name" nillable="true" type="xsd:string" />
+      <element name="type" type="xsd:int" />
+      <element name="value" nillable="true" type="xsd:anyType" />
+    </sequence>
+  </complexType>
+  <complexType name="StatisticInfo">
+    <sequence>
+      <element name="defolt" type="xsd:boolean" />
+      <element name="description" nillable="true" type="xsd:string" />
+      <element name="name" nillable="true" type="xsd:string" />
+      <element name="shared" type="xsd:boolean" />
+      <element name="units" nillable="true" type="xsd:string" />
+    </sequence>
+  </complexType>
+  <complexType name="ApplicationComponentInfo">
+    <sequence>
+      <element maxOccurs="unbounded" name="allocationConstraints"
+        nillable="true" type="xsd:string" />
+      <element name="componentType" nillable="true" type="xsd:string" />
+      <element name="containerName" nillable="true" type="xsd:string" />
+      <element name="containerVersion" nillable="true" type="xsd:string" />
+      <element maxOccurs="unbounded" name="defaultAllocationRuleSettings"
+        nillable="true" type="tns1:AllocationRuleInfo" />
+      <element maxOccurs="unbounded" name="defaultSettings"
+        nillable="true" type="tns1:Property" />
+      <element name="description" nillable="true" type="xsd:string" />
+      <element maxOccurs="unbounded" name="features" nillable="true"
+        type="tns1:FeatureInfo" />
+      <element name="lastModified" type="xsd:long" />
+      <element name="modified" type="xsd:boolean" />
+      <element name="modifiedBy" nillable="true" type="xsd:string" />
+      <element name="name" nillable="true" type="xsd:string" />
+      <element maxOccurs="unbounded" name="options" nillable="true"
+        type="tns1:Property" />
+      <element maxOccurs="unbounded" name="runtimeContextVariables"
+        nillable="true" type="tns1:RuntimeContextVariableInfo" />
+      <element maxOccurs="unbounded" name="supportedStatistics"
+        nillable="true" type="tns1:StatisticInfo" />
+      <element maxOccurs="unbounded" name="trackedStatistics"
+        nillable="true" type="xsd:string" />
+    </sequence>
+  </complexType>
+  <element name="getApplicationPrecedences">
+    <complexType />
+  </element>
+  <element name="getApplicationPrecedencesResponse">
+    <complexType>
+      <sequence>
+        <element maxOccurs="unbounded" name="getApplicationPrecedencesReturn"
+          type="xsd:string" />
+      </sequence>
+    </complexType>
+  </element>
+  <element name="changeApplicationPrecedence">
+    <complexType>
+      <sequence>
+        <element name="appName" type="xsd:string" />
+        <element name="insertIndex" type="xsd:int" />
+      </sequence>
+    </complexType>
+  </element>
+  <element name="changeApplicationPrecedenceResponse">
+    <complexType />
+  </element>
+  <element name="isApplicationDeployed">
+    <complexType>
+      <sequence>
+        <element name="name" type="xsd:string" />
+      </sequence>
+    </complexType>
+  </element>
+  <element name="isApplicationDeployedResponse">
+    <complexType>
+      <sequence>
+        <element name="isApplicationDeployedReturn" type="xsd:boolean" />
+      </sequence>
+    </complexType>
+  </element>
+</schema>

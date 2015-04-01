@@ -1,0 +1,500 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified"
+  targetNamespace="http://admin.fabric.webservices.datasynapse.com"
+  xmlns:tns1="http://admin.fabric.webservices.datasynapse.com"
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+   <element name="getContainer">
+    <complexType>
+     <sequence>
+      <element name="containerName" type="xsd:string"/>
+      <element name="containerVersion" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="getContainerResponse">
+    <complexType>
+     <sequence>
+      <element name="getContainerReturn" type="tns1:ContainerInfo"/>
+     </sequence>
+    </complexType>
+   </element>
+   <complexType name="ContainerInfo">
+    <sequence>
+     <element name="description" nillable="true" type="xsd:string"/>
+     <element name="distributionVersion" nillable="true" type="xsd:string"/>
+     <element name="lastModified" type="xsd:long"/>
+     <element name="modified" type="xsd:boolean"/>
+     <element name="modifiedBy" nillable="true" type="xsd:string"/>
+     <element name="name" nillable="true" type="xsd:string"/>
+     <element maxOccurs="unbounded" name="runtimeContextVariables" nillable="true" type="string"/>
+     <element name="shutdownTimeout" type="xsd:long"/>
+     <element maxOccurs="unbounded" name="supportedDomainTypes" nillable="true" type="xsd:string"/>
+     <element maxOccurs="unbounded" name="supportedFeatures" nillable="true" type="string"/>
+     <element maxOccurs="unbounded" name="supportedStatistics" nillable="true" type="string"/>
+     <element name="version" nillable="true" type="xsd:string"/>
+    </sequence>
+   </complexType>
+   <element name="isDeployed">
+    <complexType>
+     <sequence>
+      <element name="name" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="isDeployedResponse">
+    <complexType>
+     <sequence>
+      <element name="isDeployedReturn" type="xsd:boolean"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="getApplicationComponent">
+    <complexType>
+     <sequence>
+      <element name="name" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="getDistributionVersions">
+    <complexType>
+     <sequence>
+      <element name="containerName" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="getDistributionVersionsResponse">
+    <complexType>
+     <sequence>
+      <element maxOccurs="unbounded" name="getDistributionVersionsReturn" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="getSupportedFeatures">
+    <complexType>
+     <sequence>
+      <element name="containerName" type="xsd:string"/>
+      <element name="containerVersion" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="getSupportedFeaturesResponse">
+    <complexType>
+     <sequence>
+      <element maxOccurs="unbounded" name="getSupportedFeaturesReturn" type="string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="clearEngineFromBlacklists">
+    <complexType>
+     <sequence>
+      <element name="engineId" type="xsd:long"/>
+      <element name="instance" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="clearEngineFromBlacklistsResponse">
+    <complexType/>
+   </element>
+   <element name="clearAllEnginesFromBlacklists">
+    <complexType>
+     <sequence>
+      <element name="engineId" type="xsd:long"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="clearAllEnginesFromBlacklistsResponse">
+    <complexType/>
+   </element>
+   <element name="isUtility">
+    <complexType>
+     <sequence>
+      <element name="componentName" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="isUtilityResponse">
+    <complexType>
+     <sequence>
+      <element name="isUtilityReturn" type="xsd:boolean"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="setUtility">
+    <complexType>
+     <sequence>
+      <element name="componentName" type="xsd:string"/>
+      <element name="newUtilityValue" type="xsd:boolean"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="setUtilityResponse">
+    <complexType/>
+   </element>
+   <element name="getBlacklistedEngines">
+    <complexType>
+     <sequence>
+      <element name="componentName" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="getBlacklistedEnginesResponse">
+    <complexType>
+     <sequence>
+      <element maxOccurs="unbounded" name="getBlacklistedEnginesReturn" type="tns1:EngineIdInfo"/>
+     </sequence>
+    </complexType>
+   </element>
+   <complexType name="EngineIdInfo">
+    <sequence>
+     <element name="engineId" type="xsd:long"/>
+     <element name="instance" nillable="true" type="xsd:string"/>
+    </sequence>
+   </complexType>
+   <element name="getBlacklistedEngineCount">
+    <complexType>
+     <sequence>
+      <element name="componentName" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="getBlacklistedEngineCountResponse">
+    <complexType>
+     <sequence>
+      <element name="getBlacklistedEngineCountReturn" type="xsd:int"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="getAllocatedEngines">
+    <complexType>
+     <sequence>
+      <element name="componentName" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="getAllocatedEnginesResponse">
+    <complexType>
+     <sequence>
+      <element maxOccurs="unbounded" name="getAllocatedEnginesReturn" type="tns1:EngineIdInfo"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="getAllocatedEngineCount">
+    <complexType>
+     <sequence>
+      <element name="componentName" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="getAllocatedEngineCountResponse">
+    <complexType>
+     <sequence>
+      <element name="getAllocatedEngineCountReturn" type="xsd:int"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="removeContentFiles">
+    <complexType>
+     <sequence>
+      <element name="componentName" type="xsd:string"/>
+      <element name="regexPattern" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="removeContentFilesResponse">
+    <complexType/>
+   </element>
+   <element name="getDepartments">
+    <complexType/>
+   </element>
+   <element name="getDepartmentsResponse">
+    <complexType>
+     <sequence>
+      <element maxOccurs="unbounded" name="getDepartmentsReturn" type="tns1:DepartmentInfo"/>
+     </sequence>
+    </complexType>
+   </element>
+   <complexType name="DepartmentInfo">
+    <sequence>
+     <element name="description" nillable="true" type="xsd:string"/>
+     <element name="name" nillable="true" type="xsd:string"/>
+    </sequence>
+   </complexType>
+   <element name="getLocations">
+    <complexType/>
+   </element>
+   <element name="getLocationsResponse">
+    <complexType>
+     <sequence>
+      <element maxOccurs="unbounded" name="getLocationsReturn" type="tns1:LocationInfo"/>
+     </sequence>
+    </complexType>
+   </element>
+   <complexType name="LocationInfo">
+    <sequence>
+     <element name="description" nillable="true" type="xsd:string"/>
+     <element name="name" nillable="true" type="xsd:string"/>
+    </sequence>
+   </complexType>
+   <element name="updateApplicationComponent">
+    <complexType>
+     <sequence>
+      <element name="applicationComponent" type="string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="updateApplicationComponentResponse">
+    <complexType/>
+   </element>
+   <element name="copyApplicationComponent">
+    <complexType>
+     <sequence>
+      <element name="sourceName" type="xsd:string"/>
+      <element name="targetName" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="copyApplicationComponentResponse">
+    <complexType/>
+   </element>
+   <element name="getBlacklistedApplicationComponents">
+    <complexType>
+     <sequence>
+      <element name="engineId" type="xsd:long"/>
+      <element name="instance" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="getBlacklistedApplicationComponentsResponse">
+    <complexType>
+     <sequence>
+      <element maxOccurs="unbounded" name="getBlacklistedApplicationComponentsReturn" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="clearBlacklistedApplicationComponentFromEngines">
+    <complexType>
+     <sequence>
+      <element name="componentName" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="clearBlacklistedApplicationComponentFromEnginesResponse">
+    <complexType/>
+   </element>
+   <element name="getApplicationComponentStatisticValue">
+    <complexType>
+     <sequence>
+      <element name="componentName" type="xsd:string"/>
+      <element name="statName" type="xsd:string"/>
+      <element name="from" type="xsd:dateTime"/>
+      <element name="to" type="xsd:dateTime"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="getApplicationComponentStatisticValueResponse">
+    <complexType>
+     <sequence>
+      <element name="getApplicationComponentStatisticValueReturn" type="xsd:double"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="assignApplicationComponentToAccount">
+    <complexType>
+     <sequence>
+      <element name="componentName" type="xsd:string"/>
+      <element name="account" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="assignApplicationComponentToAccountResponse">
+    <complexType/>
+   </element>
+   <element name="cloneApplicationComponentForCloud">
+    <complexType>
+     <sequence>
+      <element name="componentName" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="cloneApplicationComponentForCloudResponse">
+    <complexType/>
+   </element>
+   <element name="cloneApplicationComponentForAccount">
+    <complexType>
+     <sequence>
+      <element name="componentName" type="xsd:string"/>
+      <element name="account" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="cloneApplicationComponentForAccountResponse">
+    <complexType/>
+   </element>
+   <element name="cloneContainerForCloud">
+    <complexType>
+     <sequence>
+      <element name="containerName" type="xsd:string"/>
+      <element name="containerVersion" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="cloneContainerForCloudResponse">
+    <complexType/>
+   </element>
+   <element name="cloneContainerForAccount">
+    <complexType>
+     <sequence>
+      <element name="containerName" type="xsd:string"/>
+      <element name="containerVersion" type="xsd:string"/>
+      <element name="account" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="cloneContainerForAccountResponse">
+    <complexType/>
+   </element>
+   <element name="getContainerNames">
+    <complexType/>
+   </element>
+   <element name="getContainerNamesResponse">
+    <complexType>
+     <sequence>
+      <element maxOccurs="unbounded" name="getContainerNamesReturn" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="revertContainer">
+    <complexType>
+     <sequence>
+      <element name="name" type="xsd:string"/>
+      <element name="version" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="revertContainerResponse">
+    <complexType/>
+   </element>
+   <element name="getApplicationComponentNames">
+    <complexType/>
+   </element>
+   <element name="getApplicationComponentNamesResponse">
+    <complexType>
+     <sequence>
+      <element maxOccurs="unbounded" name="getApplicationComponentNamesReturn" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="getApplicationComponentTypeNames">
+    <complexType/>
+   </element>
+   <element name="getApplicationComponentTypeNamesResponse">
+    <complexType>
+     <sequence>
+      <element maxOccurs="unbounded" name="getApplicationComponentTypeNamesReturn" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="getApplicationComponentsByType">
+    <complexType>
+     <sequence>
+      <element name="componentTypeName" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="getApplicationComponentsByTypeResponse">
+    <complexType>
+     <sequence>
+      <element maxOccurs="unbounded" name="getApplicationComponentsByTypeReturn" type="string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="deployApplicationComponent">
+    <complexType>
+     <sequence>
+      <element name="name" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="deployApplicationComponentResponse">
+    <complexType/>
+   </element>
+   <element name="undeployApplicationComponent">
+    <complexType>
+     <sequence>
+      <element name="name" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="undeployApplicationComponentResponse">
+    <complexType/>
+   </element>
+   <element name="getAllocationInfo">
+    <complexType>
+     <sequence>
+      <element name="componentName" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="getAllocationInfoResponse">
+    <complexType>
+     <sequence>
+      <element maxOccurs="unbounded" name="getAllocationInfoReturn" type="string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="getAllAllocationConstraints">
+    <complexType/>
+   </element>
+   <element name="getAllAllocationConstraintsResponse">
+    <complexType>
+     <sequence>
+      <element maxOccurs="unbounded" name="getAllAllocationConstraintsReturn" type="tns1:AllocationConstraintInfo"/>
+     </sequence>
+    </complexType>
+   </element>
+   <complexType name="AllocationConstraintInfo">
+    <sequence>
+     <element name="currentValue" type="xsd:long"/>
+     <element name="description" nillable="true" type="xsd:string"/>
+     <element name="lastModified" type="xsd:long"/>
+     <element name="maxValue" type="xsd:long"/>
+     <element name="modifiedBy" nillable="true" type="xsd:string"/>
+     <element name="name" nillable="true" type="xsd:string"/>
+     <element name="type" nillable="true" type="xsd:string"/>
+    </sequence>
+   </complexType>
+   <element name="copyContainer">
+    <complexType>
+     <sequence>
+      <element name="name" type="xsd:string"/>
+      <element name="version" type="xsd:string"/>
+      <element name="newName" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="copyContainerResponse">
+    <complexType/>
+   </element>
+   <element name="deployContainer">
+    <complexType>
+     <sequence>
+      <element name="name" type="xsd:string"/>
+      <element name="version" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="deployContainerResponse">
+    <complexType/>
+   </element>
+   <element name="getContainers">
+    <complexType/>
+   </element>
+   <element name="getContainersResponse">
+    <complexType>
+     <sequence>
+      <element maxOccurs="unbounded" name="getContainersReturn" type="tns1:ContainerInfo"/>
+     </sequence>
+    </complexType>
+   </element>
+  </schema>
