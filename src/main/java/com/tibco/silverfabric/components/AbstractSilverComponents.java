@@ -7,6 +7,7 @@
 package com.tibco.silverfabric.components;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -17,6 +18,8 @@ import java.util.Map;
 import javax.xml.bind.JAXBElement;
 import javax.xml.transform.stream.StreamSource;
 
+import org.apache.maven.model.PluginContainer;
+import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.Parameter;
@@ -24,12 +27,16 @@ import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpRequest;
 import org.springframework.http.MediaType;
+import org.springframework.http.client.ClientHttpRequestExecution;
+import org.springframework.http.client.ClientHttpRequestInterceptor;
+import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.HttpClientErrorException;
 
-import com.fedex.scm.sf.ComponentType;
+import com.fedex.scm.sf.Component;
 import com.tibco.silverfabric.AbstractSilverFabricMojo;
 import com.tibco.silverfabric.Archive;
 import com.tibco.silverfabric.DefaultAllocationSetting;
@@ -109,17 +116,32 @@ public abstract class AbstractSilverComponents extends AbstractSilverFabricMojo 
     private String scriptName;
     @Parameter
     private String scriptFileRegex;
+    @Parameter
+    private boolean override = false;
 
 	/**
      * 
      */
-	private ComponentType component;    
+	private Component component;    
     
 	public void initialize() {
 		getLog().info("loading plan " + this.plan);
-		JAXBElement<ComponentType> component_ = (JAXBElement<ComponentType>) marshaller
+		JAXBElement<Component> _component = (JAXBElement<Component>) marshaller
 				.unmarshal(new StreamSource(this.plan));
-		component = component_.getValue();
+		component = _component.getValue();
+		
+//		//
+//		final AbstractMojo THIS = (AbstractMojo) this;
+//        restTemplate.getInterceptors().add(new ClientHttpRequestInterceptor() {
+//			
+//			@Override
+//			public ClientHttpResponse intercept(HttpRequest request, byte[] body,
+//					ClientHttpRequestExecution execution) throws IOException {
+//				THIS.getLog().info(new String(body, "UTF-8"));
+//				return null;
+//			}
+//		});
+
 	}
 
     
@@ -359,6 +381,8 @@ public abstract class AbstractSilverComponents extends AbstractSilverFabricMojo 
                 }
             } catch (HttpClientErrorException httpException) {
                 getLog().info("Error when running " + action + " on component " + componentName + " : " + httpException.getResponseBodyAsString());
+                throw new MojoExecutionException("Error when running " + action 
+                		+ " on component " + componentName + " : " + httpException.getResponseBodyAsString(), httpException);
             }
         }
     }
@@ -368,7 +392,7 @@ public abstract class AbstractSilverComponents extends AbstractSilverFabricMojo 
 	 * 
 	 * @return
 	 */
-	private HashMap<Object, Object> setComponentRequest() {
+	protected HashMap<Object, Object> setComponentRequest() {
 		HashMap<Object, Object> request = new LinkedHashMap<Object, Object>();
 		request.put("componentType",
 				valueOf(component.getComponentType(), componentType));
@@ -379,14 +403,14 @@ public abstract class AbstractSilverComponents extends AbstractSilverFabricMojo 
 				valueOf(component.getEnablerVersion(), enablerVersion));
 		valueOf(request, "description", description, null);
 		valueOf(request, "trackedStatistics", trackedStatistics, null);
-		valueOf(request, "options", component.getOption(), options);
+		valueOf(request, "options", component.getOptions(), options);
 		valueOf(request, "runtimeContextVariables",
-				component.getRuntimeVariable(), runtimeContextVariables);
-		valueOf(request, "features", component.getFeature(), features);
+				component.getRuntimeVariables(), runtimeContextVariables);
+		valueOf(request, "features", component.getFeatures(), features);
 		valueOf(request, "defaultAllocationRuleSettings",
 				defaultAllocationRuleSettings, null);
 		valueOf(request, "defaultSettings", defaultSettings, null);
-		valueOf(request, "allocationConstraints", allocationConstraints, component.getAllocationConstraint());
+		valueOf(request, "allocationConstraints", allocationConstraints, component.getAllocationConstraints());
 		return request;
 	}
 
@@ -397,13 +421,15 @@ public abstract class AbstractSilverComponents extends AbstractSilverFabricMojo 
 	 * @param description2
 	 * @param object
 	 */
-	private void valueOf(HashMap<Object, Object> request, String string,
+	protected Object valueOf(HashMap<Object, Object> request, String string,
 			Object a, Object b) {
-		Object value = valueOf(a, b);
+		Object value = override && "features".equals(string) ? valueOf(b, a) : valueOf(a, b);
 		if (value != null) {
 			getLog().info("\n\nadding[" + string + "] \n\n\t= " + value );
 			request.put(string, value);
+			return value;
 		}
+		return null;
 	}
 
 	/**
@@ -412,7 +438,7 @@ public abstract class AbstractSilverComponents extends AbstractSilverFabricMojo 
 	 * @param b
 	 * @return
 	 */
-	private static Object valueOf(Object a, Object b) {
+	protected static Object valueOf(Object a, Object b) {
 		if (a == null && b == null) {
 			return null;
 		}

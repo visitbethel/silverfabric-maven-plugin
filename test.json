@@ -1,0 +1,241 @@
+{
+	"componentType":"TIBCO BusinessEvents:2.5.0",
+	"name":"GSEFS-CoreEngine-ShipmentCore",
+	"enablerName":"TIBCO BusinessEvents container",
+	"enablerVersion":"2.5.0.1",
+	"options":[
+		{
+			"name":"Engine Blacklisting",
+			"value":"false"
+		},
+		{
+			"name":"Failures Per Day Before Blacklist",
+			"value":"10"
+		},
+		{
+			"name":"Archive Scale Up Timeout",
+			"value":"320"
+		},
+		{
+			"name":"Archive Scale Down Timeout",
+			"value":"320"
+		},
+		{
+			"name":"Maximum Activation Time",
+			"value":"3300"
+		},
+		{
+			"name":"Maximum Deactivation Time",
+			"value":"300"
+		},
+		{
+			"name":"Maximum Capture Time",
+			"value":"380"
+		},
+		{
+			"name":"Minimum Instances Per Host",
+			"value":"0"
+		},
+		{
+			"name":"Maximum Instances Per Host",
+			"value":"0"
+		},
+		{
+			"name":"Statistics Collection Frequency",
+			"value":"30"
+		},
+		{
+			"name":"Activation Delay",
+			"value":"3"
+		},
+		{
+			"name":"Engine Reservation Expiration",
+			"value":"300"
+		}
+	],
+	"runtimeContextVariables":[
+		{
+			"autoIncrementType":0,
+			"description":"External Jar files",
+			"export":false,
+			"name":"WITHOUT_TRA",
+			"type":1,
+			"value":false
+		},
+		{
+			"autoIncrementType":0,
+			"description":"JDBC Driver file",
+			"export":true,
+			"name":"JDBC_DRIVER_FILE",
+			"type":1,
+			"value":"jdbc/ojdbc6.jar"
+		},
+		{
+			"autoIncrementType":0,
+			"description":"Name of the TLM",
+			"export":true,
+			"name":"LOGICAL_MACHINE_NAME",
+			"type":1,
+			"value":"%%COMPONENT_DISPLAYNAME%%"
+		},
+		{
+			"autoIncrementType":0,
+			"description":"On logical machine restart, all services are either\n      started or stopped\n    ",
+			"export":false,
+			"name":"TIBCO_SERVICES_STATE_AFTER_TLM_MOVED",
+			"type":1,
+			"value":"Started"
+		},
+		{
+			"autoIncrementType":0,
+			"description":"Should Silver prepend .jars to CLASSPATH on\n      deployment\n    ",
+			"export":true,
+			"name":"IS_PREPAND",
+			"type":1,
+			"value":false
+		},
+		{
+			"autoIncrementType":0,
+			"description":"Use Full Archive Name",
+			"export":false,
+			"name":"USE_FULL_ARCHIVE_NAME",
+			"type":1,
+			"value":false
+		},
+		{
+			"autoIncrementType":0,
+			"description":"HAWK AMI SERVICE for TIBCO Administrator\n    ",
+			"export":true,
+			"name":"AMI_HAWK_SERVICE",
+			"type":1,
+			"value":7474
+		},
+		{
+			"autoIncrementType":0,
+			"description":"HAWK AMI DAEMON for TIBCO Administrator\n    ",
+			"export":true,
+			"name":"AMI_HAWK_DAEMON",
+			"type":1,
+			"value":"tcp:7474"
+		},
+		{
+			"autoIncrementType":0,
+			"description":"Consult the user documentation on automated HTTP\n      port setting\n    ",
+			"export":false,
+			"name":"HTTP_PORT_BASE",
+			"type":1,
+			"value":38000
+		},
+		{
+			"autoIncrementType":0,
+			"description":"Consult the user documentation on automated HTTP\n      port setting\n    ",
+			"export":false,
+			"name":"HTTP_PORT_INCREASE",
+			"type":1,
+			"value":50
+		},
+		{
+			"autoIncrementType":0,
+			"description":"Polling period (in seconds) for TIBCO Hawk Agent\n      running verification\n    ",
+			"export":false,
+			"name":"HAWK_POLLPERIOD",
+			"type":0,
+			"value":30
+		},
+		{
+			"autoIncrementType":0,
+			"description":"Number of times to restart Hawk Agent before\n      tearing down install\n    ",
+			"export":true,
+			"name":"NB_HAWK_RESTART_BEFORE_RESTART_ENGINE",
+			"type":1,
+			"value":3
+		},
+		{
+			"autoIncrementType":0,
+			"description":"Delete contents of work directory when component\n      stops\n    ",
+			"export":false,
+			"name":"DELETE_RUNTIME_DIR_ON_SHUTDOWN",
+			"type":1,
+			"value":true
+		},
+		{
+			"autoIncrementType":0,
+			"description":"Number of times to restart BE before tearing down\n      install\n    ",
+			"export":true,
+			"name":"NB_BE_RESTART_BEFORE_RESTART_ENGINE",
+			"type":1,
+			"value":3
+		},
+		{
+			"autoIncrementType":0,
+			"description":"Polling period (in seconds) for BE running\n      verification\n    ",
+			"export":false,
+			"name":"BE_POLLPERIOD",
+			"type":0,
+			"value":30
+		}
+	],
+	"features":[
+		{
+			"description":"Application Logging Support",
+			"infoDescription":"Support for handling of custom application logs\n    ",
+			"name":"applicationloggingsupport",
+			"properties":{
+				"property":[
+					{
+						"name":"Checkpoint Frequency In Seconds",
+						"value":"300"
+					},
+					{
+						"name":"Archive Application Logs",
+						"value":"true"
+					},
+					{
+						"name":"Log File Pattern",
+						"value":"/../domaindata/tra/${TIBCO_DOMAIN_NAME}/logs/*.log,/./tibco/tra/5.8/logs/*.log,/../domaindata/tra/${TIBCO_DOMAIN_NAME}/application/logs/.*.log\n        "
+					}
+				]
+			}
+		},
+		{
+			"description":"HTTP Support",
+			"infoDescription":"Support for HTTP routing ",
+			"name":"httpsupport",
+			"properties":{
+				"property":[
+					{
+						"name":"Relative Url",
+						"value":""
+					},
+					{
+						"name":"Routing Prefix",
+						"value":""
+					},
+					{
+						"name":"HTTPS Enabled",
+						"value":"false"
+					},
+					{
+						"name":"HTTP Enabled",
+						"value":"true"
+					},
+					{
+						"name":"Routing\n          Directly To Endpoints\n        ",
+						"value":"false"
+					}
+				]
+			}
+		}
+	],
+	"allocationConstraints":[
+		{
+			"currentValue":0,
+			"description":"tns:description",
+			"lastModified":0,
+			"maxValue":0,
+			"modifiedBy":"tns:modifiedBy",
+			"name":"tns:name",
+			"type":"tns:type"
+		}
+	]
+}

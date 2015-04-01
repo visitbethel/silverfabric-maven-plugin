@@ -12,6 +12,10 @@
   <name>Silver Fabric Maven Plugin Test</name>
   <description>Maven Plugin for creating Silver Fabric Components Test.</description>
 
+  <properties>
+    <override>false</override>
+  </properties>
+
   <build>
     <pluginManagement>
       <plugins>
@@ -21,12 +25,33 @@
           <version>0.16</version>
           <configuration>
             <brokerConfig>
-              <brokerURL>http://urh00172.ute.fedex.com:8080</brokerURL>
+              <brokerURL>http://srh00611.ute.fedex.com:8080</brokerURL>
               <username>sefsdev_operate</username>
               <password>test123</password>
             </brokerConfig>
             <componentName>GSEFS-CoreEngine-ShipmentCore</componentName>
             <plan>plan-be.xml</plan>
+            <override>${override}</override>
+            <features>
+              <feature>
+                <name>HTTP Support</name>
+                <description>Support for HTTP routing</description>
+                <properties>
+                  <property>
+                    <name>HTTPS Enabled</name>
+                    <value>false</value>
+                  </property>
+                  <property>
+                    <name>HTTP Enabled</name>
+                    <value>true</value>
+                  </property>
+                  <property>
+                    <name>Routing Directly To Endpoints</name>
+                    <value>false</value>
+                  </property>
+                </properties>
+              </feature>
+            </features>
           </configuration>
         </plugin>
       </plugins>
@@ -75,7 +100,7 @@
         </plugins>
       </build>
     </profile>
-   <profile>
+    <profile>
       <id>update</id>
       <build>
         <plugins>

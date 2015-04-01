@@ -26,6 +26,7 @@ import javax.xml.transform.stream.StreamSource;
 
 public abstract class AbstractSilverFabricMojo extends AbstractMojo {
 
+	
 	@Parameter
 	private LinkedList<String> actions;
 
@@ -70,6 +71,7 @@ public abstract class AbstractSilverFabricMojo extends AbstractMojo {
 	
 	@Override
 	public void execute() throws MojoExecutionException, MojoFailureException {
+		getLog().info(brokerConfig.toString());
 		httpClient.getCredentialsProvider().setCredentials(
 				new AuthScope(brokerConfig.getBrokerURL().getHost(),
 						brokerConfig.getBrokerURL().getPort(),

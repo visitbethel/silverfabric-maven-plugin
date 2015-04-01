@@ -21,8 +21,8 @@
     defined otherwise all log messages will be logged to the appender "stdout", 
     unless defined otherwise -->
   <root>
-    <priority value="INFO" />
-    <appender-ref ref="stdout" />
-    <appender-ref ref="stderr" />
+    <priority value="DEBUG" />
+   <!--  <appender-ref ref="stdout" /> -->
+    <appender-ref ref="stderr" /> 
   </root>
 </log4j:configuration>
