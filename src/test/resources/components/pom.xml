@@ -36,7 +36,7 @@
             <id>default-install</id>
             <phase>install</phase>
             <goals>
-              <goal>components</goal>
+              <goal>create-components</goal>
             </goals>
             <configuration>
               <actions>
