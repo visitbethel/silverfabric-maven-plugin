@@ -6,7 +6,7 @@
   <artifactId>silverfabric-maven-plugin-test</artifactId>
   <version>0.16</version>
 
-  <packaging>maven-plugin</packaging>
+  <packaging>jar</packaging>
 
   <name>Silver Fabric Maven Plugin</name>
   <description>Maven Plugin for creating Silver Fabric Components and Stacks.</description>
@@ -33,7 +33,7 @@
         </configuration>
         <executions>
           <execution>
-            <id>Create Component</id>
+            <id>default-install</id>
             <phase>install</phase>
             <goals>
               <goal>components</goal>
@@ -44,9 +44,9 @@
                 <action>publish</action>
               </actions>
               <componentName>My Component</componentName>
-              <componentType>J2EE:5.5.0.0</componentType>
+              <componentType>J2EE:5.5.1.0</componentType>
               <enablerName>Tomcat 6.0 Enabler</enablerName>
-              <enablerVersion>5.5</enablerVersion>
+              <enablerVersion>5.6.0</enablerVersion>
               <description>My New Component</description>
               <defaultSettings>
                 <defaultSetting>
@@ -77,30 +77,7 @@
             </configuration>
           </execution>
         </executions>
-<!--         <dependencies>
 
-          <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-context</artifactId>
-            <version>${spring.version}</version>
-          </dependency>
-    <dependency>
-      <groupId>org.apache.httpcomponents</groupId>
-      <artifactId>httpclient</artifactId>
-      <version>4.2</version>
-    </dependency>
-    Parsing JSON
-    <dependency>
-      <groupId>com.fasterxml.jackson.core</groupId>
-      <artifactId>jackson-databind</artifactId>
-      <version>2.2.3</version>
-    </dependency>
-    <dependency>
-      <groupId>commons-io</groupId>
-      <artifactId>commons-io</artifactId>
-      <version>2.4</version>
-    </dependency>
-        </dependencies> -->
       </plugin>
     </plugins>
   </build>
