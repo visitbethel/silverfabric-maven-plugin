@@ -137,6 +137,8 @@ public abstract class AbstractSilverComponents extends Components {
 			MojoFailureException {
 
 		initialize();
+		
+		getLog().info("execute from " + this.getClass());
 
 		List<String> actionList = getActions() != null ? getActions()
 				: new ArrayList<String>();
