@@ -20,7 +20,7 @@ import org.apache.maven.plugins.annotations.Mojo;
  *       engineId (only if info=blacklisted_names) * instance (only if
  *       info=blacklisted_names)
  */
-@Mojo(name = "create-components")
+@Mojo(name = "update-components")
 public class UpdateComponents extends AbstractSilverComponents {
 
 	public UpdateComponents() {
@@ -30,7 +30,7 @@ public class UpdateComponents extends AbstractSilverComponents {
 		super.initialize();
 		if (getActions() == null) {
 			LinkedList<String> list = new LinkedList<String>();
-			list.add("create");
+			list.add("update");
 			list.add("publish");
 			setActions(list);
 		}

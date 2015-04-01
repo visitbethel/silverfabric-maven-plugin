@@ -16,6 +16,7 @@ import org.apache.maven.plugins.annotations.Parameter;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
+import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.LinkedList;
@@ -29,6 +30,14 @@ public abstract class AbstractSilverFabricMojo extends AbstractMojo {
     HttpComponentsClientHttpRequestFactory httpComponentsClientHttpRequestFactory = (HttpComponentsClientHttpRequestFactory) restTemplate.getRequestFactory();
     DefaultHttpClient httpClient = (DefaultHttpClient) httpComponentsClientHttpRequestFactory.getHttpClient();
 
+	/**
+	 * 
+	 */
+	protected Jaxb2Marshaller marshaller = ctx.getBean(Jaxb2Marshaller.class);
+
+	
+    
+    
     @Parameter (required = true)
     private BrokerConfig brokerConfig;
 
