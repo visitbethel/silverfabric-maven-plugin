@@ -17,68 +17,141 @@
     <maven.api.version>3.2.5</maven.api.version>
   </properties>
 
-  <build>
-    <plugins>
-
-      <plugin>
-        <groupId>com.tibco.silverfabric</groupId>
-        <artifactId>silverfabric-maven-plugin</artifactId>
-        <version>0.16</version>
-        <configuration>
-          <brokerConfig>
-            <brokerURL>http://srh00611.ute.fedex.com:8080</brokerURL>
-            <username>sefsdev_operate</username>
-            <password>test123</password>
-          </brokerConfig>
-        </configuration>
-        <executions>
-          <execution>
-            <id>default-install</id>
-            <phase>install</phase>
-            <goals>
-              <goal>create-components</goal>
-            </goals>
+  <profiles>
+    <profile>
+      <id>create</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>com.tibco.silverfabric</groupId>
+            <artifactId>silverfabric-maven-plugin</artifactId>
+            <version>0.16</version>
             <configuration>
-              <actions>
-                <action>create</action>
-                <action>publish</action>
-              </actions>
-              <componentName>My Component</componentName>
-              <componentType>J2EE:5.5.1.0</componentType>
-              <enablerName>Tomcat 6.0 Enabler</enablerName>
-              <enablerVersion>5.6.0</enablerVersion>
-              <description>My New Component</description>
-              <defaultSettings>
-                <defaultSetting>
-                  <name>Default Priority</name>
-                  <value>5</value>
-                </defaultSetting>
-              </defaultSettings>
-              <options>
-                <option>
-                  <name>Maximum Activation Time in seconds</name>
-                  <value>60</value>
-                </option>
-              </options>
-              <runtimeContextVariables>
-                <runtimeContextVariable>
-                  <name>Example RCV</name>
-                  <value>bar</value>
-                  <type>1</type>
-                  <export>true</export>
-                </runtimeContextVariable>
-              </runtimeContextVariables>
-              <features>
-                <feature>
-                  <name>HTTP Support</name>
-                  <description>Support for HTTP routing</description>
-                </feature>
-              </features>
+              <brokerConfig>
+                <brokerURL>http://srh00611.ute.fedex.com:8080</brokerURL>
+                <username>sefsdev_operate</username>
+                <password>test123</password>
+              </brokerConfig>
             </configuration>
-          </execution>
-        </executions>
+            <executions>
+              <execution>
+                <id>default-install</id>
+                <phase>install</phase>
+                <goals>
+                  <goal>create-components</goal>
+                </goals>
+                <configuration>
+                  <actions>
+                    <action>create</action>
+                    <action>publish</action>
+                  </actions>
+                  <componentName>My Component</componentName>
+                  <componentType>J2EE:5.5.1.0</componentType>
+                  <enablerName>Tomcat 6.0 Enabler</enablerName>
+                  <enablerVersion>5.6.0</enablerVersion>
+                  <description>My New Component</description>
+                  <defaultSettings>
+                    <defaultSetting>
+                      <name>Default Priority</name>
+                      <value>5</value>
+                    </defaultSetting>
+                  </defaultSettings>
+                  <options>
+                    <option>
+                      <name>Maximum Activation Time in seconds</name>
+                      <value>60</value>
+                    </option>
+                  </options>
+                  <runtimeContextVariables>
+                    <runtimeContextVariable>
+                      <name>Example RCV</name>
+                      <value>bar</value>
+                      <type>1</type>
+                      <export>true</export>
+                    </runtimeContextVariable>
+                  </runtimeContextVariables>
+                  <features>
+                    <feature>
+                      <name>HTTP Support</name>
+                      <description>Support for HTTP routing</description>
+                    </feature>
+                  </features>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
 
-      </plugin>
-    </plugins>
-  </build>
+        </plugins>
+
+      </build>
+    </profile>
+
+    <profile>
+      <id>delete</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>com.tibco.silverfabric</groupId>
+            <artifactId>silverfabric-maven-plugin</artifactId>
+            <version>0.16</version>
+            <configuration>
+              <brokerConfig>
+                <brokerURL>http://srh00611.ute.fedex.com:8080</brokerURL>
+                <username>sefsdev_operate</username>
+                <password>test123</password>
+              </brokerConfig>
+            </configuration>
+            <executions>
+              <execution>
+                <id>default-install</id>
+                <phase>install</phase>
+                <goals>
+                  <goal>create-components</goal>
+                </goals>
+                <configuration>
+                  <actions>
+                    <action>unpublish</action>
+                    <action>delete</action>
+                  </actions>
+                  <componentName>My Component</componentName>
+                  <componentType>J2EE:5.5.1.0</componentType>
+                  <enablerName>Tomcat 6.0 Enabler</enablerName>
+                  <enablerVersion>5.6.0</enablerVersion>
+                  <description>My New Component</description>
+                  <defaultSettings>
+                    <defaultSetting>
+                      <name>Default Priority</name>
+                      <value>5</value>
+                    </defaultSetting>
+                  </defaultSettings>
+                  <options>
+                    <option>
+                      <name>Maximum Activation Time in seconds</name>
+                      <value>60</value>
+                    </option>
+                  </options>
+                  <runtimeContextVariables>
+                    <runtimeContextVariable>
+                      <name>Example RCV</name>
+                      <value>bar</value>
+                      <type>1</type>
+                      <export>true</export>
+                    </runtimeContextVariable>
+                  </runtimeContextVariables>
+                  <features>
+                    <feature>
+                      <name>HTTP Support</name>
+                      <description>Support for HTTP routing</description>
+                    </feature>
+                  </features>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
+
 </project>
