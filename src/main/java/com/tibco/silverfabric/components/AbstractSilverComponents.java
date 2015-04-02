@@ -118,6 +118,8 @@ public abstract class AbstractSilverComponents extends Components {
 	private String scriptFileRegex;
 	@Parameter
 	private boolean override = false;
+	@Parameter(property="breakout")
+	private boolean breakout = false;
 
 	/**
      * 
@@ -135,6 +137,19 @@ public abstract class AbstractSilverComponents extends Components {
 				this.setEnablerVersion(component.getEnablerVersion());
 				this.setComponentType(component.getComponentType());
 			}
+		}
+		final AbstractSilverComponents THIS = this;
+		if (this.breakout) {
+			getRestTemplate().getInterceptors().add(new ClientHttpRequestInterceptor() {
+				
+				@Override
+				public ClientHttpResponse intercept(HttpRequest arg0, byte[] arg1,
+						ClientHttpRequestExecution arg2) throws IOException {
+					// TODO Auto-generated method stub
+					THIS.getLog().info("message: \n\t" + new String(arg1, "UTF-8"));
+					return null;
+				}
+			});
 		}
 	}
 
@@ -686,6 +701,13 @@ public abstract class AbstractSilverComponents extends Components {
 	 */
 	public final void setEnablerVersion(String enablerVersion) {
 		this.enablerVersion = enablerVersion;
+	}
+
+	/**
+	 * @return the component
+	 */
+	protected final Component getComponent() {
+		return component;
 	}
 
 }

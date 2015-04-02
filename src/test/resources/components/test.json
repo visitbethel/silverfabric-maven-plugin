@@ -1,0 +1,37 @@
+{
+	"componentType":"TIBCO BusinessEvents:2.5.0",
+	"name":"__UNIT_TEST_Component",
+	"enablerName":"TIBCO BusinessEvents container",
+	"enablerVersion":"2.5.0.1",
+	"description":"My New Component",
+	"options":[
+		{
+			"name":"Maximum Activation Time in seconds",
+			"value":"60"
+		}
+	],
+	"runtimeContextVariables":[
+		{
+			"name":"Example RCV",
+			"value":"bar",
+			"type":"1",
+			"description":null,
+			"autoIncrementType":null,
+			"export":"true"
+		}
+	],
+	"features":[
+		{
+			"name":"HTTP Support",
+			"properties":null,
+			"description":"Support for HTTP routing",
+			"infoDescription":"infoDescription"
+		}
+	],
+	"defaultSettings":[
+		{
+			"name":"Default Priority",
+			"value":"5"
+		}
+	]
+}

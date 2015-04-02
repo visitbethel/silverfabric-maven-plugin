@@ -68,4 +68,11 @@ public abstract class AbstractSilverFabricMojo extends AbstractMojo {
     }
 
     public abstract void executeMojo() throws MojoExecutionException, MojoFailureException;
+
+	/**
+	 * @return the restTemplate
+	 */
+	public final RestTemplate getRestTemplate() {
+		return restTemplate;
+	}
 }

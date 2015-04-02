@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component xmlns="http://www.example.org/SilverLining" xmlns:tns="http://admin.fabric.webservices.datasynapse.com" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.example.org/SilverLining SilverLining.xsd ">
+
+
+
+  <enablerName>TIBCO BusinessEvents container</enablerName>
+  <enablerVersion>2.5.0.1</enablerVersion>
+  <componentType>TIBCO BusinessEvents:2.5.0</componentType>
+  <MiddlewarVersions>TIBCO_BusinessEvents_distribution:5.1.4.0.0,TIBCO_TRA_distribution:5.8.0.0.0,TIBCO_HAWK_distribution:4.9.0.0,TIBCO_RV_distribution:8.4.2.0.0</MiddlewarVersions>
+  <Department></Department>
+  <Location></Location>
+  <Partition></Partition>
+
+  <option>
+    <name>Engine Blacklisting</name>
+    <value>false</value>
+  </option>
+  <option>
+    <name>Failures Per Day Before Blacklist</name>
+    <value>40</value>
+  </option>
+  <option>
+    <name>Archive Scale Up Timeout</name>
+    <value>420</value>
+  </option>
+  <option>
+    <name>Archive Scale Down Timeout</name>
+    <value>420</value>
+  </option>
+  <option>
+    <name>Maximum Activation Time</name>
+    <value>4300</value>
+  </option>
+  <option>
+    <name>Maximum Deactivation Time</name>
+    <value>400</value>
+  </option>
+  <option>
+    <name>Maximum Capture Time</name>
+    <value>480</value>
+  </option>
+  <option>
+    <name>Minimum Instances Per Host</name>
+    <value>0</value>
+  </option>
+  <option>
+    <name>Maximum Instances Per Host</name>
+    <value>0</value>
+  </option>
+  <option>
+    <name>Statistics Collection Frequency</name>
+    <value>40</value>
+  </option>
+  <option>
+    <name>Activation Delay</name>
+    <value>4</value>
+  </option>
+  <option>
+    <name>Engine Reservation Expiration</name>
+    <value>400</value>
+  </option>
+
+  <feature>
+    <tns:description>Application Logging Support</tns:description>
+    <tns:infoDescription>Support for handling of custom application logs</tns:infoDescription>
+    <tns:name>applicationloggingsupport</tns:name>
+     <tns:properties>
+      <tns:name>Checkpoint Frequency In Seconds</tns:name>
+      <tns:value>400</tns:value>
+    </tns:properties>
+    <tns:properties>
+      <tns:name>Archive Application Logs</tns:name>
+      <tns:value>true</tns:value>
+    </tns:properties>
+    <tns:properties>
+      <tns:name>Log File Pattern</tns:name>
+      <tns:value>/../domaindata/tra/${TIBCO_DOMAIN_NAME}/logs/*.log,/./tibco/tra/5.8/logs/*.log,/../domaindata/tra/${TIBCO_DOMAIN_NAME}/application/logs/.*.log
+      </tns:value>
+    </tns:properties> 
+  </feature>
+  <feature>
+    <tns:description>HTTP Support</tns:description>
+    <tns:infoDescription>Support for HTTP routing </tns:infoDescription>
+    <tns:name>httpsupport</tns:name>
+     <tns:properties>
+      <tns:name>Relative Url</tns:name>
+      <tns:value></tns:value>
+    </tns:properties>
+    <tns:properties>
+      <tns:name>Routing Prefix</tns:name>
+      <tns:value></tns:value>
+    </tns:properties>
+    <tns:properties>
+      <tns:name>HTTPS Enabled</tns:name>
+      <tns:value>false</tns:value>
+    </tns:properties>
+    <tns:properties>
+      <tns:name>HTTP Enabled</tns:name>
+      <tns:value>true</tns:value>
+    </tns:properties>
+    <tns:properties>
+      <tns:name>Routing
+        Directly To Endpoints
+      </tns:name>
+      <tns:value>false</tns:value>
+    </tns:properties>
+  </feature>
+
+  <runtime-variable>
+    <tns:autoIncrementType>0</tns:autoIncrementType>
+    <tns:description>External Jar files</tns:description>
+    <tns:export>false</tns:export>
+    <tns:name>WITHOUT_TRA</tns:name>
+    <tns:type>1</tns:type>
+    <tns:value xsi:type="xsd:boolean">false</tns:value>
+  </runtime-variable>
+
+  <runtime-variable>
+    <tns:autoIncrementType>0</tns:autoIncrementType>
+    <tns:description>JDBC Driver file</tns:description>
+    <tns:export>true</tns:export>
+    <tns:name>JDBC_DRIVER_FILE</tns:name>
+    <tns:type>1</tns:type>
+    <tns:value xsi:type="xsd:string">jdbc/ojdbc6.jar</tns:value>
+  </runtime-variable>
+
+  <runtime-variable>
+    <tns:autoIncrementType>0</tns:autoIncrementType>
+    <tns:description>Name of the TLM</tns:description>
+    <tns:export>true</tns:export>
+    <tns:name>LOGICAL_MACHINE_NAME</tns:name>
+    <tns:type>1</tns:type>
+    <tns:value xsi:type="xsd:string">%%COMPONENT_DISPLAYNAME%%</tns:value>
+  </runtime-variable>
+
+  <runtime-variable>
+    <tns:autoIncrementType>0</tns:autoIncrementType>
+    <tns:description>On logical machine restart, all services are either started or stopped</tns:description>
+    <tns:export>false</tns:export>
+    <tns:name>TIBCO_SERVICES_STATE_AFTER_TLM_MOVED</tns:name>
+    <tns:type>1</tns:type>
+    <tns:value xsi:type="xsd:string">Started</tns:value>
+  </runtime-variable>
+
+  <runtime-variable>
+    <tns:autoIncrementType>0</tns:autoIncrementType>
+    <tns:description>Should Silver prepend .jars to CLASSPATH on deployment</tns:description>
+    <tns:export>true</tns:export>
+    <tns:name>IS_PREPAND</tns:name>
+    <tns:type>1</tns:type>
+    <tns:value xsi:type="xsd:boolean">false</tns:value>
+  </runtime-variable>
+
+  <runtime-variable>
+    <tns:autoIncrementType>0</tns:autoIncrementType>
+    <tns:description>Use Full Archive Name</tns:description>
+    <tns:export>false</tns:export>
+    <tns:name>USE_FULL_ARCHIVE_NAME</tns:name>
+    <tns:type>1</tns:type>
+    <tns:value xsi:type="xsd:boolean">false</tns:value>
+  </runtime-variable>
+
+  <runtime-variable>
+    <tns:autoIncrementType>0</tns:autoIncrementType>
+    <tns:description>HAWK AMI SERVICE for TIBCO Administrator</tns:description>
+    <tns:export>true</tns:export>
+    <tns:name>AMI_HAWK_SERVICE</tns:name>
+    <tns:type>1</tns:type>
+    <tns:value xsi:type="xsd:int">7474</tns:value>
+  </runtime-variable>
+
+  <runtime-variable>
+    <tns:autoIncrementType>0</tns:autoIncrementType>
+    <tns:description>HAWK AMI DAEMON for TIBCO Administrator</tns:description>
+    <tns:export>true</tns:export>
+    <tns:name>AMI_HAWK_DAEMON</tns:name>
+    <tns:type>1</tns:type>
+    <tns:value xsi:type="xsd:string">tcp:7474</tns:value>
+  </runtime-variable>
+
+  <runtime-variable>
+    <tns:autoIncrementType>0</tns:autoIncrementType>
+    <tns:description>Consult the user documentation on automated HTTPport setting </tns:description>
+    <tns:export>false</tns:export>
+    <tns:name>HTTP_PORT_BASE</tns:name>
+    <tns:type>1</tns:type>
+    <tns:value xsi:type="xsd:int">48000</tns:value>
+  </runtime-variable>
+
+  <runtime-variable>
+    <tns:autoIncrementType>0</tns:autoIncrementType>
+    <tns:description>Consult the user documentation on automated HTTP port setting</tns:description>
+    <tns:export>false</tns:export>
+    <tns:name>HTTP_PORT_INCREASE</tns:name>
+    <tns:type>1</tns:type>
+    <tns:value xsi:type="xsd:int">50</tns:value>
+  </runtime-variable>
+
+  <runtime-variable>
+    <tns:autoIncrementType>0</tns:autoIncrementType>
+    <tns:description>Polling period (in seconds) for TIBCO Hawk Agent running verification</tns:description>
+    <tns:export>false</tns:export>
+    <tns:name>HAWK_POLLPERIOD</tns:name>
+    <tns:type>0</tns:type>
+    <tns:value xsi:type="xsd:int">40</tns:value>
+  </runtime-variable>
+
+  <runtime-variable>
+    <tns:autoIncrementType>0</tns:autoIncrementType>
+    <tns:description>Number of times to restart Hawk Agent before tearing down install</tns:description>
+    <tns:export>true</tns:export>
+    <tns:name>NB_HAWK_RESTART_BEFORE_RESTART_ENGINE</tns:name>
+    <tns:type>1</tns:type>
+    <tns:value xsi:type="xsd:int">4</tns:value>
+  </runtime-variable>
+
+  <runtime-variable>
+    <tns:autoIncrementType>0</tns:autoIncrementType>
+    <tns:description>Delete contents of work directory when component stops</tns:description>
+    <tns:export>false</tns:export>
+    <tns:name>DELETE_RUNTIME_DIR_ON_SHUTDOWN</tns:name>
+    <tns:type>1</tns:type>
+    <tns:value xsi:type="xsd:boolean">true</tns:value>
+  </runtime-variable>
+
+  <runtime-variable>
+    <tns:autoIncrementType>0</tns:autoIncrementType>
+    <tns:description>Number of times to restart BE before tearing down install</tns:description>
+    <tns:export>true</tns:export>
+    <tns:name>NB_BE_RESTART_BEFORE_RESTART_ENGINE</tns:name>
+    <tns:type>1</tns:type>
+    <tns:value xsi:type="xsd:int">4</tns:value>
+  </runtime-variable>
+
+  <runtime-variable>
+    <tns:autoIncrementType>0</tns:autoIncrementType>
+    <tns:description>Polling period (in seconds) for BE running verification</tns:description>
+    <tns:export>false</tns:export>
+    <tns:name>BE_POLLPERIOD</tns:name>
+    <tns:type>0</tns:type>
+    <tns:value xsi:type="xsd:int">40</tns:value>
+  </runtime-variable>
+<!-- 
+  <allocation-rule>
+    <tns:condition>
+      <tns:description>tns:description</tns:description>
+      <tns:properties>
+        <tns:name>tns:name</tns:name>
+        <tns:value>tns:value</tns:value>
+      </tns:properties>
+      <tns:type>tns:type</tns:type>
+    </tns:condition>
+    <tns:description>tns:description</tns:description>
+    <tns:properties>
+
+      <tns:name>tns:name</tns:name>
+      <tns:value>tns:value</tns:value>
+
+    </tns:properties>
+    <tns:ruleAction>tns:ruleAction</tns:ruleAction>
+    <tns:type>tns:type</tns:type>
+  </allocation-rule>
+
+
+  <allocation-constraint>
+    <currentValue>0</currentValue>
+    <description>tns:description</description>
+    <lastModified>0</lastModified>
+    <maxValue>0</maxValue>
+    <modifiedBy>tns:modifiedBy</modifiedBy>
+    <name>tns:name</name>
+    <type>tns:type</type>
+  </allocation-constraint>
+  -->
+ 
+</component>

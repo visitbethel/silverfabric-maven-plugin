@@ -1,19 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>com.fedex.scm.sf</groupId>
+  <groupId>com.tibco.silverfabric</groupId>
   <artifactId>silverfabric-maven-plugin-test</artifactId>
   <version>0.16</version>
 
   <packaging>jar</packaging>
 
-  <name>Silver Fabric Maven Plugin Test</name>
-  <description>Maven Plugin for creating Silver Fabric Components Test.</description>
+  <name>Silver Fabric Maven Plugin</name>
+  <description>Maven Plugin for creating Silver Fabric Components and Stacks.</description>
 
   <properties>
-    <override>true</override>
+    <spring.version>3.2.1.RELEASE</spring.version>
+    <maven.plugin.version>3.3</maven.plugin.version>
+    <maven.api.version>3.2.5</maven.api.version>
   </properties>
 
   <build>
@@ -25,38 +26,16 @@
           <version>0.16</version>
           <configuration>
             <brokerConfig>
-              <brokerURL>http://srh00611.ute.fedex.com:8080</brokerURL>
+              <brokerURL>${broker.url}</brokerURL>
               <username>sefsdev_operate</username>
               <password>test123</password>
             </brokerConfig>
-            <componentName>GSEFS-CoreEngine-ShipmentCore</componentName>
-            <plan>plan-be.xml</plan>
-            <override>${override}</override>
-            <features>
-              <feature>
-                <name>HTTP Support</name>
-                <description>Support for HTTP routing</description>
-                <properties>
-                  <property>
-                    <name>HTTPS Enabled</name>
-                    <value>false</value>
-                  </property>
-                  <property>
-                    <name>HTTP Enabled</name>
-                    <value>true</value>
-                  </property>
-                  <property>
-                    <name>Routing Directly To Endpoints</name>
-                    <value>false</value>
-                  </property>
-                </properties>
-              </feature>
-            </features>
           </configuration>
         </plugin>
       </plugins>
     </pluginManagement>
   </build>
+
 
   <profiles>
     <profile>
@@ -73,12 +52,64 @@
                 <goals>
                   <goal>create-components</goal>
                 </goals>
+                <configuration>
+                  <componentName>__UNIT_TEST_Component</componentName>
+                  <componentType>TIBCO BusinessEvents:2.5.0</componentType>
+                  <enablerName>TIBCO BusinessEvents container</enablerName>
+                  <enablerVersion>2.5.0.1</enablerVersion>
+                  <description>My New Component</description>
+                  <defaultSettings>
+                    <defaultSetting>
+                      <name>Default Priority</name>
+                      <value>5</value>
+                    </defaultSetting>
+                  </defaultSettings>
+                  <options>
+                    <option>
+                      <name>Maximum Activation Time in seconds</name>
+                      <value>60</value>
+                    </option>
+                  </options>
+                  <runtimeContextVariables>
+                    <runtimeContextVariable>
+                      <name>Example RCV</name>
+                      <value>bar</value>
+                      <type>1</type>
+                      <export>true</export>
+                    </runtimeContextVariable>
+                  </runtimeContextVariables>
+                  <features>
+                    <feature>
+                      <name>HTTP Support</name>
+                      <description>Support for HTTP routing</description>
+                      <infoDescription>infoDescription</infoDescription>
+<!--                       <properties>
+                        <property>
+                          <name>Checkpoint Frequency In Seconds</name>
+                          <value>300</value>
+                        </property>
+                        <property>
+                          <name>Archive Application Logs</name>
+                          <value>true</value>
+                        </property>
+                        <property>
+                          <name>Log File Pattern</name>
+                          <value><![CDATA[  /../domaindata/tra/${TIBCO_DOMAIN_NAME}/logs/*.log,/./tibco/tra/5.8/logs/*.log,/../domaindata/tra/${TIBCO_DOMAIN_NAME}/application/logs/.*.log]]></value>
+                        </property>
+                      </properties> -->
+                    </feature>
+
+                  </features>
+                </configuration>
               </execution>
             </executions>
           </plugin>
+
         </plugins>
+
       </build>
     </profile>
+
     <profile>
       <id>delete</id>
       <build>
@@ -86,7 +117,6 @@
           <plugin>
             <groupId>com.tibco.silverfabric</groupId>
             <artifactId>silverfabric-maven-plugin</artifactId>
-            <version>0.16</version>
             <executions>
               <execution>
                 <id>default-install</id>
@@ -94,34 +124,69 @@
                 <goals>
                   <goal>delete-components</goal>
                 </goals>
+                <configuration>
+                  <componentName>__UNIT_TEST_Component</componentName>
+                  <componentType>TIBCO BusinessEvents:2.5.0</componentType>
+                  <enablerName>TIBCO BusinessEvents container</enablerName>
+                  <enablerVersion>2.5.0.1</enablerVersion>
+                  <description>My New Component</description>
+                  <defaultSettings>
+                    <defaultSetting>
+                      <name>Default Priority</name>
+                      <value>5</value>
+                    </defaultSetting>
+                  </defaultSettings>
+                  <options>
+                    <option>
+                      <name>Maximum Activation Time in seconds</name>
+                      <value>60</value>
+                    </option>
+                  </options>
+                  <runtimeContextVariables>
+                    <runtimeContextVariable>
+                      <name>Example RCV</name>
+                      <value>bar</value>
+                      <type>1</type>
+                      <export>true</export>
+                    </runtimeContextVariable>
+                  </runtimeContextVariables>
+                  <features>
+                    <feature>
+                      <name>HTTP Support</name>
+                      <description>Support for HTTP routing</description>
+                    </feature>
+                  </features>
+                </configuration>
               </execution>
             </executions>
           </plugin>
+
         </plugins>
       </build>
+    </profile>
+
+    <profile>
+      <id>L1</id>
+      <properties>
+        <broker.url>http://urh00172.ute.fedex.com:8080</broker.url>
+      </properties>
     </profile>
     <profile>
-      <id>update</id>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>com.tibco.silverfabric</groupId>
-            <artifactId>silverfabric-maven-plugin</artifactId>
-            <version>0.16</version>
-            <executions>
-              <execution>
-                <id>default-install</id>
-                <phase>install</phase>
-                <goals>
-                  <goal>update-components</goal>
-                </goals>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-      </build>
+      <id>L2</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <properties>
+        <broker.url>http://irh00610.ute.fedex.com:8080</broker.url>
+      </properties>
+    </profile>
+    <profile>
+      <id>L3</id>
+      <properties>
+        <broker.url>http://srh00611.ute.fedex.com:8080</broker.url>
+      </properties>
     </profile>
 
-
   </profiles>
+
 </project>
