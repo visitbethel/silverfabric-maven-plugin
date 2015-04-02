@@ -27,8 +27,6 @@ public abstract class AbstractSilverFabricMojo extends AbstractMojo {
 
     public RestTemplate restTemplate = ctx.getBean(RestTemplate.class);
 
-    HttpComponentsClientHttpRequestFactory httpComponentsClientHttpRequestFactory = (HttpComponentsClientHttpRequestFactory) restTemplate.getRequestFactory();
-    DefaultHttpClient httpClient = (DefaultHttpClient) httpComponentsClientHttpRequestFactory.getHttpClient();
 
 	/**
 	 * 
@@ -62,6 +60,9 @@ public abstract class AbstractSilverFabricMojo extends AbstractMojo {
 
     @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
+        HttpComponentsClientHttpRequestFactory httpComponentsClientHttpRequestFactory = (HttpComponentsClientHttpRequestFactory) restTemplate.getRequestFactory();
+        DefaultHttpClient httpClient = (DefaultHttpClient) httpComponentsClientHttpRequestFactory.getHttpClient();
+    	
         httpClient.getCredentialsProvider().setCredentials(new AuthScope(brokerConfig.getBrokerURL().getHost(),brokerConfig.getBrokerURL().getPort(),AuthScope.ANY_REALM),new UsernamePasswordCredentials(brokerConfig.getUsername(), brokerConfig.getPassword()));
         executeMojo();
     }

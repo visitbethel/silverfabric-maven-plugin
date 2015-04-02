@@ -130,6 +130,11 @@ public abstract class AbstractSilverComponents extends Components {
 			JAXBElement<Component> _component = (JAXBElement<Component>) marshaller
 					.unmarshal(new StreamSource(this.plan));
 			component = _component.getValue();
+			if (component != null) {
+				this.setEnablerName(component.getEnablerName());
+				this.setEnablerVersion(component.getEnablerVersion());
+				this.setComponentType(component.getComponentType());
+			}
 		}
 	}
 
@@ -611,6 +616,76 @@ public abstract class AbstractSilverComponents extends Components {
 		} else {
 			return a;
 		}
+	}
+
+	/**
+	 * @return the plan
+	 */
+	public final File getPlan() {
+		return plan;
+	}
+
+	/**
+	 * @param plan the plan to set
+	 */
+	public final void setPlan(File plan) {
+		this.plan = plan;
+	}
+
+	/**
+	 * @return the componentType
+	 */
+	public final String getComponentType() {
+		return componentType;
+	}
+
+	/**
+	 * @param componentType the componentType to set
+	 */
+	public final void setComponentType(String componentType) {
+		this.componentType = componentType;
+	}
+
+	/**
+	 * @return the componentName
+	 */
+	public final String getComponentName() {
+		return componentName;
+	}
+
+	/**
+	 * @param componentName the componentName to set
+	 */
+	public final void setComponentName(String componentName) {
+		this.componentName = componentName;
+	}
+
+	/**
+	 * @return the enablerName
+	 */
+	public final String getEnablerName() {
+		return enablerName;
+	}
+
+	/**
+	 * @param enablerName the enablerName to set
+	 */
+	public final void setEnablerName(String enablerName) {
+		this.enablerName = enablerName;
+	}
+
+	/**
+	 * @return the enablerVersion
+	 */
+	public final String getEnablerVersion() {
+		return enablerVersion;
+	}
+
+	/**
+	 * @param enablerVersion the enablerVersion to set
+	 */
+	public final void setEnablerVersion(String enablerVersion) {
+		this.enablerVersion = enablerVersion;
 	}
 
 }

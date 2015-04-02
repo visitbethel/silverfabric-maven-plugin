@@ -30,7 +30,6 @@ public class DeleteComponents extends AbstractSilverComponents {
 		super.initialize();
 		if (getActions() == null) {
 			LinkedList<String> list = new LinkedList<String>();
-			list.add("create");
 			list.add("unpublish");
 			list.add("delete");
 			setActions(list);

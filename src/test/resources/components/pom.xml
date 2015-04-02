@@ -17,6 +17,26 @@
     <maven.api.version>3.2.5</maven.api.version>
   </properties>
 
+  <build>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>com.tibco.silverfabric</groupId>
+          <artifactId>silverfabric-maven-plugin</artifactId>
+          <version>0.16</version>
+          <configuration>
+            <brokerConfig>
+              <brokerURL>${broker.url}</brokerURL>
+              <username>sefsdev_operate</username>
+              <password>test123</password>
+            </brokerConfig>
+          </configuration>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+  </build>
+
+
   <profiles>
     <profile>
       <id>create</id>
@@ -25,14 +45,6 @@
           <plugin>
             <groupId>com.tibco.silverfabric</groupId>
             <artifactId>silverfabric-maven-plugin</artifactId>
-            <version>0.16</version>
-            <configuration>
-              <brokerConfig>
-                <brokerURL>http://srh00611.ute.fedex.com:8080</brokerURL>
-                <username>sefsdev_operate</username>
-                <password>test123</password>
-              </brokerConfig>
-            </configuration>
             <executions>
               <execution>
                 <id>default-install</id>
@@ -93,14 +105,6 @@
           <plugin>
             <groupId>com.tibco.silverfabric</groupId>
             <artifactId>silverfabric-maven-plugin</artifactId>
-            <version>0.16</version>
-            <configuration>
-              <brokerConfig>
-                <brokerURL>http://srh00611.ute.fedex.com:8080</brokerURL>
-                <username>sefsdev_operate</username>
-                <password>test123</password>
-              </brokerConfig>
-            </configuration>
             <executions>
               <execution>
                 <id>default-install</id>
@@ -152,6 +156,29 @@
         </plugins>
       </build>
     </profile>
+
+    <profile>
+      <id>L1</id>
+      <properties>
+        <broker.url>http://urh00172.ute.fedex.com:8080</broker.url>
+      </properties>
+    </profile>
+    <profile>
+      <id>L2</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <properties>
+        <broker.url>http://irh00610.ute.fedex.com:8080</broker.url>
+      </properties>
+    </profile>
+    <profile>
+      <id>L3</id>
+      <properties>
+        <broker.url>http://srh00611.ute.fedex.com:8080</broker.url>
+      </properties>
+    </profile>
+    
   </profiles>
 
 </project>
