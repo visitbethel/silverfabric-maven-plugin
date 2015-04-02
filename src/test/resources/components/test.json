@@ -23,7 +23,20 @@
 	"features":[
 		{
 			"name":"HTTP Support",
-			"properties":null,
+			"properties":[
+				{
+					"name":"Checkpoint Frequency In Seconds",
+					"value":"300"
+				},
+				{
+					"name":"Archive Application Logs",
+					"value":"true"
+				},
+				{
+					"name":"Log File Pattern",
+					"value":"/../domaindata/tra/${TIBCO_DOMAIN_NAME}/logs/*.log,/./tibco/tra/5.8/logs/*.log,/../domaindata/tra/${TIBCO_DOMAIN_NAME}/application/logs/.*.log"
+				}
+			],
 			"description":"Support for HTTP routing",
 			"infoDescription":"infoDescription"
 		}

@@ -61,11 +61,6 @@ public class AbstractSilverComponentsTest {
 		assertFalse(map.containsKey("a1"));
 	}
 
-	private File getTestFile(int number, String ext) {
-		return new File(String.format("src/test/resources/components/%s%s.%s", this.getClass()
-				.getSimpleName(), number, ext));
-	}
-
 	@Test
 	public void testResponseFormat() throws MojoExecutionException,
 			MojoFailureException {
@@ -84,11 +79,11 @@ public class AbstractSilverComponentsTest {
 		c.setComponentType("TYPE");
 		c.setEnablerName("enablerName");
 		c.setEnablerVersion("enablerVersion");
-		c.plan =  getTestFile(1, "xml");
+		c.plan = Utils.getTestFile(AbstractSilverComponents.class, 1, "xml");
 		c.initialize();
 		MappingJackson2HttpMessageConverter converter = null;
-		for (Iterator<HttpMessageConverter<?>> iterator = c.getRestTemplate().getMessageConverters()
-				.iterator(); iterator.hasNext();) {
+		for (Iterator<HttpMessageConverter<?>> iterator = c.getRestTemplate()
+				.getMessageConverters().iterator(); iterator.hasNext();) {
 			Object type = (Object) iterator.next();
 			if (String.valueOf(type).contains("MappingJackson2")) {
 				converter = (MappingJackson2HttpMessageConverter) type;
@@ -101,11 +96,13 @@ public class AbstractSilverComponentsTest {
 		try {
 			String s = converter.getObjectMapper().writeValueAsString(m);
 			assertEquals("{\"it\":\"is\"}", s);
-			s = converter.getObjectMapper().writeValueAsString(c.getComponent());
-			List<String> l = IOUtils.readLines(new FileReader(getTestFile(1, "json")));
+			s = converter.getObjectMapper()
+					.writeValueAsString(c.getComponent());
+			List<String> l = IOUtils.readLines(new FileReader(Utils
+					.getTestFile(AbstractSilverComponents.class, 1, "json")));
 			System.out.println(s);
 			assertEquals(l.get(0), s);
-			
+
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

@@ -80,10 +80,10 @@
                   </runtimeContextVariables>
                   <features>
                     <feature>
-                      <name>HTTP Support</name>
-                      <description>Support for HTTP routing</description>
+                      <name>Application Logging Support</name>
+                      <description>Application Logging Support</description>
                       <infoDescription>infoDescription</infoDescription>
-<!--                       <properties>
+                      <properties>
                         <property>
                           <name>Checkpoint Frequency In Seconds</name>
                           <value>300</value>
@@ -96,7 +96,7 @@
                           <name>Log File Pattern</name>
                           <value><![CDATA[  /../domaindata/tra/${TIBCO_DOMAIN_NAME}/logs/*.log,/./tibco/tra/5.8/logs/*.log,/../domaindata/tra/${TIBCO_DOMAIN_NAME}/application/logs/.*.log]]></value>
                         </property>
-                      </properties> -->
+                      </properties>
                     </feature>
 
                   </features>
@@ -130,32 +130,6 @@
                   <enablerName>TIBCO BusinessEvents container</enablerName>
                   <enablerVersion>2.5.0.1</enablerVersion>
                   <description>My New Component</description>
-                  <defaultSettings>
-                    <defaultSetting>
-                      <name>Default Priority</name>
-                      <value>5</value>
-                    </defaultSetting>
-                  </defaultSettings>
-                  <options>
-                    <option>
-                      <name>Maximum Activation Time in seconds</name>
-                      <value>60</value>
-                    </option>
-                  </options>
-                  <runtimeContextVariables>
-                    <runtimeContextVariable>
-                      <name>Example RCV</name>
-                      <value>bar</value>
-                      <type>1</type>
-                      <export>true</export>
-                    </runtimeContextVariable>
-                  </runtimeContextVariables>
-                  <features>
-                    <feature>
-                      <name>HTTP Support</name>
-                      <description>Support for HTTP routing</description>
-                    </feature>
-                  </features>
                 </configuration>
               </execution>
             </executions>
