@@ -79,7 +79,7 @@ public class AbstractSilverComponentsTest {
 		c.setComponentType("TYPE");
 		c.setEnablerName("enablerName");
 		c.setEnablerVersion("enablerVersion");
-		c.plan = Utils.getTestFile(AbstractSilverComponents.class, 1, "xml");
+		c.plan = Utils.getTestFile(AbstractSilverComponentsTest.class, 1, "xml");
 		c.initialize();
 		MappingJackson2HttpMessageConverter converter = null;
 		for (Iterator<HttpMessageConverter<?>> iterator = c.getRestTemplate()
@@ -99,7 +99,7 @@ public class AbstractSilverComponentsTest {
 			s = converter.getObjectMapper()
 					.writeValueAsString(c.getComponent());
 			List<String> l = IOUtils.readLines(new FileReader(Utils
-					.getTestFile(AbstractSilverComponents.class, 1, "json")));
+					.getTestFile(AbstractSilverComponentsTest.class, 1, "json")));
 			System.out.println(s);
 			assertEquals(l.get(0), s);
 
