@@ -36,7 +36,7 @@ public class CreateComponentsTest {
 		}
 	}
 
-	@After
+	//@After
 	public void cleanup() {
 		System.err.println("\n=========== CLEANUP ===================\n");
 		DeleteComponents d = new DeleteComponents();
@@ -163,7 +163,7 @@ public class CreateComponentsTest {
 	public void testCreateComponentsAllocationRule5() throws MojoExecutionException,
 			MojoFailureException {
 
-		plan = Utils.getTestFile(CreateComponentsTest.class, 4, "xml");
+		plan = Utils.getTestFile(CreateComponentsTest.class, 5, "xml");
 		
 		CreateComponents c = new CreateComponents();
 		c.setBrokerConfig(config);
@@ -179,5 +179,32 @@ public class CreateComponentsTest {
 			}
 		}
 	}
+	
+	/**
+	 * With allocations
+	 * 
+	 * @throws MojoExecutionException
+	 * @throws MojoFailureException
+	 */
+	@Test
+	public void testCreateComponentsDefaultSettings6() throws MojoExecutionException,
+			MojoFailureException {
+
+		plan = Utils.getTestFile(CreateComponentsTest.class, 6, "xml");
+		
+		CreateComponents c = new CreateComponents();
+		c.setBrokerConfig(config);
+		c.plan = plan;
+		c.setComponentName(PREFIX + "-" + this.getClass());
+		assertNotNull(c.restTemplate);
+		try {
+			c.execute();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			if (!e.getMessage().contains("already exists")) {
+				fail(e.getMessage());
+			}
+		}
+	}	
 
 }

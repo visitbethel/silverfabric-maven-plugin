@@ -1,0 +1,225 @@
+<root>
+  <capturedOn>0</capturedOn>
+  <components>
+    <property>Scripting Database Example</property>
+    <property>J2EE Example</property>
+  </components>
+  <description>
+    An example stack consisting of an HSQLDB database component and a J2EE web application component.
+  </description>
+  <displayName>my example Stack</displayName>
+  <exportedOn>0</exportedOn>
+  <icon>/livecluster/admin/images/icons/stackIcons/defaults/4_Skyway_J2EE_Default_Icon.png</icon>
+  <lastModified>1334948952513</lastModified>
+  <mode>auto</mode>
+  <modified>false</modified>
+  <modifiedBy>admin</modifiedBy>
+  <name>MyStack 007</name>
+  <owner>admin</owner>
+  <policies>
+    <property>
+      <componentAllocationInfo>
+        <property>
+          <allocationRules null="true" />
+          <max>1</max>
+          <min>1</min>
+          <name>Scripting Database Example</name>
+          <priority>3</priority>
+        </property>
+        <property>
+          <allocationRules>
+            <property>
+              <condition null="true" />
+              <description>
+                Startup and shutdown dependency on Component "Scripting Database Example" with ordered deactivation
+              </description>
+              <properties>
+                <property>
+                  <name>packByProperty</name>
+                  <value>"null"</value>
+                </property>
+                <property>
+                  <name>orderedShutdown</name>
+                  <value>true</value>
+                </property>
+                <property>
+                  <name>restartForNewRules</name>
+                  <value>false</value>
+                </property>
+                <property>
+                  <name>component</name>
+                  <value>Scripting Database Example</value>
+                </property>
+                <property>
+                  <name>shutdown</name>
+                  <value>true</value>
+                </property>
+              </properties>
+              <ruleAction null="true" />
+              <type>Component Dependency</type>
+            </property>
+          </allocationRules>
+          <max>4</max>
+          <min>1</min>
+          <name>J2EE Example</name>
+          <priority>3</priority>
+        </property>
+      </componentAllocationInfo>
+      <scheduleName />
+      <scheduled>false</scheduled>
+    </property>
+    <property>
+      <componentAllocationInfo>
+        <property>
+          <allocationRules null="true" />
+          <max>1</max>
+          <min>1</min>
+          <name>Scripting Database Example</name>
+          <priority>3</priority>
+        </property>
+        <property>
+          <allocationRules>
+            <property>
+              <condition null="true" />
+              <description>
+                Startup and shutdown dependency on Component "Scripting Database Example" with ordered deactivation
+              </description>
+              <properties>
+                <property>
+                  <name>packByProperty</name>
+                  <value>"null"</value>
+                </property>
+                <property>
+                  <name>orderedShutdown</name>
+                  <value>true</value>
+                </property>
+                <property>
+                  <name>restartForNewRules</name>
+                  <value>false</value>
+                </property>
+                <property>
+                  <name>component</name>
+                  <value>Scripting Database Example</value>
+                </property>
+                <property>
+                  <name>shutdown</name>
+                  <value>true</value>
+                </property>
+              </properties>
+              <ruleAction null="true" />
+              <type>Component Dependency</type>
+            </property>
+          </allocationRules>
+          <max>4</max>
+          <min>1</min>
+          <name>J2EE Example</name>
+          <priority>3</priority>
+        </property>
+      </componentAllocationInfo>
+      <scheduleName>9To5</scheduleName>
+      <scheduled>true</scheduled>
+    </property>
+  </policies>
+  <propertyOverrides>
+    <property>
+      <datatype>boolean</datatype>
+      <description />
+      <displayName>Scripting Database Example excludeComponent</displayName>
+      <name>excludeComponent</name>
+      <order>0</order>
+      <readonly>false</readonly>
+      <required>false</required>
+      <source>Scripting Database Example</source>
+      <validations />
+      <value>false</value>
+    </property>
+    <property>
+      <datatype>int</datatype>
+      <description />
+      <displayName>Scripting Database Example Instance Count</displayName>
+      <name>Instance Count</name>
+      <order>0</order>
+      <readonly>false</readonly>
+      <required>false</required>
+      <source>Scripting Database Example</source>
+      <validations>
+        <max>1</max>
+        <min>1</min>
+      </validations>
+      <value>1</value>
+    </property>
+    <property>
+      <datatype>boolean</datatype>
+      <description />
+      <displayName>J2EE Example excludeComponent</displayName>
+      <name>excludeComponent</name>
+      <order>0</order>
+      <readonly>false</readonly>
+      <required>false</required>
+      <source>J2EE Example</source>
+      <validations />
+      <value>false</value>
+    </property>
+    <property>
+      <datatype>int</datatype>
+      <description />
+      <displayName>J2EE Example Instance Count</displayName>
+      <name>Instance Count</name>
+      <order>0</order>
+      <readonly>false</readonly>
+      <required>false</required>
+      <source>J2EE Example</source>
+      <validations>
+        <max>1</max>
+        <min>1</min>
+      </validations>
+      <value>1</value>
+    </property>
+    <property>
+      <datatype>string</datatype>
+      <description>The stack's name, as shown in Skyway</description>
+      <displayName>Stack Name</displayName>
+      <name>displayName</name>
+      <order>0</order>
+      <readonly>false</readonly>
+      <required>true</required>
+      <source null="true" />
+      <validations>
+        <message>Stack Name must be unique among all of your stacks</message>
+        <unique>owner</unique>
+      </validations>
+      <value>Example Stack</value>
+    </property>
+    <property>
+      <datatype>string</datatype>
+      <description>The stack's description</description>
+      <displayName>Stack Description</displayName>
+      <name>description</name>
+      <order>1</order>
+      <readonly>false</readonly>
+      <required>false</required>
+      <source null="true" />
+      <validations />
+      <value>
+        An example stack consisting of an HSQLDB database component and a J2EE web application component.
+      </value>
+    </property>
+  </propertyOverrides>
+  <startOn>0</startOn>
+  <technology />
+  <templateLevel>--</templateLevel>
+  <urls>
+    <property>
+      <default>true</default>
+      <source>J2EE Example</source>
+      <title>/HelloWorld</title>
+      <url>/HelloWorld</url>
+    </property>
+    <property>
+      <default>false</default>
+      <source>J2EE Example</source>
+      <title>/JSPWiki</title>
+      <url>/JSPWiki</url>
+    </property>
+  </urls>
+</root>

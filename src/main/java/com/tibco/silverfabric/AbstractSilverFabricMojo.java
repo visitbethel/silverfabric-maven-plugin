@@ -19,11 +19,46 @@ import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 
 public abstract class AbstractSilverFabricMojo extends AbstractMojo {
 
-    ApplicationContext ctx = new AnnotationConfigApplicationContext(SilverFabricConfig.class);
+    /**
+	 * 
+	 * @param request
+	 * @param string
+	 * @param description2
+	 * @param object
+	 */
+	protected static Object valueOf(HashMap<Object, Object> request, String string, Object a,
+			Object b) {
+				Object value = valueOf(a, b);
+				if (value != null) {
+					request.put(string, value);
+					return value;
+				}
+				return null;
+			}
+
+	/**
+	 * 
+	 * @param a
+	 * @param b
+	 * @return
+	 */
+	protected static Object valueOf(Object a, Object b) {
+		if (a == null && b == null) {
+			return null;
+		}
+		if (a == null) {
+			return b;
+		} else {
+			return a;
+		}
+	}
+
+	ApplicationContext ctx = new AnnotationConfigApplicationContext(SilverFabricConfig.class);
 
     public RestTemplate restTemplate = ctx.getBean(RestTemplate.class);
 

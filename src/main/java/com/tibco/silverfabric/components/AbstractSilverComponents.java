@@ -138,7 +138,7 @@ public abstract class AbstractSilverComponents extends Components {
 				this.setComponentType(component.getComponentType());
 			}
 		}
-		final AbstractSilverComponents THIS = this;
+		final AbstractSilverFabricMojo THIS = this;
 		if (this.breakout) {
 			getRestTemplate().getInterceptors().add(new ClientHttpRequestInterceptor() {
 				
@@ -595,42 +595,6 @@ public abstract class AbstractSilverComponents extends Components {
 				component != null ? component.getAllocationConstraints() : null,
 				allocationConstraints);
 		return request;
-	}
-
-	/**
-	 * 
-	 * @param request
-	 * @param string
-	 * @param description2
-	 * @param object
-	 */
-	protected Object valueOf(HashMap<Object, Object> request, String string,
-			Object a, Object b) {
-		Object value = override && "features".equals(string) ? valueOf(b, a)
-				: valueOf(a, b);
-		if (value != null) {
-			getLog().info("\n\nadding[" + string + "] \n\n\t= " + value);
-			request.put(string, value);
-			return value;
-		}
-		return null;
-	}
-
-	/**
-	 * 
-	 * @param a
-	 * @param b
-	 * @return
-	 */
-	protected static Object valueOf(Object a, Object b) {
-		if (a == null && b == null) {
-			return null;
-		}
-		if (a == null) {
-			return b;
-		} else {
-			return a;
-		}
 	}
 
 	/**
