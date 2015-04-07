@@ -6,6 +6,7 @@ public class Utils {
 
 	public static final String PREFIX_COMPONENT = "__UNIT_COMPONENT__";
 	public static final String PREFIX_STACK = "__UNIT_STACK__";
+
 	/**
 	 * 
 	 * @param c
@@ -14,9 +15,8 @@ public class Utils {
 	 * @return
 	 */
 	public static File getTestFile(Class c, int number, String ext) {
-		return new File(String.format("src/test/resources/%s/%s%s.%s", c
-				.getSimpleName().contains("acks") ? "stacks" : "components", c
-				.getSimpleName(), number, ext));
+		return new File(String.format("src/test/resources/%s/%s%s.%s",
+				c.getSimpleName(), c.getSimpleName(), number, ext));
 	}
 
 	/**
@@ -30,6 +30,7 @@ public class Utils {
 		String sn = c.getSimpleName();
 		return String.format("%s-%s", prefix, sn);
 	}
+
 	/**
 	 * 
 	 * @param c
@@ -41,5 +42,5 @@ public class Utils {
 		String sn = c.getSimpleName();
 		return String.format("%s-%s-%s", prefix, sn, suffix);
 	}
-		
+
 }

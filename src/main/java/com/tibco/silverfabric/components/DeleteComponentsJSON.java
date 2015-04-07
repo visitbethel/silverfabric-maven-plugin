@@ -6,12 +6,13 @@
  */
 package com.tibco.silverfabric.components;
 
-import java.io.File;
 import java.util.LinkedList;
 
+import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.Mojo;
 
 import com.tibco.silverfabric.BrokerConfig;
+import com.tibco.silverfabric.model.Plan;
 
 /**
  * Actions related to components.
@@ -29,16 +30,19 @@ public class DeleteComponentsJSON extends AbstractSilverJSONComponents {
 	public DeleteComponentsJSON() {
 		super();
 	}
-	public DeleteComponentsJSON(File plan) {
+	public DeleteComponentsJSON(Plan plan) {
 		super();
 		this.plan = plan;
 	}
-	public DeleteComponentsJSON(BrokerConfig config, File plan) {
+	public DeleteComponentsJSON(BrokerConfig config, Plan plan) {
 		super();
 		this.plan = plan;
 		this.setBrokerConfig(config);
 	}
-	public void initialize() {
+	/**
+	 * 
+	 */
+	public void initialize() throws MojoFailureException {
 		super.initialize();
 		if (getActions() == null) {
 			LinkedList<String> list = new LinkedList<String>();

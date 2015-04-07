@@ -5,6 +5,7 @@ package com.tibco.silverfabric.stacks;
 
 import java.util.LinkedList;
 
+import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.Mojo;
 
 import com.tibco.silverfabric.BrokerConfig;
@@ -28,7 +29,7 @@ public class GetStacksJSON extends AbstractSilverStacks {
 		setBrokerConfig(config);
 	}
 
-	public void initialize() {
+	public void initialize() throws MojoFailureException {
 		super.initialize();
 		if (getActions() == null) {
 			LinkedList<String> list = new LinkedList<String>();

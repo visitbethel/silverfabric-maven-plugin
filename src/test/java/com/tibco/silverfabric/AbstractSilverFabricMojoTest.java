@@ -9,7 +9,7 @@ import java.util.HashMap;
 import org.junit.Before;
 import org.junit.Test;
 
-public class AbstractSilverComponentsTest {
+public class AbstractSilverFabricMojoTest {
 
 	@Before
 	public void setUp() throws Exception {

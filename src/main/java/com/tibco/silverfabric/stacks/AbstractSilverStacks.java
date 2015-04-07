@@ -6,7 +6,7 @@
  */
 package com.tibco.silverfabric.stacks;
 
-import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -14,12 +14,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.xml.bind.JAXBElement;
-import javax.xml.transform.stream.StreamSource;
-
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
-import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -31,12 +27,12 @@ import org.springframework.http.client.ClientHttpRequestInterceptor;
 import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.web.client.HttpClientErrorException;
 
-import com.fedex.scm.sf.Component;
-import com.fedex.scm.sf.Stack;
 import com.tibco.silverfabric.AbstractSilverFabricMojo;
 import com.tibco.silverfabric.Policy;
 import com.tibco.silverfabric.PropertyOverride;
+import com.tibco.silverfabric.SilverFabricConfig;
 import com.tibco.silverfabric.Stacks;
+import com.tibco.silverfabric.model.Plan;
 
 /**
  * Actions related to stacks.
@@ -50,7 +46,7 @@ import com.tibco.silverfabric.Stacks;
 public abstract class AbstractSilverStacks extends Stacks {
 
 	@Parameter
-	protected File plan;
+	protected Plan plan;
 
 	@Parameter
 	protected List<String> components;
@@ -79,26 +75,34 @@ public abstract class AbstractSilverStacks extends Stacks {
 	@Parameter
 	protected List<Map> urls;
 
-	private boolean breakout = true;
+	private boolean breakout = false;
 
 	/**
      * 
      */
-	private Stack stack;
+	private com.fedex.scm.Stacks stack;
 
+	/**
+	 * 
+	 * @throws MojoFailureException
+	 */
 	@SuppressWarnings("unchecked")
-	public void initialize() {
+	public void initialize() throws MojoFailureException {
+		
 		if (this.plan != null) {
-			getLog().info("loading plan " + this.plan);
-			JAXBElement<Stack> _component = (JAXBElement<Stack>) marshaller
-					.unmarshal(new StreamSource(this.plan));
-			stack = _component.getValue();
-			if (stack != null) {
-				this.stackName = stack.getName();
+			try {
+				this.stack = SilverFabricConfig.loadingRESTPlan(this,
+						this.plan.stackTemplateURI, com.fedex.scm.Stacks.class);
+			} catch (FileNotFoundException e) {
+				throw new MojoFailureException("Plan not found", e);
 			}
+		}
+		if (this.stack != null) {
+			this.stackName = this.stack.getName();
 		}
 		final AbstractSilverFabricMojo THIS = this;
 		if (this.breakout) {
+			getLog().warn("[[[[[[[[[[[ BREAK OUT IS ON MALFUNCTIONING EXPECTED ]]]]]]]]");
 			getRestTemplate().getInterceptors().add(
 					new ClientHttpRequestInterceptor() {
 
@@ -123,6 +127,16 @@ public abstract class AbstractSilverStacks extends Stacks {
 		initialize();
 
 		getLog().info("execute from " + this.getClass());
+		
+		if (this.stack == null) {
+			throw new MojoExecutionException("Unable to create stack, plan loading failed.");
+		}
+		if (this.stack.getComponents() == null || this.stack.getComponents().isEmpty()) {
+			throw new MojoExecutionException("The components parameters are required to create a stack");
+		}
+		if (this.stack.getPolicies() == null || this.stack.getPolicies().isEmpty()) {
+			throw new MojoExecutionException("The policies parameters are required to create a stack");
+		}
 
 		List<String> actionList = getActions() != null ? getActions()
 				: new ArrayList<String>();
@@ -285,19 +299,19 @@ public abstract class AbstractSilverStacks extends Stacks {
 		}
 	}
 
+	@SuppressWarnings("rawtypes")
 	private HashMap<Object, Object> setStackRequest() {
-		if (policies == null || policies.isEmpty() || components == null
-				|| components.isEmpty())
-			return null;
+		
+		List _policies = stack != null ? stack.getPolicies() : policies;
+		List<String> _components = stack != null ? stack.getComponents() : components;
+		
+
 		HashMap<Object, Object> request = new LinkedHashMap<Object, Object>();
 		request.put("name",
 				valueOf(stack != null ? stack.getName() : null, stackName));
-		request.put("policies",
-				valueOf(stack != null ? stack.getPolicies() : null, policies));
+		request.put("policies", _policies);
 		request.put(
-				"components",
-				valueOf(stack != null ? stack.getComponents() : null,
-						components));
+				"components", _components);
 		request.put("icon",
 				valueOf(stack != null ? stack.getIcon() : null, icon));
 		request.put(
@@ -323,23 +337,7 @@ public abstract class AbstractSilverStacks extends Stacks {
 						technology));
 		request.put("urls",
 				valueOf(stack != null ? stack.getUrls() : null, urls));
-
 		return request;
-	}
-
-	/**
-	 * @return the plan
-	 */
-	protected final File getPlan() {
-		return plan;
-	}
-
-	/**
-	 * @param plan
-	 *            the plan to set
-	 */
-	protected final void setPlan(File plan) {
-		this.plan = plan;
 	}
 
 	/**
@@ -556,7 +554,7 @@ public abstract class AbstractSilverStacks extends Stacks {
 	/**
 	 * @return the stack
 	 */
-	protected final Stack getStack() {
+	protected final com.fedex.scm.Stacks getStack() {
 		return stack;
 	}
 

@@ -15,12 +15,13 @@ import org.junit.Test;
 import com.tibco.silverfabric.Archive;
 import com.tibco.silverfabric.BrokerConfig;
 import com.tibco.silverfabric.Utils;
+import com.tibco.silverfabric.model.Plan;
 
-public class CanPostTransformJSONTest {
+public class CanPostTransformTest {
 
 	private static final String PREFIX = "__UNIT-TEST";
 
-	File plan;
+	Plan plan;
 
 	BrokerConfig config;
 
@@ -54,7 +55,7 @@ public class CanPostTransformJSONTest {
 		}
 	}
 
-	private void executeCreateComponent(File planz, CreateComponentsJSON c) {
+	private void executeCreateComponent(Plan planz, CreateComponentsJSON c) {
 		c.setBrokerConfig(config);
 		c.plan = planz;
 		c.setComponentName(Utils.getEntityName(this.getClass(), Utils.PREFIX_COMPONENT));
@@ -81,7 +82,10 @@ public class CanPostTransformJSONTest {
 			MojoFailureException {
 		CreateComponentsJSON c = new CreateComponentsJSON();
 
-		plan = Utils.getTestFile(CanPostTransformJSONTest.class, 1, "json");
+		plan = new Plan();
+		plan.componentTemplateURI = Utils.getTestFile(CanPostTransformTest.class, 1, ".component.json").getAbsolutePath();
+		plan.stackTemplateURI = Utils.getTestFile(CanPostTransformTest.class, 1, ".stack.json").getAbsolutePath();
+		
 		File f = new File("/Users/akaan/STAGING/shipmentefs-CanPostTransformer/DEV/NA/", "CanPostTransformer.ear.zip");
 		c.getArchives().add(new Archive(f));
 		executeCreateComponent(plan, c);

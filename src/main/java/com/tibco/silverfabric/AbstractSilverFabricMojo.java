@@ -1,29 +1,36 @@
-/*
- * Copyright (c) 2013 TIBCO Software Inc. All Rights Reserved.
- *
- * Use is subject to the terms of the TIBCO license terms accompanying the download of this code.
- * In most instances, the license terms are contained in a file named license.txt.
- */
 package com.tibco.silverfabric;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.LinkedList;
 
 import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.maven.execution.MavenSession;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
+import org.apache.maven.plugins.annotations.Component;
 import org.apache.maven.plugins.annotations.Parameter;
+import org.apache.maven.project.MavenProject;
+import org.apache.maven.shared.filtering.MavenFileFilter;
+import org.apache.maven.shared.filtering.MavenFileFilterRequest;
+import org.apache.maven.shared.filtering.MavenFilteringException;
+import org.codehaus.plexus.util.IOUtil;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
-import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 import org.springframework.web.client.RestTemplate;
 
 public abstract class AbstractSilverFabricMojo extends AbstractMojo {
 
+	///opt/tibco/silver/5.6.0/fabric/webapps/livecluster/WEB-INF/log/server
+	
     /**
 	 * 
 	 * @param request
@@ -58,56 +65,109 @@ public abstract class AbstractSilverFabricMojo extends AbstractMojo {
 		}
 	}
 
-	ApplicationContext ctx = new AnnotationConfigApplicationContext(SilverFabricConfig.class);
-
-    public RestTemplate restTemplate = ctx.getBean(RestTemplate.class);
-
-
-	/**
-	 * 
-	 */
-	protected Jaxb2Marshaller marshaller = ctx.getBean(Jaxb2Marshaller.class);
-
-	
-    
-    
-    @Parameter (required = true)
-    private BrokerConfig brokerConfig;
-
-    @Parameter
+	@Parameter
     private LinkedList<String> actions;
 
-    public LinkedList<String> getActions() {
-        return actions;
-    }
+    @Parameter (required = true)
+    private BrokerConfig brokerConfig;
+    
+	@Parameter(defaultValue = "${project}", readonly = true)
+	protected MavenProject project;
 
-    public void setActions(LinkedList<String> actions) {
-        this.actions = actions;
-    }
+	@Parameter(defaultValue = "${session}", readonly = true)
+	protected MavenSession session;
+	/**
+	 * Maven shared filtering utility.
+	 */
+	@Component
+	public MavenFileFilter mavenFileFilter;
+    
+    
+    ApplicationContext ctx = new AnnotationConfigApplicationContext(SilverFabricConfig.class);
 
-    public BrokerConfig getBrokerConfig() {
-        return brokerConfig;
-    }
+    public final RestTemplate restTemplate; // = ctx.getBean(RestTemplate.class);
+    public final HttpComponentsClientHttpRequestFactory clientRequestfactory ;
 
-    public void setBrokerConfig(BrokerConfig brokerConfig) {
-        this.brokerConfig = brokerConfig;
-    }
+    public AbstractSilverFabricMojo() {
+		super();
+		this.restTemplate = new SilverFabricConfig().restTemplate();
+        this.clientRequestfactory = (HttpComponentsClientHttpRequestFactory) restTemplate.getRequestFactory();
+	}
 
-    @Override
+	@Override
     public void execute() throws MojoExecutionException, MojoFailureException {
-        HttpComponentsClientHttpRequestFactory httpComponentsClientHttpRequestFactory = (HttpComponentsClientHttpRequestFactory) restTemplate.getRequestFactory();
-        DefaultHttpClient httpClient = (DefaultHttpClient) httpComponentsClientHttpRequestFactory.getHttpClient();
-    	
+		DefaultHttpClient httpClient = (DefaultHttpClient) this.clientRequestfactory.getHttpClient();
         httpClient.getCredentialsProvider().setCredentials(new AuthScope(brokerConfig.getBrokerURL().getHost(),brokerConfig.getBrokerURL().getPort(),AuthScope.ANY_REALM),new UsernamePasswordCredentials(brokerConfig.getUsername(), brokerConfig.getPassword()));
         executeMojo();
     }
 
     public abstract void executeMojo() throws MojoExecutionException, MojoFailureException;
 
-	/**
+    public LinkedList<String> getActions() {
+        return actions;
+    }
+
+    public BrokerConfig getBrokerConfig() {
+        return brokerConfig;
+    }
+
+    /**
 	 * @return the restTemplate
 	 */
 	public final RestTemplate getRestTemplate() {
 		return restTemplate;
 	}
+
+    public void setActions(LinkedList<String> actions) {
+        this.actions = actions;
+    }
+
+	public void setBrokerConfig(BrokerConfig brokerConfig) {
+        this.brokerConfig = brokerConfig;
+    }
+	
+	/**
+	 * 
+	 * @param outputDirectory
+	 * @param path
+	 * @return
+	 * @throws MojoFailureException 
+	 * @throws IOException 
+	 * @throws FileNotFoundException 
+	 */
+	@SuppressWarnings("unchecked")
+	public File filterFile(File outputDirectory, File sourcePlan) throws MojoFailureException {
+		File outputPlan = new File(outputDirectory, sourcePlan.getName() + ".filtered");
+		/* if we are running testcases unharnessed with the maven runtime
+		 * we still want to be able to run, however without filtering.
+		 */
+		if (project != null) {
+			MavenFileFilterRequest req = new MavenFileFilterRequest(
+					sourcePlan, outputPlan, true, project,
+					this.project.getFilters(), true, "UTF-8", session, null);
+			try {
+				if (outputDirectory != null && !outputDirectory.exists()) {
+					if (!outputDirectory.mkdirs()) {
+						throw new MojoFailureException(
+								"Failure to create directories to publish plan to "
+										+ outputDirectory);
+					}
+				}
+				this.mavenFileFilter.copyFile(req);
+			} catch (MavenFilteringException e1) {
+				// TODO Auto-generated catch block
+				throw new MojoFailureException("Publishing plan", e1);
+			}
+			return outputPlan;
+		}
+		else {
+			try {
+				IOUtil.copy(new FileInputStream(sourcePlan), new FileOutputStream(outputPlan));
+				return outputPlan;
+			} catch (IOException e) {
+				throw new MojoFailureException("Unable to copy plan", e);
+
+			}
+		}
+	}	
 }

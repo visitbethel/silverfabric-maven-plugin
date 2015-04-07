@@ -3,12 +3,13 @@
  */
 package com.tibco.silverfabric.stacks;
 
-import java.io.File;
 import java.util.LinkedList;
 
+import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.Mojo;
 
 import com.tibco.silverfabric.BrokerConfig;
+import com.tibco.silverfabric.model.Plan;
 
 /**
  * @author akaan
@@ -24,13 +25,13 @@ public class CreateStacks extends AbstractSilverStacks {
 		super();
 	}
 	
-	public CreateStacks(BrokerConfig config, File plan) {
+	public CreateStacks(BrokerConfig config, Plan plan) {
 		super();
 		this.plan = plan;
 		setBrokerConfig(config);
 	}
 
-	public void initialize() {
+	public void initialize() throws MojoFailureException {
 		super.initialize();
 		if (getActions() == null) {
 			LinkedList<String> list = new LinkedList<String>();

@@ -4,20 +4,20 @@
   ],
   "capturedOn":0,
   "components":[
-    "L1_BW_suAddress"
+    "__UNIT_COMPONENT__-CreateStacksTest"
   ],
-  "description":"SEFS CORE BW suAddress Stack",
-  "displayName":"L1_BW_suAddressStack",
+  "description":"__UNIT_STACK__-CreateStacksTest-Stack",
+  "displayName":"__UNIT_STACK__-CreateStacksTest-Stack",
   "exportedOn":0,
   "extras":[
     
   ],
   "icon":"/livecluster/admin/images/icons/stackIcons/defaults/1_Skyway_TIBCO_Generic_Default_Icon.png",
-  "lastModified":1428368765883,
-  "mode":"stopped",
+  "lastModified":1428368487083,
+  "mode":"manual",
   "modified":false,
   "modifiedBy":"sefsdev_operate",
-  "name":"L1_BW_suAddressStack",
+  "name":"__UNIT_STACK__-CreateStacksTest-Stack",
   "owner":"",
   "policies":[
     {
@@ -26,36 +26,56 @@
           "allocationRules":[
             {
               "condition":null,
-              "description":"Startup dependency on Component \"L1_ADMIN_sefsAdmin\"",
+              "description":"Engines whose hostname property matches the regular expression \"${app.deploy.host}\" are Required",
               "properties":[
                 {
-                  "name":"component",
-                  "value":"L1_ADMIN_sefsAdmin"
+                  "name":"affinityPos",
+                  "value":"0"
                 },
                 {
-                  "name":"orderedShutdown",
-                  "value":"false"
+                  "name":"operator",
+                  "value":"matches"
                 },
                 {
-                  "name":"packByProperty",
-                  "value":"false"
+                  "name":"propertyName",
+                  "value":"hostname"
                 },
                 {
-                  "name":"restartForNewRules",
-                  "value":"false"
-                },
-                {
-                  "name":"shutdown",
-                  "value":"false"
+                  "name":"propertyValue",
+                  "value":"${app.deploy.host}"
                 }
               ],
               "ruleAction":null,
-              "type":"Component Dependency"
+              "type":"Resource Preference"
+            },
+            {
+              "condition":null,
+              "description":"Engines whose instance property matches the regular expression 31 are Required",
+              "properties":[
+                {
+                  "name":"affinityPos",
+                  "value":"0"
+                },
+                {
+                  "name":"operator",
+                  "value":"matches"
+                },
+                {
+                  "name":"propertyName",
+                  "value":"instance"
+                },
+                {
+                  "name":"propertyValue",
+                  "value":"31"
+                }
+              ],
+              "ruleAction":null,
+              "type":"Resource Preference"
             }
           ],
           "max":1,
           "min":1,
-          "name":"L1_BW_suAddress",
+          "name":"__UNIT_COMPONENT__-CreateStacksTest",
           "priority":4
         }
       ],
@@ -78,7 +98,7 @@
         "message":"Stack Name must be unique among all of your stacks",
         "unique":"owner"
       },
-      "value":"L1_BW_suAddressStack"
+      "value":"__UNIT_STACK__-CreateStacksTest-Stack"
     },
     {
       "datatype":"string",
@@ -100,8 +120,6 @@
   "technology":"",
   "templateLevel":"--",
   "urls":[
-
     
-]
-}
+  ]
 }

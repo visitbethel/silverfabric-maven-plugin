@@ -7,6 +7,8 @@
 package com.tibco.silverfabric.components;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -17,7 +19,9 @@ import java.util.Map;
 
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
+import org.apache.maven.plugins.annotations.Component;
 import org.apache.maven.plugins.annotations.Parameter;
+import org.apache.maven.shared.filtering.MavenFileFilter;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -31,7 +35,9 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.HttpClientErrorException;
 
+import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tibco.silverfabric.AbstractSilverFabricMojo;
@@ -42,21 +48,33 @@ import com.tibco.silverfabric.DefaultSetting;
 import com.tibco.silverfabric.Feature;
 import com.tibco.silverfabric.Option;
 import com.tibco.silverfabric.RuntimeContextVariable;
+import com.tibco.silverfabric.SilverFabricConfig;
+import com.tibco.silverfabric.model.Plan;
 
 /**
  * Actions related to components.
  *
- * @get: Queries the Components for names, all info, or blacklisted_names. This
- *       is the default action if action is not set. * The parameters you can
- *       use in that case are: * info (names, all, blacklisted_names) * type
- *       name of type (i.e.: J2EE, "TIBCO ActiveMatrix BusinessWorks:2.0.0") *
- *       engineId (only if info=blacklisted_names) * instance (only if
- *       info=blacklisted_names)
  */
 public abstract class AbstractSilverJSONComponents extends Components {
 
+	public abstract static class InternalCallback {
+		public abstract void process(Object result);
+	}
+
+	/* input data */
+
+	/**
+	 * <pre>
+	 * <plan>
+	 * 		<componentTemplateURI>/templates/2.6.0.4/component.json</componentTemplateURI>
+	 * 		<stackTemplateURI>/templates/stack.json</stackTemplateURI>
+	 * </plan>
+	 * </pre>
+	 */
 	@Parameter
-	protected File plan;
+	public Plan plan;
+
+	/* interface */
 
 	@Parameter(defaultValue = "names")
 	private String info;
@@ -115,48 +133,54 @@ public abstract class AbstractSilverJSONComponents extends Components {
 	private String scriptFileRegex;
 	@Parameter
 	private boolean override = false;
-	@Parameter(property="breakout")
+	@Parameter(property = "breakout")
 	private boolean breakout = false;
+	private File outputDirectory = new File("target");
 
 	/**
      * 
      */
 	private com.fedex.scm.Components component;
+	private InternalCallback internalCallback;
 
-	public void initialize() {
+	/**
+	 * 
+	 * @throws MojoFailureException
+	 */
+	public void initialize() throws MojoFailureException {
 		if (this.plan != null) {
-			getLog().info("loading JSON plan " + this.plan);
-			ObjectMapper m = new ObjectMapper();
+			File outPlan = filterFile(this.outputDirectory, new File(this.plan.componentTemplateURI));
 			try {
-				component = m.readValue(this.plan, com.fedex.scm.Components.class);
-			} catch (JsonParseException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (JsonMappingException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				component = SilverFabricConfig.loadingRESTPlan(this,
+						outPlan,
+						com.fedex.scm.Components.class);
+			} catch (FileNotFoundException e) {
+				throw new MojoFailureException("Plan not found", e);
 			}
-			if (component != null) {
-				this.setEnablerName(component.getEnablerName());
-				this.setEnablerVersion(component.getEnablerVersion());
-				this.setComponentType(component.getComponentType());
-			}
+		}
+		if (component != null) {
+			this.setEnablerName(component.getEnablerName());
+			this.setEnablerVersion(component.getEnablerVersion());
+			this.setComponentType(component.getComponentType());
 		}
 		final AbstractSilverFabricMojo THIS = this;
 		if (this.breakout) {
-			getRestTemplate().getInterceptors().add(new ClientHttpRequestInterceptor() {
-				
-				@Override
-				public ClientHttpResponse intercept(HttpRequest arg0, byte[] arg1,
-						ClientHttpRequestExecution arg2) throws IOException {
-					// TODO Auto-generated method stub
-					THIS.getLog().info("message: \n\t" + new String(arg1, "UTF-8"));
-					return null;
-				}
-			});
+			getLog().warn("[[[[[[[[[[[ BREAK OUT IS ON MALFUNCTIONING EXPECTED ]]]]]]]]");
+			
+			getRestTemplate().getInterceptors().add(
+					new ClientHttpRequestInterceptor() {
+
+						@Override
+						public ClientHttpResponse intercept(HttpRequest arg0,
+								byte[] arg1, ClientHttpRequestExecution arg2)
+								throws IOException {
+							// TODO Auto-generated method stub
+							THIS.getLog()
+									.info("message: \n\t"
+											+ new String(arg1, "UTF-8"));
+							return null;
+						}
+					});
 		}
 	}
 
@@ -230,6 +254,9 @@ public abstract class AbstractSilverJSONComponents extends Components {
 					getLog().info(
 							infoLinkedHashMap.get("result").get("value")
 									.toString());
+					if (internalCallback != null) {
+						internalCallback.process(infoLinkedHashMap);
+					}
 					break;
 				case "get archives":
 					getLog().info(
@@ -567,6 +594,14 @@ public abstract class AbstractSilverJSONComponents extends Components {
 	}
 
 	/**
+	 * @param internalCallback
+	 *            the internalCallback to set
+	 */
+	public final void setInternalCallback(InternalCallback internalCallback) {
+		this.internalCallback = internalCallback;
+	}
+
+	/**
 	 * 
 	 * @return
 	 */
@@ -591,8 +626,8 @@ public abstract class AbstractSilverJSONComponents extends Components {
 		valueOf(request, "options", component != null ? component.getOptions()
 				: null, options);
 		valueOf(request, "runtimeContextVariables",
-				component != null ? component.getRuntimeContextVariables() : null,
-				runtimeContextVariables);
+				component != null ? component.getRuntimeContextVariables()
+						: null, runtimeContextVariables);
 		valueOf(request, "features",
 				component != null ? component.getFeatures() : null, features);
 		valueOf(request, "defaultAllocationRuleSettings",
@@ -606,81 +641,70 @@ public abstract class AbstractSilverJSONComponents extends Components {
 	}
 
 	/**
-	 * @return the plan
-	 */
-	public final File getPlan() {
-		return plan;
-	}
-
-	/**
-	 * @param plan the plan to set
-	 */
-	public final void setPlan(File plan) {
-		this.plan = plan;
-	}
-
-	/**
 	 * @return the componentType
 	 */
-	protected final String getComponentType() {
+	public final String getComponentType() {
 		return componentType;
 	}
 
 	/**
-	 * @param componentType the componentType to set
+	 * @param componentType
+	 *            the componentType to set
 	 */
-	protected final void setComponentType(String componentType) {
+	public final void setComponentType(String componentType) {
 		this.componentType = componentType;
 	}
 
 	/**
 	 * @return the componentName
 	 */
-	protected final String getComponentName() {
+	public final String getComponentName() {
 		return componentName;
 	}
 
 	/**
-	 * @param componentName the componentName to set
+	 * @param componentName
+	 *            the componentName to set
 	 */
-	protected final void setComponentName(String componentName) {
+	public final void setComponentName(String componentName) {
 		this.componentName = componentName;
 	}
 
 	/**
 	 * @return the enablerName
 	 */
-	protected final String getEnablerName() {
+	public final String getEnablerName() {
 		return enablerName;
 	}
 
 	/**
-	 * @param enablerName the enablerName to set
+	 * @param enablerName
+	 *            the enablerName to set
 	 */
-	protected final void setEnablerName(String enablerName) {
+	public final void setEnablerName(String enablerName) {
 		this.enablerName = enablerName;
 	}
 
 	/**
 	 * @return the enablerVersion
 	 */
-	protected final String getEnablerVersion() {
+	public final String getEnablerVersion() {
 		return enablerVersion;
 	}
 
 	/**
-	 * @param enablerVersion the enablerVersion to set
+	 * @param enablerVersion
+	 *            the enablerVersion to set
 	 */
-	protected final void setEnablerVersion(String enablerVersion) {
+	public final void setEnablerVersion(String enablerVersion) {
 		this.enablerVersion = enablerVersion;
 	}
 
 	/**
 	 * @return the archives
 	 */
-	protected final List<Archive> getArchives() {
+	public final List<Archive> getArchives() {
 		return archives;
 	}
-
 
 }
