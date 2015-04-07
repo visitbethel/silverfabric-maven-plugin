@@ -1,0 +1,151 @@
+{
+  "enablerName":"TIBCO BusinessEvents container",
+  "enablerVersion":"2.5.0.1",
+  "componentType":"TIBCO BusinessEvents:2.5.0",
+  "MiddlewarVersions":"TIBCO_BusinessEvents_distribution:5.1.4.0.0,TIBCO_TRA_distribution:5.8.0.0.0,TIBCO_HAWK_distribution:4.9.0.0,TIBCO_RV_distribution:8.4.2.0.0",
+  "Department":null,
+  "Location":null,
+  "Partition":null,
+  "option":[
+    {
+      "name":"Engine Blacklisting",
+      "value":"false"
+    },
+    {
+      "name":"Failures Per Day Before Blacklist",
+      "value":"0"
+    },
+    {
+      "name":"Archive Scale Up Timeout",
+      "value":"120"
+    },
+    {
+      "name":"Archive Scale Down Timeout",
+      "value":"120"
+    },
+    {
+      "name":"Maximum Activation Time",
+      "value":"900"
+    },
+    {
+      "name":"Maximum Deactivation Time",
+      "value":"300"
+    },
+    {
+      "name":"Maximum Capture Time",
+      "value":"180"
+    },
+    {
+      "name":"Minimum Instances Per Host",
+      "value":"0"
+    },
+    {
+      "name":"Maximum Instances Per Host",
+      "value":"0"
+    },
+    {
+      "name":null,
+      "value":null
+    },
+    {
+      "name":"Statistics Collection Frequency",
+      "value":"10"
+    },
+    {
+      "name":"Activation Delay",
+      "value":"0"
+    },
+    {
+      "name":"Engine Reservation Expiration",
+      "value":"300"
+    }
+  ],
+  "feature":[
+    {
+      "description":"Application Logging Support",
+      "infoDescription":"Support for handling of custom application\n      logs",
+      "name":"applicationloggingsupport",
+      "properties":{
+        "property":[
+          {
+            "name":"Checkpoint Frequency In Seconds",
+            "value":"300"
+          },
+          {
+            "name":"Archive Application Logs",
+            "value":"true"
+          },
+          {
+            "name":"Log File Pattern",
+            "value":"/../domaindata/tra/${TIBCO_DOMAIN_NAME}/logs/*.log,/./tibco/tra/5.8/logs/*.log,/../domaindata/tra/${TIBCO_DOMAIN_NAME}/application/logs/.*.log"
+          }
+        ]
+      }
+    },
+    {
+      "description":"HTTP Support",
+      "infoDescription":"Support for HTTP routing",
+      "name":"httpsupport",
+      "properties":{
+        "property":[
+          {
+            "name":"Relative Url",
+            "value":null
+          },
+          {
+            "name":"Routing Prefix",
+            "value":null
+          },
+          {
+            "name":"HTTPS Enabled",
+            "value":"false"
+          },
+          {
+            "name":"HTTP Enabled",
+            "value":"true"
+          },
+          {
+            "name":"Routing Directly To Endpoints",
+            "value":"false"
+          }
+        ]
+      }
+    }
+  ],
+  "runtime-variable":{
+    "autoIncrementType":"0",
+    "description":"External Jar Files",
+    "export":"false",
+    "name":"WITHOUT_TRA",
+    "type":"1",
+    "value":"false"
+  },
+  "allocation-rule":{
+    "condition":{
+      "description":"tns1:description",
+      "properties":{
+        "name":"tns1:name",
+        "value":"tns1:value"
+      },
+      "type":"tns1:type"
+    },
+    "description":"tns1:description",
+    "properties":{
+      "property":{
+        "name":"tns1:name",
+        "value":"tns1:value"
+      }
+    },
+    "ruleAction":"tns1:ruleAction",
+    "type":"tns1:type"
+  },
+  "allocation-constraint":{
+    "currentValue":"0",
+    "description":"description",
+    "lastModified":"0",
+    "maxValue":"0",
+    "modifiedBy":"modifiedBy",
+    "name":"name",
+    "type":"type"
+  }
+}

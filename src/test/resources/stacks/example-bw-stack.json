@@ -1,0 +1,107 @@
+{
+  "archiveScalingRules":[
+    
+  ],
+  "capturedOn":0,
+  "components":[
+    "L1_BW_suAddress"
+  ],
+  "description":"SEFS CORE BW suAddress Stack",
+  "displayName":"L1_BW_suAddressStack",
+  "exportedOn":0,
+  "extras":[
+    
+  ],
+  "icon":"/livecluster/admin/images/icons/stackIcons/defaults/1_Skyway_TIBCO_Generic_Default_Icon.png",
+  "lastModified":1428368765883,
+  "mode":"stopped",
+  "modified":false,
+  "modifiedBy":"sefsdev_operate",
+  "name":"L1_BW_suAddressStack",
+  "owner":"",
+  "policies":[
+    {
+      "componentAllocationInfo":[
+        {
+          "allocationRules":[
+            {
+              "condition":null,
+              "description":"Startup dependency on Component \"L1_ADMIN_sefsAdmin\"",
+              "properties":[
+                {
+                  "name":"component",
+                  "value":"L1_ADMIN_sefsAdmin"
+                },
+                {
+                  "name":"orderedShutdown",
+                  "value":"false"
+                },
+                {
+                  "name":"packByProperty",
+                  "value":"false"
+                },
+                {
+                  "name":"restartForNewRules",
+                  "value":"false"
+                },
+                {
+                  "name":"shutdown",
+                  "value":"false"
+                }
+              ],
+              "ruleAction":null,
+              "type":"Component Dependency"
+            }
+          ],
+          "max":1,
+          "min":1,
+          "name":"L1_BW_suAddress",
+          "priority":4
+        }
+      ],
+      "scheduleName":"",
+      "scheduled":false
+    }
+  ],
+  "propertyOverrides":[
+    {
+      "datatype":"string",
+      "description":"The stack's name, as shown in Skyway",
+      "displayName":"Stack Name",
+      "name":"displayName",
+      "order":0,
+      "readonly":false,
+      "required":true,
+      "requiredForProvisioning":false,
+      "source":null,
+      "validations":{
+        "message":"Stack Name must be unique among all of your stacks",
+        "unique":"owner"
+      },
+      "value":"L1_BW_suAddressStack"
+    },
+    {
+      "datatype":"string",
+      "description":"The stack's description",
+      "displayName":"Stack Description",
+      "name":"description",
+      "order":1,
+      "readonly":false,
+      "required":false,
+      "requiredForProvisioning":false,
+      "source":null,
+      "validations":{
+        
+      },
+      "value":null
+    }
+  ],
+  "startOn":0,
+  "technology":"",
+  "templateLevel":"--",
+  "urls":[
+
+    
+]
+}
+}

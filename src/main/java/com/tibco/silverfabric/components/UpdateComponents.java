@@ -21,7 +21,7 @@ import org.apache.maven.plugins.annotations.Mojo;
  *       info=blacklisted_names)
  */
 @Mojo(name = "update-components")
-public class UpdateComponents extends AbstractSilverComponents {
+public class UpdateComponents extends AbstractSilverXMLComponents {
 
 	public UpdateComponents() {
 		super();

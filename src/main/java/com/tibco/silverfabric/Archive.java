@@ -6,12 +6,26 @@
  */
 package com.tibco.silverfabric;
 
+import java.io.File;
+
 public class Archive {
     private String path;
     private String name;
     private String relativePath = "";
 
-    public String getRelativePath() {
+    
+    
+    public Archive() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	public Archive(File f) {
+    	this.path = f.getParent();
+    	this.name = f.getName();
+	}
+
+	public String getRelativePath() {
         return relativePath;
     }
 

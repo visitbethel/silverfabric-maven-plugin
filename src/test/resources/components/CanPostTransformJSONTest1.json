@@ -1,0 +1,712 @@
+{
+  "allocationConstraints":[
+    
+  ],
+  "componentType":"TIBCO ActiveMatrix BusinessWorks:2.6.0.8",
+  "defaultAllocationRuleSettings":null,
+  "defaultSettings":[
+    {
+      "name":"Default Max Engines",
+      "value":"1"
+    },
+    {
+      "name":"Default Min Engines",
+      "value":"1"
+    },
+    {
+      "name":"Default Priority",
+      "value":"3"
+    }
+  ],
+  "description":"GSEFS CanPostTransformer",
+  "enablerName":"TIBCO ActiveMatrix BusinessWorks container",
+  "enablerVersion":"2.6.0.8",
+  "features":[
+    {
+      "description":"Supports Logging feature.",
+      "infoDescription":"",
+      "name":"Application Logging Support",
+      "properties":[
+        {
+          "name":"Archive Application Logs",
+          "value":"true"
+        },
+        {
+          "name":"Checkpoint Frequency In Seconds",
+          "value":"300"
+        },
+        {
+          "name":"Log File Pattern",
+          "value":"/../domaindata/tra/${TIBCO_DOMAIN_NAME}/logs/Hawk.log,/../domaindata/logs/domainutility.log,/../domaindata/tra/${TIBCO_DOMAIN_NAME}/logs/tsm.log,/../domaindata/tra/${TIBCO_DOMAIN_NAME}/logs/msghma.log,/../domaindata/tra/${TIBCO_DOMAIN_NAME}/logs/ApplicationManagement.log,/../domaindata/tra/${TIBCO_DOMAIN_NAME}/application/logs/.*.log"
+        }
+      ]
+    },
+    {
+      "description":"Supports deployment of file archives into the Container.",
+      "infoDescription":"This Feature adds support for deployment of Archive files.  You may upload archives on the <b>Add/Remove Archive Files</b> page.",
+      "name":"Archive Management Support",
+      "properties":[
+        {
+          "name":"Archive",
+          "value":"sefs_suAddress.zip"
+        },
+        {
+          "name":"Start Archives On Activation",
+          "value":"true"
+        }
+      ]
+    },
+    {
+      "description":"Support for HTTP routing",
+      "infoDescription":"",
+      "name":"HTTP Support",
+      "properties":[
+        {
+          "name":"HTTP Enabled",
+          "value":"true"
+        },
+        {
+          "name":"HTTPS Enabled",
+          "value":"false"
+        },
+        {
+          "name":"Relative Url",
+          "value":""
+        },
+        {
+          "name":"Route Directly To Endpoints",
+          "value":"false"
+        },
+        {
+          "name":"Routing Prefix",
+          "value":""
+        }
+      ]
+    }
+  ],
+  "lastModified":1428079444279,
+  "modified":false,
+  "modifiedBy":"sefsdev_operate",
+  "name":"L1_BW_suAddress",
+  "options":[
+    {
+      "name":"Activation Delay",
+      "value":"0"
+    },
+    {
+      "name":"Archive Scale Down Timeout",
+      "value":"120"
+    },
+    {
+      "name":"Archive Scale Up Timeout",
+      "value":"120"
+    },
+    {
+      "name":"Department",
+      "value":""
+    },
+    {
+      "name":"Engine Blacklisting",
+      "value":"false"
+    },
+    {
+      "name":"Engine Reservation Expiration",
+      "value":"300"
+    },
+    {
+      "name":"Failures Per Day Before Blacklist",
+      "value":"0"
+    },
+    {
+      "name":"Location",
+      "value":""
+    },
+    {
+      "name":"Maximum Activation Time",
+      "value":"900"
+    },
+    {
+      "name":"Maximum Capture Time",
+      "value":"180"
+    },
+    {
+      "name":"Maximum Deactivation Time",
+      "value":"900"
+    },
+    {
+      "name":"Maximum Instances Per Host",
+      "value":"0"
+    },
+    {
+      "name":"Middleware Versions",
+      "value":"TIBCO_ActiveMatrix_BW_distribution:5.11.0.0.0,TIBCO_TRA_distribution:5.8.0.0.0,TIBCO_HAWK_distribution:4.9.0.0,TIBCO_RV_distribution:8.4.2.0.0"
+    },
+    {
+      "name":"Minimum Instances Per Host",
+      "value":"0"
+    },
+    {
+      "name":"Partition",
+      "value":""
+    },
+    {
+      "name":"Plugin Mdlware Versions",
+      "value":"TIBCO_bw_asplugin_distribution:1.0.3"
+    },
+    {
+      "name":"Separator Tags",
+      "value":""
+    },
+    {
+      "name":"Statistics Collection Frequency",
+      "value":"10"
+    }
+  ],
+  "patches":[
+    
+  ],
+  "runtimeContextVariables":[
+    {
+      "autoIncrementType":0,
+      "description":null,
+      "export":false,
+      "name":"ACTION_TO_PERFORM_FOR_HAWK_FILE",
+      "type":1,
+      "value":""
+    },
+    {
+      "autoIncrementType":0,
+      "description":"HAWK AMI DAEMON for TIBCO Administrator",
+      "export":true,
+      "name":"AMI_HAWK_DAEMON",
+      "type":1,
+      "value":"tcp:7474"
+    },
+    {
+      "autoIncrementType":0,
+      "description":null,
+      "export":false,
+      "name":"AMI_HAWK_NETWORK",
+      "type":1,
+      "value":""
+    },
+    {
+      "autoIncrementType":0,
+      "description":"HAWK AMI SERVICE for TIBCO Administrator",
+      "export":true,
+      "name":"AMI_HAWK_SERVICE",
+      "type":1,
+      "value":"7475"
+    },
+    {
+      "autoIncrementType":0,
+      "description":"Archive detection enabled",
+      "export":true,
+      "name":"ARCHIVE_DETECTION_ENABLED",
+      "type":1,
+      "value":"true"
+    },
+    {
+      "autoIncrementType":0,
+      "description":"Archive detection frequency",
+      "export":true,
+      "name":"ARCHIVE_DETECTION_FREQUENCY",
+      "type":1,
+      "value":"60"
+    },
+    {
+      "autoIncrementType":0,
+      "description":"BW Input AppManage Deployment Configuration File",
+      "export":false,
+      "name":"BW_INPUT_APPMANAGE_DEPLOYCONFIGFILE",
+      "type":0,
+      "value":"sefs_suAddress_template.xml.${ENGINE_USERNAME}.xml"
+    },
+    {
+      "autoIncrementType":0,
+      "description":"Delete contents of work directory when component stops",
+      "export":false,
+      "name":"DELETE_RUNTIME_DIR_ON_SHUTDOWN",
+      "type":1,
+      "value":"true"
+    },
+    {
+      "autoIncrementType":0,
+      "description":"HAWK DAEMON for TIBCO Administrator",
+      "export":true,
+      "name":"DOMAIN_HAWK_DAEMON",
+      "type":1,
+      "value":"tcp:7474"
+    },
+    {
+      "autoIncrementType":0,
+      "description":"HAWK SERVICE for TIBCO Administrator",
+      "export":true,
+      "name":"DOMAIN_HAWK_SERVICE",
+      "type":1,
+      "value":"7474"
+    },
+    {
+      "autoIncrementType":0,
+      "description":"Share drive where deployment configuration will be created",
+      "export":false,
+      "name":"DOMAINDATA_DIR",
+      "type":1,
+      "value":""
+    },
+    {
+      "autoIncrementType":0,
+      "description":null,
+      "export":false,
+      "name":"EXTERNAL_JAR_FILE",
+      "type":1,
+      "value":""
+    },
+    {
+      "autoIncrementType":0,
+      "description":null,
+      "export":false,
+      "name":"HAWK_PLUGIN_CONFIG_FILE",
+      "type":1,
+      "value":""
+    },
+    {
+      "autoIncrementType":0,
+      "description":"Polling period (in seconds) for TIBCO Hawk Agent running verification",
+      "export":false,
+      "name":"HAWK_POLLPERIOD",
+      "type":0,
+      "value":"30"
+    },
+    {
+      "autoIncrementType":0,
+      "description":"Consult the user documentation on automated HTTP port setting",
+      "export":false,
+      "name":"HTTP_PORT_BASE",
+      "type":1,
+      "value":"8200"
+    },
+    {
+      "autoIncrementType":0,
+      "description":"Consult the user documentation on automated HTTP port setting",
+      "export":false,
+      "name":"HTTP_PORT_INCREASE",
+      "type":1,
+      "value":"50"
+    },
+    {
+      "autoIncrementType":0,
+      "description":"Should Silver prepend .jars to CLASSPATH on deployment",
+      "export":true,
+      "name":"IS_PREPAND",
+      "type":1,
+      "value":"false"
+    },
+    {
+      "autoIncrementType":0,
+      "description":"JDBC Driver file",
+      "export":true,
+      "name":"JDBC_DRIVER_FILE",
+      "type":1,
+      "value":"jdbc/ojdbc6.jar"
+    },
+    {
+      "autoIncrementType":0,
+      "description":"Name of the TLM",
+      "export":true,
+      "name":"LOGICAL_MACHINE_NAME",
+      "type":1,
+      "value":"L1_BW_suAddress"
+    },
+    {
+      "autoIncrementType":0,
+      "description":"Number of times to restart Hawk Agent before tearing down install",
+      "export":true,
+      "name":"NB_HAWK_RESTART_BEFORE_RESTART_ENGINE",
+      "type":1,
+      "value":"3"
+    },
+    {
+      "autoIncrementType":0,
+      "description":null,
+      "export":false,
+      "name":"PLUGIN_CONFIG_FILE",
+      "type":1,
+      "value":""
+    },
+    {
+      "autoIncrementType":0,
+      "description":"Used by sfs_component_script.py originally from Pattern Factory",
+      "export":false,
+      "name":"sfs_CLUSTEREVENTS_ENABLED",
+      "type":0,
+      "value":"false"
+    },
+    {
+      "autoIncrementType":0,
+      "description":"Used by sfs_component_script.py originally from Pattern Factory",
+      "export":false,
+      "name":"sfs_COLDSTART_ENABLED",
+      "type":0,
+      "value":"false"
+    },
+    {
+      "autoIncrementType":0,
+      "description":"Used by sfs_component_script.py originally from Pattern Factory",
+      "export":false,
+      "name":"sfs_DATACLEAN_ALLOWED",
+      "type":0,
+      "value":"true"
+    },
+    {
+      "autoIncrementType":0,
+      "description":"Used by sfs_component_script.py originally from Pattern Factory",
+      "export":false,
+      "name":"sfs_ENABLER_HASCOMPONENTSTARTED_ENABLED",
+      "type":0,
+      "value":"true"
+    },
+    {
+      "autoIncrementType":0,
+      "description":"Used by sfs_component_script.py originally from Pattern Factory",
+      "export":false,
+      "name":"sfs_ENABLER_HASCONTAINERSTARTED_ENABLED",
+      "type":0,
+      "value":"true"
+    },
+    {
+      "autoIncrementType":0,
+      "description":"Used by sfs_component_script.py originally from Pattern Factory",
+      "export":false,
+      "name":"sfs_ENABLER_ISCOMPONENTRUNNING_ENABLED",
+      "type":0,
+      "value":"true"
+    },
+    {
+      "autoIncrementType":0,
+      "description":"Used by sfs_component_script.py originally from Pattern Factory",
+      "export":false,
+      "name":"sfs_ENABLER_ISCONTAINERRUNNING_ENABLED",
+      "type":0,
+      "value":"true"
+    },
+    {
+      "autoIncrementType":0,
+      "description":"Used by sfs_component_script.py originally from Pattern Factory",
+      "export":false,
+      "name":"sfs_PERSISTENTDATA_DIR",
+      "type":0,
+      "value":"/opt/tibco/silver/persistentdata"
+    },
+    {
+      "autoIncrementType":0,
+      "description":"Used by sfs_component_script.py originally from Pattern Factory to run sfs_pauseresume_wrapper.sh if included as content file",
+      "export":false,
+      "name":"sfs_script_PAUSERESUME_BLOCKING_PROCESS",
+      "type":0,
+      "value":"false"
+    },
+    {
+      "autoIncrementType":0,
+      "description":"Directory containing the DSEngine directory on the Engine Hosts",
+      "export":false,
+      "name":"sfs_TIBCO_DIR",
+      "type":0,
+      "value":"/opt/tibco/silver"
+    },
+    {
+      "autoIncrementType":0,
+      "description":"May be needed if using sfs_utility_scripts.py from pattern factory",
+      "export":false,
+      "name":"sfs_UTILITY_SCRIPTS_DIR",
+      "type":0,
+      "value":"/opt/tibco/silver/scripts"
+    },
+    {
+      "autoIncrementType":0,
+      "description":"On logical machine restart, all services are either started or stopped",
+      "export":false,
+      "name":"TIBCO_SERVICES_STATE_AFTER_TLM_MOVED",
+      "type":1,
+      "value":"Started"
+    },
+    {
+      "autoIncrementType":0,
+      "description":"Use Full Archive Name",
+      "export":true,
+      "name":"USE_FULL_ARCHIVE_NAME",
+      "type":1,
+      "value":"true"
+    }
+  ],
+  "supportedStatistics":[
+    {
+      "defolt":true,
+      "description":"Number of share ressources used Activly in the archives running in this component",
+      "name":"Active Connections",
+      "shared":false,
+      "units":"Connection(s)"
+    },
+    {
+      "defolt":true,
+      "description":"Number of archives deployed in this component",
+      "name":"Archives deployed",
+      "shared":false,
+      "units":"Archive(s)"
+    },
+    {
+      "defolt":false,
+      "description":"Total number of active, not paged, processes",
+      "name":"BW Active Process Count",
+      "shared":false,
+      "units":"processes"
+    },
+    {
+      "defolt":false,
+      "description":"Total number of active, not paged, processes",
+      "name":"BW Archive Active Process Count",
+      "shared":false,
+      "units":"processes"
+    },
+    {
+      "defolt":true,
+      "description":"Average elapsed clock time for all successfully completed process instances",
+      "name":"BW Archive Average Elapse Execution Time",
+      "shared":false,
+      "units":"seconds"
+    },
+    {
+      "defolt":false,
+      "description":"Execution time of the most recently completed process instance",
+      "name":"BW Archive Last Execution Time",
+      "shared":false,
+      "units":"seconds"
+    },
+    {
+      "defolt":true,
+      "description":"Total number of errors encountered since the last time statistic method was called",
+      "name":"BW Archive Last Number Error",
+      "shared":false,
+      "units":"errors"
+    },
+    {
+      "defolt":false,
+      "description":"max number of running process instances",
+      "name":"BW Archive Max Process Count",
+      "shared":false,
+      "units":"processes"
+    },
+    {
+      "defolt":true,
+      "description":"Total number of bytes that are not currently in use",
+      "name":"BW Archive Memory Free Bytes",
+      "shared":false,
+      "units":"MB"
+    },
+    {
+      "defolt":false,
+      "description":"Total number of bytes that are currently in use",
+      "name":"BW Archive Memory Used Bytes",
+      "shared":false,
+      "units":"MB"
+    },
+    {
+      "defolt":false,
+      "description":"Number of times process instances have been aborted",
+      "name":"BW Archive Number of Process Aborted",
+      "shared":false,
+      "units":"processes"
+    },
+    {
+      "defolt":false,
+      "description":"Number of process instances that have been successfully completed.",
+      "name":"BW Archive Number of process completed",
+      "shared":false,
+      "units":"processes"
+    },
+    {
+      "defolt":false,
+      "description":"Number of process instances created.",
+      "name":"BW Archive Number of process created",
+      "shared":false,
+      "units":"processes"
+    },
+    {
+      "defolt":false,
+      "description":"Number of times process instances have been suspended",
+      "name":"BW Archive Number of Process Suspended",
+      "shared":false,
+      "units":"processes"
+    },
+    {
+      "defolt":false,
+      "description":"Number of times process instances have been swapped to disk",
+      "name":"BW Archive Number of Process Swapped",
+      "shared":false,
+      "units":"processes"
+    },
+    {
+      "defolt":true,
+      "description":"Percentage of Memory Used (Used/Allocated)",
+      "name":"BW Archive Percentage of Memory Used",
+      "shared":false,
+      "units":"%"
+    },
+    {
+      "defolt":true,
+      "description":"total number of running process instances",
+      "name":"BW Archive Process Count",
+      "shared":false,
+      "units":"processes"
+    },
+    {
+      "defolt":false,
+      "description":"Total number of bytes allocated to the process engine",
+      "name":"BW Archive Total Allocated Memory",
+      "shared":false,
+      "units":"MB"
+    },
+    {
+      "defolt":true,
+      "description":"Total number of errors encountered since the process engine was started",
+      "name":"BW Archive Total Number Error",
+      "shared":false,
+      "units":"errors"
+    },
+    {
+      "defolt":false,
+      "description":"Elapsed time (in minutes) since the process engine was started.",
+      "name":"BW Archive Uptime",
+      "shared":false,
+      "units":"minutes"
+    },
+    {
+      "defolt":true,
+      "description":"Average elapsed clock time for all successfully completed process instances",
+      "name":"BW Average Elapse Execution Time",
+      "shared":false,
+      "units":"seconds"
+    },
+    {
+      "defolt":false,
+      "description":"Execution time of the most recently completed process instance",
+      "name":"BW Last Execution Time",
+      "shared":false,
+      "units":"seconds"
+    },
+    {
+      "defolt":true,
+      "description":"Total number of errors encountered since the last time statistic method was called",
+      "name":"BW Last Number Error",
+      "shared":false,
+      "units":"errors"
+    },
+    {
+      "defolt":false,
+      "description":"max number of running process instances",
+      "name":"BW Max Process Count",
+      "shared":false,
+      "units":"processes"
+    },
+    {
+      "defolt":true,
+      "description":"Total number of bytes that are not currently in use",
+      "name":"BW Memory Free Bytes",
+      "shared":false,
+      "units":"MB"
+    },
+    {
+      "defolt":false,
+      "description":"Total number of bytes that are currently in use",
+      "name":"BW Memory Used Bytes",
+      "shared":false,
+      "units":"MB"
+    },
+    {
+      "defolt":false,
+      "description":"Number of times process instances have been aborted",
+      "name":"BW Number of Process Aborted",
+      "shared":false,
+      "units":"processes"
+    },
+    {
+      "defolt":false,
+      "description":"Number of process instances that have been successfully completed.",
+      "name":"BW Number of process completed",
+      "shared":false,
+      "units":"processes"
+    },
+    {
+      "defolt":false,
+      "description":"Number of process instances created.",
+      "name":"BW Number of process created",
+      "shared":false,
+      "units":"processes"
+    },
+    {
+      "defolt":false,
+      "description":"Number of times process instances have been suspended",
+      "name":"BW Number of Process Suspended",
+      "shared":false,
+      "units":"processes"
+    },
+    {
+      "defolt":false,
+      "description":"Number of times process instances have been swapped to disk",
+      "name":"BW Number of Process Swapped",
+      "shared":false,
+      "units":"processes"
+    },
+    {
+      "defolt":true,
+      "description":"Percentage of Memory Used (Used/Allocated)",
+      "name":"BW Percentage of Memory Used",
+      "shared":false,
+      "units":"%"
+    },
+    {
+      "defolt":true,
+      "description":"total number of running process instances",
+      "name":"BW Process Count",
+      "shared":false,
+      "units":"processes"
+    },
+    {
+      "defolt":false,
+      "description":"Total number of bytes allocated to the process engine",
+      "name":"BW Total Allocated Memory",
+      "shared":false,
+      "units":"MB"
+    },
+    {
+      "defolt":true,
+      "description":"Total number of errors encountered since the process engine was started",
+      "name":"BW Total Number Error",
+      "shared":false,
+      "units":"errors"
+    },
+    {
+      "defolt":false,
+      "description":"Elapsed time (in minutes) since the process engine was started.",
+      "name":"BW Uptime",
+      "shared":false,
+      "units":"minutes"
+    }
+  ],
+  "trackedStatistics":[
+    "Active Connections",
+    "Archives deployed",
+    "BW Archive Average Elapse Execution Time",
+    "BW Archive Last Number Error",
+    "BW Archive Memory Free Bytes",
+    "BW Archive Percentage of Memory Used",
+    "BW Archive Process Count",
+    "BW Archive Total Number Error",
+    "BW Average Elapse Execution Time",
+    "BW Last Number Error",
+    "BW Memory Free Bytes",
+    "BW Percentage of Memory Used",
+    "BW Process Count",
+    "BW Total Number Error"
+  ]
+}

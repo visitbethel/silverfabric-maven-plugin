@@ -26,6 +26,7 @@ import org.springframework.http.converter.json.MappingJackson2HttpMessageConvert
 
 import com.tibco.silverfabric.AbstractSilverFabricMojo;
 import com.tibco.silverfabric.BrokerConfig;
+import com.tibco.silverfabric.Utils;
 
 public class AbstractSilverComponentsTest {
 

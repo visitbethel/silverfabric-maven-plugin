@@ -1,0 +1,127 @@
+{
+  "archiveScalingRules":[
+    
+  ],
+  "capturedOn":0,
+  "components":[
+    "${app.level}_ADMIN_${app.name}"
+  ],
+  "description":"SEFS CORE ADMIN Stack",
+  "displayName":"${app.level}_ADMIN_${app.name}Stack",
+  "exportedOn":0,
+  "extras":[
+    
+  ],
+  "icon":"/livecluster/admin/images/icons/stackIcons/defaults/1_Skyway_TIBCO_Generic_Default_Icon.png",
+  "lastModified":1428368487083,
+  "mode":"manual",
+  "modified":false,
+  "modifiedBy":"sefsdev_operate",
+  "name":"${app.level}_ADMIN_${app.name}Stack",
+  "owner":"",
+  "policies":[
+    {
+      "componentAllocationInfo":[
+        {
+          "allocationRules":[
+            {
+              "condition":null,
+              "description":"Engines whose hostname property matches the regular expression \"${app.deploy.host}\" are Required",
+              "properties":[
+                {
+                  "name":"affinityPos",
+                  "value":"0"
+                },
+                {
+                  "name":"operator",
+                  "value":"matches"
+                },
+                {
+                  "name":"propertyName",
+                  "value":"hostname"
+                },
+                {
+                  "name":"propertyValue",
+                  "value":"${app.deploy.host}"
+                }
+              ],
+              "ruleAction":null,
+              "type":"Resource Preference"
+            },
+            {
+              "condition":null,
+              "description":"Engines whose instance property matches the regular expression 31 are Required",
+              "properties":[
+                {
+                  "name":"affinityPos",
+                  "value":"0"
+                },
+                {
+                  "name":"operator",
+                  "value":"matches"
+                },
+                {
+                  "name":"propertyName",
+                  "value":"instance"
+                },
+                {
+                  "name":"propertyValue",
+                  "value":"31"
+                }
+              ],
+              "ruleAction":null,
+              "type":"Resource Preference"
+            }
+          ],
+          "max":1,
+          "min":1,
+          "name":"${app.level}_ADMIN_${app.name}",
+          "priority":4
+        }
+      ],
+      "scheduleName":"",
+      "scheduled":false
+    }
+  ],
+  "propertyOverrides":[
+    {
+      "datatype":"string",
+      "description":"The stack's name, as shown in Skyway",
+      "displayName":"Stack Name",
+      "name":"displayName",
+      "order":0,
+      "readonly":false,
+      "required":true,
+      "requiredForProvisioning":false,
+      "source":null,
+      "validations":{
+        "message":"Stack Name must be unique among all of your stacks",
+        "unique":"owner"
+      },
+      "value":"${app.level}_ADMIN_${app.name}Stack"
+    },
+    {
+      "datatype":"string",
+      "description":"The stack's description",
+      "displayName":"Stack Description",
+      "name":"description",
+      "order":1,
+      "readonly":false,
+      "required":false,
+      "requiredForProvisioning":false,
+      "source":null,
+      "validations":{
+        
+      },
+      "value":null
+    }
+  ],
+  "startOn":0,
+  "technology":"",
+  "templateLevel":"--",
+  "urls":[
+
+    
+]
+}
+}

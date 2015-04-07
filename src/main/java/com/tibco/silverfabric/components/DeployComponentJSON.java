@@ -23,33 +23,42 @@ import com.tibco.silverfabric.BrokerConfig;
  *       engineId (only if info=blacklisted_names) * instance (only if
  *       info=blacklisted_names)
  */
-@Mojo(name = "create-components")
-public class CreateComponents extends AbstractSilverXMLComponents {
+@Mojo(name = "deploy-components-json")
+public class DeployComponentJSON extends AbstractSilverJSONComponents {
 
-	public CreateComponents() {
+	public DeployComponentJSON() {
 		super();
 	}
-
-	public CreateComponents(File plan) {
+	
+	
+	public DeployComponentJSON(File plan) {
 		super();
 		this.plan = plan;
 	}
 
-	public CreateComponents(BrokerConfig config, File plan) {
+
+	public DeployComponentJSON(BrokerConfig config, File plan) {
 		super();
 		this.plan = plan;
 		setBrokerConfig(config);
 	}
 
+
 	public void initialize() {
 		super.initialize();
 		if (getActions() == null) {
 			LinkedList<String> list = new LinkedList<String>();
+			list.add("unpublish");
+			list.add("delete");
 			list.add("create");
+			if (this.getArchives() != null && this.getArchives().size() > 0) {
+				list.add("add archives");
+			}
 			list.add("publish");
 			setActions(list);
 		}
 		getLog().info("assign action " + getActions());
 	}
 
+	
 }

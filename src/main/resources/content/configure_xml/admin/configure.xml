@@ -1,0 +1,144 @@
+<?xml version='1.0' encoding='utf-8'  standalone='yes' ?>
+<!-- Admin Config -->
+<containerConfig>
+	<!-- 5.8 -->
+	<configFiles baseDir="${TIBCO_HOME}/tra/5.8/template/domainutility" include="hawkagenttra.template">
+		<regex pattern="java\.heap\.size\.max\s+[0-9]+[a-zA-Z]+"
+			replacement="java.heap.size.max 1024M" />
+		<regex pattern="java\.heap\.size\.initial\s+[0-9]+[a-zA-Z]+"
+			replacement="java.heap.size.initial 64M" />
+		
+		<regex action="Insert At End">
+			<![CDATA[java.property.TIBCO_SECURITY_VENDOR j2se]]>
+		</regex>
+		<regex action="Insert At End">
+			<![CDATA[java.extended.properties = -XX:NewSize=32m -XX:MaxNewSize=64m]]>
+		</regex>
+		
+		<regex action="Insert At End">
+			<![CDATA[java.property.java.io.tmpdir=${ENGINE_WORK_DIR}/domaindata/tra/${TIBCO_DOMAIN_NAME}/tmp]]>
+		</regex>
+		<regex action="Insert At End">
+			<![CDATA[#java.property.com.sun.management.jmxremote.port=5001]]>
+		</regex>
+		<regex action="Insert At End">
+			<![CDATA[#java.property.com.sun.management.jmxremote=true]]>
+		</regex>
+		<regex action="Insert At End">
+			<![CDATA[#java.property.com.sun.management.jmxremote.authenticate=false]]>
+		</regex>
+		<regex action="Insert At End">
+			<![CDATA[#java.property.com.sun.management.jmxremote.ssl=false]]>
+		</regex>
+		<regex action="Insert At Beginning">
+			<![CDATA[##### hawkagenttra.template Updated by Configure.xml - TAP TRA Pattern - ADMIN #####]]>
+		</regex>
+	</configFiles>
+	
+	<configFiles baseDir="${TIBCO_HOME}/tra/5.8/template/domainutility" include="hawkagenttra.template">
+		<velocity />
+	</configFiles>
+			
+	<configFiles baseDir="${TIBCO_HOME}/tra/5.8/bin" include="AppManage.tra">
+		<regex pattern="java\.heap\.size\.max\s+[0-9]+[a-zA-Z]+"
+			replacement="java.heap.size.max 1024M" />
+		<regex action="Insert At Beginning">
+			<![CDATA[##### AppManage.tra Updated by Configure.xml - TAP TRA Pattern - ADMIN #####]]>
+		</regex>
+		<regex action="Insert At End">
+			<![CDATA[#java.property.com.sun.management.jmxremote.port=5002]]>
+		</regex>
+		<regex action="Insert At End">
+			<![CDATA[#java.property.com.sun.management.jmxremote=true]]>
+		</regex>
+		<regex action="Insert At End">
+			<![CDATA[#java.property.com.sun.management.jmxremote.authenticate=false]]>
+		</regex>
+				<regex action="Insert At End">
+			<![CDATA[#java.property.com.sun.management.jmxremote.ssl=false]]>
+		</regex>
+	</configFiles>
+
+	<!-- 
+		Security Vendor Issues
+		Remove  if there are problems adding SSL - can be cause by certificate files with "odd" formats
+		SQLSERVER - This needs to be set if the CreateDomain fails due to a error of..
+			commit() should not be called while in auto-commit mode	
+	-->
+	<configFiles baseDir="${TIBCO_HOME}/tra/5.8/bin" include="domainutilitycmd.tra">
+		<regex action="Insert At End">
+			<![CDATA[java.property.TIBCO_SECURITY_VENDOR j2se]]>
+		</regex>
+		<regex action="Insert At Beginning">
+			<![CDATA[##### domainutilitycmd.tra Updated by Configure.xml - TAP TRA Pattern - ADMIN #####]]>
+		</regex>
+	</configFiles>
+	<!--  -->
+
+	<configFiles baseDir="${TIBCO_HOME}/administrator/5.8/template" include="tibcoadmintra.template">
+		<regex action="Insert At End">
+			<![CDATA[java.property.TIBCO_SECURITY_VENDOR j2se]]>
+		</regex>
+		<regex pattern="java.heap.size.max 512m"
+			replacement="java.heap.size.max=2048m" />
+		<regex pattern="#repo\.commitHistoryFileMaxNumber\s.\s.+[0-9]"
+			replacement="repo.commitHistoryFileMaxNumber = 10" />
+		<regex pattern="java\.extended\.properties.-XX\:MaxPermSize=+[0-9]+[a-zA-Z]"
+			replacement="java.extended.properties=-XX:NewSize=32m -XX:MaxNewSize=64m -XX:MaxPermSize=128m" />
+		<regex action="Insert At Beginning">
+			<![CDATA[##### Updated by configure.xml - TAP TRA Pattern - ADMIN #####]]>
+		</regex>
+		<regex action="Insert At End">
+			<![CDATA[##### Following lines added by configure.xml #####]]>
+		</regex>
+		<regex action="Insert At End">
+			<![CDATA[java.heap.size.max=2048m]]>
+		</regex>
+		<regex action="Insert At End">
+			<![CDATA[java.extended.properties=-XX:NewSize=32m -XX:MaxNewSize=64m -XX:MaxPermSize=128m -Djava.util.Arrays.useLegacyMergeSort=true]]>
+		</regex>
+		<regex action="Insert At End">
+			<![CDATA[java.property.com.sun.management.jmxremote.port=${admin_component_JMX_PORT}]]>
+		</regex>
+		<regex action="Insert At End">
+			<![CDATA[java.property.com.sun.management.jmxremote=${admin_component_JMX_ENABLED}]]>
+		</regex>
+		<regex action="Insert At End">
+			<![CDATA[java.property.com.sun.management.jmxremote.authenticate=false]]>
+		</regex>
+		<regex action="Insert At End">
+			<![CDATA[java.property.com.sun.management.jmxremote.ssl=false]]>
+		</regex>
+	</configFiles>
+	
+	<configFiles baseDir="${TIBCO_HOME}/administrator/5.8/template" include="tibcoadmintra.template">
+		<velocity />
+	</configFiles>
+
+	<configFiles baseDir="${TIBCO_HOME}/tra/5.8/bin" include="ImportDomainSecurity.tra_template">
+		<regex action="Insert At End">
+			<![CDATA[java.extended.properties=-Djava.util.Arrays.useLegacyMergeSort=true]]>
+		</regex>
+	</configFiles>
+	<configFiles baseDir="${TIBCO_HOME}/tra/5.8/bin" include="ImportDomainSecurity.tra">
+		<regex action="Insert At End">
+			<![CDATA[java.extended.properties=-Djava.util.Arrays.useLegacyMergeSort=true]]>
+		</regex>
+	</configFiles>
+
+	<configFiles baseDir="${ENGINE_WORK_DIR}/domaindata/tra/${TIBCO_DOMAIN_NAME}" include="hawkagent_${TIBCO_DOMAIN_NAME}.tra">
+		<velocity />
+	</configFiles>
+	
+	<configFiles baseDir="${ENGINE_WORK_DIR}/domaindata" include="CreateDomain.xml">
+		<xpath expression="/Task/CreateDomain"
+			action="Add Node">
+				<![CDATA[<MaxDeploymentRevision>10</MaxDeploymentRevision>]]>
+		</xpath>
+	</configFiles>
+	
+	<configFiles baseDir="${CONTAINER_WORK_DIR}/ldapConfig" include="admin_ldap.xml">
+		<velocity />
+	</configFiles>
+
+</containerConfig>

@@ -1,0 +1,530 @@
+{
+  "result":{
+    "name":"component",
+    "value":{
+      "allocationConstraints":[
+        
+      ],
+      "componentType":"J2EE:5.5.1.0",
+      "defaultAllocationRuleSettings":null,
+      "defaultSettings":[
+        {
+          "name":"Default Max Engines",
+          "value":"4"
+        },
+        {
+          "name":"Default Min Engines",
+          "value":"1"
+        },
+        {
+          "name":"Default Priority",
+          "value":"3"
+        }
+      ],
+      "description":"",
+      "enablerName":"TIBCO ActiveSpaces 2.1.4 Enabler FDX",
+      "enablerVersion":"1.0.0.0",
+      "features":[
+        {
+          "description":"Support for handling of custom application logs",
+          "infoDescription":"Specify how often checkpoint copies of application log files are made, and whether or not application logs are archived upon deactivation.",
+          "name":"Application Logging Support",
+          "properties":[
+            {
+              "name":"Archive Application Logs",
+              "value":"true"
+            },
+            {
+              "name":"Checkpoint Frequency In Seconds",
+              "value":"300"
+            },
+            {
+              "name":"Log File Pattern",
+              "value":"/as/2.1/as_agent.log,/as/2.1/asmm/war/WEB-INF/classes/com/tibco/as/admin/client/log/.*.log"
+            }
+          ]
+        }
+      ],
+      "lastModified":1428158023814,
+      "modified":false,
+      "modifiedBy":"sefsdev_operate",
+      "name":"ASMetaspace-SU_ADDRESS_TAPAS_agent-1",
+      "options":[
+        {
+          "name":"Activation Delay",
+          "value":"0"
+        },
+        {
+          "name":"Archive Scale Down Timeout",
+          "value":"120"
+        },
+        {
+          "name":"Archive Scale Up Timeout",
+          "value":"120"
+        },
+        {
+          "name":"Department",
+          "value":""
+        },
+        {
+          "name":"Engine Blacklisting",
+          "value":"false"
+        },
+        {
+          "name":"Engine Reservation Expiration",
+          "value":"300"
+        },
+        {
+          "name":"Failures Per Day Before Blacklist",
+          "value":"0"
+        },
+        {
+          "name":"Location",
+          "value":""
+        },
+        {
+          "name":"Maximum Activation Time",
+          "value":"3600"
+        },
+        {
+          "name":"Maximum Capture Time",
+          "value":"180"
+        },
+        {
+          "name":"Maximum Deactivation Time",
+          "value":"180"
+        },
+        {
+          "name":"Maximum Instances Per Host",
+          "value":"1"
+        },
+        {
+          "name":"Minimum Instances Per Host",
+          "value":"0"
+        },
+        {
+          "name":"Partition",
+          "value":""
+        },
+        {
+          "name":"Separator Tags",
+          "value":""
+        },
+        {
+          "name":"Statistics Collection Frequency",
+          "value":"120"
+        }
+      ],
+      "patches":[
+        
+      ],
+      "runtimeContextVariables":[
+        {
+          "autoIncrementType":0,
+          "description":"AS Cluster suspend threshold",
+          "export":false,
+          "name":"AS_CLUSTER_SUSPEND_THRESHOLD",
+          "type":1,
+          "value":"-1"
+        },
+        {
+          "autoIncrementType":0,
+          "description":"Data store path",
+          "export":false,
+          "name":"AS_DATA_STORE",
+          "type":1,
+          "value":""
+        },
+        {
+          "autoIncrementType":0,
+          "description":"Debug Level",
+          "export":false,
+          "name":"AS_DEBUG",
+          "type":1,
+          "value":"3"
+        },
+        {
+          "autoIncrementType":0,
+          "description":"Discovery URL",
+          "export":false,
+          "name":"AS_DISCOVERY",
+          "type":1,
+          "value":"tibpgm://52300/172.21.28.12"
+        },
+        {
+          "autoIncrementType":0,
+          "description":"Discovery Multicast address",
+          "export":false,
+          "name":"AS_DISCOVERY_MULTICAST_ADDRESS",
+          "type":1,
+          "value":"239.8.8.8"
+        },
+        {
+          "autoIncrementType":0,
+          "description":"Discovery Port",
+          "export":false,
+          "name":"AS_DISCOVERY_PORT",
+          "type":1,
+          "value":"50000"
+        },
+        {
+          "autoIncrementType":0,
+          "description":"Find discovery max attempts",
+          "export":false,
+          "name":"AS_FIND_DISCOVERY_MAX",
+          "type":0,
+          "value":"10"
+        },
+        {
+          "autoIncrementType":0,
+          "description":"Find discovery wait max time seconds",
+          "export":false,
+          "name":"AS_FIND_DISCOVERY_WAIT",
+          "type":0,
+          "value":"30"
+        },
+        {
+          "autoIncrementType":0,
+          "description":"AS Agent input script",
+          "export":false,
+          "name":"AS_INPUT",
+          "type":1,
+          "value":"${CONTAINER_WORK_DIR}/definitions/SU_ADDRESS.msd"
+        },
+        {
+          "autoIncrementType":0,
+          "description":"Listen port",
+          "export":false,
+          "name":"AS_LISTEN_PORT",
+          "type":1,
+          "value":"50200"
+        },
+        {
+          "autoIncrementType":0,
+          "description":"Log file full path",
+          "export":false,
+          "name":"AS_LOG",
+          "type":1,
+          "value":""
+        },
+        {
+          "autoIncrementType":0,
+          "description":"Log file count limit",
+          "export":false,
+          "name":"AS_LOG_COUNT",
+          "type":1,
+          "value":""
+        },
+        {
+          "autoIncrementType":0,
+          "description":"Log Debug Level",
+          "export":false,
+          "name":"AS_LOG_DEBUG",
+          "type":1,
+          "value":"3"
+        },
+        {
+          "autoIncrementType":0,
+          "description":"Log file limit in bytes",
+          "export":false,
+          "name":"AS_LOG_LIMIT",
+          "type":1,
+          "value":""
+        },
+        {
+          "autoIncrementType":0,
+          "description":"Member name prefix",
+          "export":false,
+          "name":"AS_MEMBER_NAME_PREFIX",
+          "type":0,
+          "value":"agent-1"
+        },
+        {
+          "autoIncrementType":0,
+          "description":"AS Member timeout",
+          "export":false,
+          "name":"AS_MEMBER_TIMEOUT",
+          "type":1,
+          "value":"30000"
+        },
+        {
+          "autoIncrementType":0,
+          "description":"Metaspace Name",
+          "export":true,
+          "name":"AS_METASPACE",
+          "type":1,
+          "value":"SU_ADDRESS"
+        },
+        {
+          "autoIncrementType":0,
+          "description":"AS Cluster suspend threshold",
+          "export":false,
+          "name":"AS_MONITOR_SYSTEM",
+          "type":1,
+          "value":"true"
+        },
+        {
+          "autoIncrementType":0,
+          "description":"Number of discovery nodes for this component",
+          "export":false,
+          "name":"AS_NUM_DISCOVERY_NODES",
+          "type":0,
+          "value":"1"
+        },
+        {
+          "autoIncrementType":0,
+          "description":"Remote Listen URL",
+          "export":false,
+          "name":"AS_REMOTE_LISTEN",
+          "type":1,
+          "value":"tcp://10.255.42.52:52301"
+        },
+        {
+          "autoIncrementType":0,
+          "description":"AS Rx Buffer Size",
+          "export":false,
+          "name":"AS_RX_BUFFER_SIZE",
+          "type":1,
+          "value":"2MB"
+        },
+        {
+          "autoIncrementType":0,
+          "description":"Shared discovery directory",
+          "export":false,
+          "name":"AS_SHARED_DISCOVERY_DIR",
+          "type":0,
+          "value":"${global.perstentdata.dir}/${global.perstentdata.dir}"
+        },
+        {
+          "autoIncrementType":0,
+          "description":"Total number of discovery nodes",
+          "export":false,
+          "name":"AS_TOTAL_DISCOVERY_NODES",
+          "type":0,
+          "value":"1"
+        },
+        {
+          "autoIncrementType":0,
+          "description":"Worker thread count",
+          "export":false,
+          "name":"AS_WORKER_THREAD_COUNT",
+          "type":1,
+          "value":"32"
+        },
+        {
+          "autoIncrementType":0,
+          "description":"Delete contents of work directory when component stops",
+          "export":false,
+          "name":"DELETE_RUNTIME_DIR_ON_SHUTDOWN",
+          "type":1,
+          "value":"true"
+        },
+        {
+          "autoIncrementType":0,
+          "description":"environment name",
+          "export":false,
+          "name":"ENVIRONMENT_NAME",
+          "type":0,
+          "value":"${as.environment.name}"
+        },
+        {
+          "autoIncrementType":0,
+          "description":"JMX password",
+          "export":false,
+          "name":"JMX_PASSWORD",
+          "type":3,
+          "value":"******"
+        },
+        {
+          "autoIncrementType":0,
+          "description":"JMX username",
+          "export":false,
+          "name":"JMX_USERNAME",
+          "type":0,
+          "value":"${as.jmx.username}"
+        },
+        {
+          "autoIncrementType":0,
+          "description":"Project name",
+          "export":false,
+          "name":"PROJECT_NAME",
+          "type":0,
+          "value":"${as.project.name}"
+        },
+        {
+          "autoIncrementType":0,
+          "description":"Version of user build files used to create this component",
+          "export":false,
+          "name":"sfs_CLUSTEREVENTS_ENABLED",
+          "type":0,
+          "value":"false"
+        },
+        {
+          "autoIncrementType":0,
+          "description":"Version of user build files used to create this component",
+          "export":false,
+          "name":"sfs_COLDSTART_ENABLED",
+          "type":0,
+          "value":"false"
+        },
+        {
+          "autoIncrementType":0,
+          "description":"Version of user build files used to create this component",
+          "export":false,
+          "name":"sfs_COMPONENT_VERSION",
+          "type":0,
+          "value":"2.0.0b-fedex"
+        },
+        {
+          "autoIncrementType":0,
+          "description":"Version of user build files used to create this component",
+          "export":false,
+          "name":"sfs_CREATE_COMPUTER",
+          "type":0,
+          "value":"COS-810341-L1"
+        },
+        {
+          "autoIncrementType":0,
+          "description":"Version of user build files used to create this component",
+          "export":false,
+          "name":"sfs_CREATE_TIME",
+          "type":0,
+          "value":"April 04, 2015 08:33:08 -0600"
+        },
+        {
+          "autoIncrementType":0,
+          "description":"Version of user build files used to create this component",
+          "export":false,
+          "name":"sfs_CREATE_USER",
+          "type":0,
+          "value":"810341"
+        },
+        {
+          "autoIncrementType":0,
+          "description":"Version of user build files used to create this component",
+          "export":false,
+          "name":"sfs_DATACLEAN_ALLOWED",
+          "type":0,
+          "value":"true"
+        },
+        {
+          "autoIncrementType":0,
+          "description":"Version of user build files used to create this component",
+          "export":false,
+          "name":"sfs_ENABLER_HASCOMPONENTSTARTED_ENABLED",
+          "type":0,
+          "value":"true"
+        },
+        {
+          "autoIncrementType":0,
+          "description":"Version of user build files used to create this component",
+          "export":false,
+          "name":"sfs_ENABLER_HASCONTAINERSTARTED_ENABLED",
+          "type":0,
+          "value":"true"
+        },
+        {
+          "autoIncrementType":0,
+          "description":"Version of user build files used to create this component",
+          "export":false,
+          "name":"sfs_ENABLER_ISCOMPONENTRUNNING_ENABLED",
+          "type":0,
+          "value":"true"
+        },
+        {
+          "autoIncrementType":0,
+          "description":"Version of user build files used to create this component",
+          "export":false,
+          "name":"sfs_ENABLER_ISCONTAINERRUNNING_ENABLED",
+          "type":0,
+          "value":"true"
+        },
+        {
+          "autoIncrementType":0,
+          "description":"Optional",
+          "export":true,
+          "name":"sfs_ENABLER_SCRIPT_NAME",
+          "type":1,
+          "value":"ActiveSpaces.py"
+        },
+        {
+          "autoIncrementType":0,
+          "description":"Version of user build files used to create this component",
+          "export":false,
+          "name":"sfs_FACTORY_VERSION",
+          "type":0,
+          "value":"2.0.0rc24"
+        },
+        {
+          "autoIncrementType":0,
+          "description":"Version of user build files used to create this component",
+          "export":false,
+          "name":"sfs_PATTERN_VERSION",
+          "type":0,
+          "value":"2.0.0b-fedex"
+        },
+        {
+          "autoIncrementType":0,
+          "description":"Data for storing Persistent data used by components",
+          "export":false,
+          "name":"sfs_PERSISTENTDATA_DIR",
+          "type":0,
+          "value":"/opt/tibco/silver/persistentdata"
+        },
+        {
+          "autoIncrementType":0,
+          "description":"Indicates that the PatternFactory's PauseResume feature should use the logic for blocking processes.",
+          "export":false,
+          "name":"sfs_script_PAUSERESUME_BLOCKING_PROCESS",
+          "type":0,
+          "value":"false"
+        },
+        {
+          "autoIncrementType":0,
+          "description":"Directory containing the DSEngine directory on the Engine Hosts",
+          "export":false,
+          "name":"sfs_TIBCO_DIR",
+          "type":0,
+          "value":"/opt/tibco/silver"
+        },
+        {
+          "autoIncrementType":0,
+          "description":"Version of user build files used to create this component",
+          "export":false,
+          "name":"sfs_UTILITY_SCRIPTS_DIR",
+          "type":0,
+          "value":"/opt/tibco/silver/scripts"
+        }
+      ],
+      "supportedStatistics":[
+        {
+          "defolt":false,
+          "description":"Curent Thread Count",
+          "name":"Current Thread Count",
+          "shared":false,
+          "units":"threads"
+        },
+        {
+          "defolt":false,
+          "description":"Heap Memory Usage (bytes)",
+          "name":"Heap Memory Usage",
+          "shared":false,
+          "units":"bytes"
+        },
+        {
+          "defolt":false,
+          "description":"Non-Heap Memory Usage (bytes)",
+          "name":"Non-Heap Memory Usage",
+          "shared":false,
+          "units":"bytes"
+        }
+      ],
+      "trackedStatistics":[
+        "Current Thread Count",
+        "Heap Memory Usage",
+        "Non-Heap Memory Usage"
+      ]
+    }
+  },
+  "status":200
+}

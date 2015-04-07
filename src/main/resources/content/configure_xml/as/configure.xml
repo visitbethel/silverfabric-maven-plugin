@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'  standalone='yes' ?>
+
+<containerConfig name="Active Spaces Enabler configuration file">
+	<configFiles baseDir="definitions" include="*.msd">
+ 		<velocity /> 
+	</configFiles>
+</containerConfig>

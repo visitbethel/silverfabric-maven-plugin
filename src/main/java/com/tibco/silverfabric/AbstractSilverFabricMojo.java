@@ -6,6 +6,9 @@
  */
 package com.tibco.silverfabric;
 
+import java.util.HashMap;
+import java.util.LinkedList;
+
 import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.impl.client.DefaultHttpClient;
@@ -18,9 +21,6 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 import org.springframework.web.client.RestTemplate;
-
-import java.util.HashMap;
-import java.util.LinkedList;
 
 public abstract class AbstractSilverFabricMojo extends AbstractMojo {
 

@@ -15,7 +15,7 @@ import org.junit.Test;
 import com.tibco.silverfabric.BrokerConfig;
 import com.tibco.silverfabric.Utils;
 
-public class CreateComponentsTest {
+public class CreateComponentsJSONTest {
 
 	private static final String PREFIX = "__UNIT-TEST";
 
@@ -40,10 +40,10 @@ public class CreateComponentsTest {
 	@After
 	public void cleanup() {
 		System.err.println("\n=========== CLEANUP ===================\n");
-		DeleteComponents d = new DeleteComponents();
+		DeleteComponentsJSON d = new DeleteComponentsJSON();
 		d.setBrokerConfig(config);
 		d.plan = plan;
-		d.setComponentName(PREFIX + "-" + this.getClass());
+		d.setComponentName(Utils.getEntityName(this.getClass(), Utils.PREFIX_COMPONENT));
 		try {
 			d.execute();
 		} catch (Exception e) {
@@ -56,12 +56,15 @@ public class CreateComponentsTest {
 	@Test
 	public void testCreateComponentsFeatures1() throws MojoExecutionException,
 			MojoFailureException {
+		plan = Utils.getTestFile(CreateComponentsJSONTest.class, 1, "json");
+		executeCreateComponent(plan);
+	}
 
-		plan = Utils.getTestFile(CreateComponentsTest.class, 1, "xml");
-		CreateComponents c = new CreateComponents();
+	private void executeCreateComponent(File planz) {
+		CreateComponentsJSON c = new CreateComponentsJSON();
 		c.setBrokerConfig(config);
-		c.plan = plan;
-		c.setComponentName(PREFIX + "-" + this.getClass());
+		c.plan = planz;
+		c.setComponentName(Utils.getEntityName(this.getClass(), Utils.PREFIX_COMPONENT));
 
 		assertNotNull(c.restTemplate);
 		try {
@@ -71,7 +74,7 @@ public class CreateComponentsTest {
 			if (!e.getMessage().contains("already exists")) {
 				fail(e.getMessage());
 			}
-		}
+		}		
 	}
 
 	/**
@@ -80,24 +83,13 @@ public class CreateComponentsTest {
 	 * @throws MojoExecutionException
 	 * @throws MojoFailureException
 	 */
-	@Test
+	//@Test
 	public void testCreateComponentsFeatures2() throws MojoExecutionException,
 			MojoFailureException {
 
-		plan = Utils.getTestFile(CreateComponentsTest.class, 2, "xml");
-		CreateComponents c = new CreateComponents();
-		c.setBrokerConfig(config);
-		c.plan = plan;
-		c.setComponentName(PREFIX + "-" + this.getClass());
-		assertNotNull(c.restTemplate);
-		try {
-			c.execute();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			if (!e.getMessage().contains("already exists")) {
-				fail(e.getMessage());
-			}
-		}
+		plan = Utils.getTestFile(CreateComponentsJSONTest.class, 2, "xml");
+		executeCreateComponent(plan);
+
 	}
 
 	/**
@@ -106,25 +98,12 @@ public class CreateComponentsTest {
 	 * @throws MojoExecutionException
 	 * @throws MojoFailureException
 	 */
-	@Test
+	//@Test
 	public void testCreateComponentsOptions3() throws MojoExecutionException,
 			MojoFailureException {
 
-		plan = Utils.getTestFile(CreateComponentsTest.class, 3, "xml");
-
-		CreateComponents c = new CreateComponents();
-		c.setBrokerConfig(config);
-		c.plan = plan;
-		c.setComponentName(PREFIX + "-" + this.getClass());
-		assertNotNull(c.restTemplate);
-		try {
-			c.execute();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			if (!e.getMessage().contains("already exists")) {
-				fail(e.getMessage());
-			}
-		}
+		plan = Utils.getTestFile(CreateComponentsJSONTest.class, 3, "xml");
+		executeCreateComponent(plan);
 	}
 
 	/**
@@ -133,25 +112,12 @@ public class CreateComponentsTest {
 	 * @throws MojoExecutionException
 	 * @throws MojoFailureException
 	 */
-	@Test
+	//@Test
 	public void testCreateComponentsRuntimeVariables4() throws MojoExecutionException,
 			MojoFailureException {
 
-		plan = Utils.getTestFile(CreateComponentsTest.class, 4, "xml");
-
-		CreateComponents c = new CreateComponents();
-		c.setBrokerConfig(config);
-		c.plan = plan;
-		c.setComponentName(PREFIX + "-" + this.getClass());
-		assertNotNull(c.restTemplate);
-		try {
-			c.execute();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			if (!e.getMessage().contains("already exists")) {
-				fail(e.getMessage());
-			}
-		}
+		plan = Utils.getTestFile(CreateComponentsJSONTest.class, 4, "xml");
+		executeCreateComponent(plan);
 	}
 
 	/**
@@ -160,25 +126,13 @@ public class CreateComponentsTest {
 	 * @throws MojoExecutionException
 	 * @throws MojoFailureException
 	 */
-	@Test
+	//@Test
 	public void testCreateComponentsAllocationRule5() throws MojoExecutionException,
 			MojoFailureException {
 
-		plan = Utils.getTestFile(CreateComponentsTest.class, 5, "xml");
-		
-		CreateComponents c = new CreateComponents();
-		c.setBrokerConfig(config);
-		c.plan = plan;
-		c.setComponentName(PREFIX + "-" + this.getClass());
-		assertNotNull(c.restTemplate);
-		try {
-			c.execute();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			if (!e.getMessage().contains("already exists")) {
-				fail(e.getMessage());
-			}
-		}
+		plan = Utils.getTestFile(CreateComponentsJSONTest.class, 5, "xml");
+		executeCreateComponent(plan);
+
 	}
 	
 	/**
@@ -187,25 +141,12 @@ public class CreateComponentsTest {
 	 * @throws MojoExecutionException
 	 * @throws MojoFailureException
 	 */
-	@Test
+	//@Test
 	public void testCreateComponentsDefaultSettings6() throws MojoExecutionException,
 			MojoFailureException {
 
-		plan = Utils.getTestFile(CreateComponentsTest.class, 6, "xml");
-		
-		CreateComponents c = new CreateComponents();
-		c.setBrokerConfig(config);
-		c.plan = plan;
-		c.setComponentName(PREFIX + "-" + this.getClass());
-		assertNotNull(c.restTemplate);
-		try {
-			c.execute();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			if (!e.getMessage().contains("already exists")) {
-				fail(e.getMessage());
-			}
-		}
+		plan = Utils.getTestFile(CreateComponentsJSONTest.class, 6, "xml");
+		executeCreateComponent(plan);
 	}	
 
 }

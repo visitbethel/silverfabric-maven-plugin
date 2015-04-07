@@ -1,1 +1,103 @@
-{"enablerName":"TIBCO BusinessEvents container","enablerVersion":"2.5.0.1","componentType":"TIBCO BusinessEvents:2.5.0","middlewarVersions":"TIBCO_BusinessEvents_distribution:5.1.4.0.0,TIBCO_TRA_distribution:5.8.0.0.0,TIBCO_HAWK_distribution:4.9.0.0,TIBCO_RV_distribution:8.4.2.0.0","department":"","location":"","partition":"","options":[{"name":"Engine Blacklisting","value":"false"},{"name":"Failures Per Day Before Blacklist","value":"10"},{"name":"Archive Scale Up Timeout","value":"320"},{"name":"Archive Scale Down Timeout","value":"320"},{"name":"Maximum Activation Time","value":"3300"},{"name":"Maximum Deactivation Time","value":"300"},{"name":"Maximum Capture Time","value":"380"},{"name":"Minimum Instances Per Host","value":"0"},{"name":"Maximum Instances Per Host","value":"0"},{"name":"Statistics Collection Frequency","value":"30"},{"name":"Activation Delay","value":"3"},{"name":"Engine Reservation Expiration","value":"300"}],"features":[{"description":"Application Logging Support","infoDescription":"Support for handling of custom application logs","name":"Application Logging Support","properties":[{"name":"Checkpoint Frequency In Seconds","value":"300"},{"name":"Archive Application Logs","value":"true"},{"name":"Log File Pattern","value":"/../domaindata/tra/${TIBCO_DOMAIN_NAME}/logs/*.log,/./tibco/tra/5.8/logs/*.log,/../domaindata/tra/${TIBCO_DOMAIN_NAME}/application/logs/.*.log\n      "}]},{"description":"HTTP Support","infoDescription":"Support for HTTP routing ","name":"HTTP Support","properties":[]}],"runtimeVariables":[],"allocationRules":[],"allocationConstraints":[],"defaultSettings":[],"trackedStatistics":[]}
+{
+  "enablerName":"TIBCO BusinessEvents container",
+  "enablerVersion":"2.5.0.1",
+  "componentType":"TIBCO BusinessEvents:2.5.0",
+  "middlewarVersions":"TIBCO_BusinessEvents_distribution:5.1.4.0.0,TIBCO_TRA_distribution:5.8.0.0.0,TIBCO_HAWK_distribution:4.9.0.0,TIBCO_RV_distribution:8.4.2.0.0",
+  "department":"",
+  "location":"",
+  "partition":"",
+  "options":[
+    {
+      "name":"Engine Blacklisting",
+      "value":"false"
+    },
+    {
+      "name":"Failures Per Day Before Blacklist",
+      "value":"10"
+    },
+    {
+      "name":"Archive Scale Up Timeout",
+      "value":"320"
+    },
+    {
+      "name":"Archive Scale Down Timeout",
+      "value":"320"
+    },
+    {
+      "name":"Maximum Activation Time",
+      "value":"3300"
+    },
+    {
+      "name":"Maximum Deactivation Time",
+      "value":"300"
+    },
+    {
+      "name":"Maximum Capture Time",
+      "value":"380"
+    },
+    {
+      "name":"Minimum Instances Per Host",
+      "value":"0"
+    },
+    {
+      "name":"Maximum Instances Per Host",
+      "value":"0"
+    },
+    {
+      "name":"Statistics Collection Frequency",
+      "value":"30"
+    },
+    {
+      "name":"Activation Delay",
+      "value":"3"
+    },
+    {
+      "name":"Engine Reservation Expiration",
+      "value":"300"
+    }
+  ],
+  "features":[
+    {
+      "description":"Application Logging Support",
+      "infoDescription":"Support for handling of custom application logs",
+      "name":"Application Logging Support",
+      "properties":[
+        {
+          "name":"Checkpoint Frequency In Seconds",
+          "value":"300"
+        },
+        {
+          "name":"Archive Application Logs",
+          "value":"true"
+        },
+        {
+          "name":"Log File Pattern",
+          "value":"/../domaindata/tra/${TIBCO_DOMAIN_NAME}/logs/*.log,/./tibco/tra/5.8/logs/*.log,/../domaindata/tra/${TIBCO_DOMAIN_NAME}/application/logs/.*.log\n      "
+        }
+      ]
+    },
+    {
+      "description":"HTTP Support",
+      "infoDescription":"Support for HTTP routing ",
+      "name":"HTTP Support",
+      "properties":[
+        
+      ]
+    }
+  ],
+  "runtimeVariables":[
+    
+  ],
+  "allocationRules":[
+    
+  ],
+  "allocationConstraints":[
+    
+  ],
+  "defaultSettings":[
+    
+  ],
+  "trackedStatistics":[
+    
+  ]
+}

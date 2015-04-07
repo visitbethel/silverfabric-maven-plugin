@@ -1,0 +1,131 @@
+{
+  "result":{
+    "name":"stack",
+    "value":{
+      "archiveScalingRules":[
+        
+      ],
+      "capturedOn":0,
+      "components":[
+        "ASMetaspace-SU_ADDRESS_TAPAS_agent-1"
+      ],
+      "description":null,
+      "displayName":"ASMetaspace-SU_ADDRESS_TAPAS_agent-1",
+      "exportedOn":0,
+      "extras":[
+        
+      ],
+      "icon":"",
+      "lastModified":1428158028193,
+      "mode":"manual",
+      "modified":false,
+      "modifiedBy":"sefsdev_operate",
+      "name":"ASMetaspace-SU_ADDRESS_TAPAS_agent-1",
+      "owner":"",
+      "policies":[
+        {
+          "componentAllocationInfo":[
+            {
+              "allocationRules":[
+                {
+                  "condition":null,
+                  "description":"Engines whose hostname property matches the regular expression \"irh00600\" are Required",
+                  "properties":[
+                    {
+                      "name":"affinityPos",
+                      "value":"0"
+                    },
+                    {
+                      "name":"operator",
+                      "value":"matches"
+                    },
+                    {
+                      "name":"propertyName",
+                      "value":"hostname"
+                    },
+                    {
+                      "name":"propertyValue",
+                      "value":"irh00600"
+                    }
+                  ],
+                  "ruleAction":null,
+                  "type":"Resource Preference"
+                },
+                {
+                  "condition":null,
+                  "description":"Engines whose instance property matches the regular expression 1 are Required",
+                  "properties":[
+                    {
+                      "name":"affinityPos",
+                      "value":"0"
+                    },
+                    {
+                      "name":"operator",
+                      "value":"matches"
+                    },
+                    {
+                      "name":"propertyName",
+                      "value":"instance"
+                    },
+                    {
+                      "name":"propertyValue",
+                      "value":"1"
+                    }
+                  ],
+                  "ruleAction":null,
+                  "type":"Resource Preference"
+                }
+              ],
+              "max":1,
+              "min":1,
+              "name":"ASMetaspace-SU_ADDRESS_TAPAS_agent-1",
+              "priority":4
+            }
+          ],
+          "scheduleName":"",
+          "scheduled":false
+        }
+      ],
+      "propertyOverrides":[
+        {
+          "datatype":"string",
+          "description":"The stack's name, as shown in Skyway",
+          "displayName":"Stack Name",
+          "name":"displayName",
+          "order":0,
+          "readonly":false,
+          "required":true,
+          "requiredForProvisioning":false,
+          "source":null,
+          "validations":{
+            "message":"Stack Name must be unique among all of your stacks",
+            "unique":"owner"
+          },
+          "value":"ASMetaspace-SU_ADDRESS_TAPAS_agent-1"
+        },
+        {
+          "datatype":"string",
+          "description":"The stack's description",
+          "displayName":"Stack Description",
+          "name":"description",
+          "order":1,
+          "readonly":false,
+          "required":false,
+          "requiredForProvisioning":false,
+          "source":null,
+          "validations":{
+            
+          },
+          "value":null
+        }
+      ],
+      "startOn":0,
+      "technology":"",
+      "templateLevel":"--",
+      "urls":[
+        
+      ]
+    }
+  },
+  "status":200
+}

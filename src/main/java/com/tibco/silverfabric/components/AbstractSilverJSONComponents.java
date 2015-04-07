@@ -15,11 +15,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import javax.xml.bind.JAXBElement;
-import javax.xml.transform.stream.StreamSource;
-
-import org.apache.maven.model.PluginContainer;
-import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.Parameter;
@@ -36,7 +31,9 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.HttpClientErrorException;
 
-import com.fedex.scm.sf.Component;
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tibco.silverfabric.AbstractSilverFabricMojo;
 import com.tibco.silverfabric.Archive;
 import com.tibco.silverfabric.Components;
@@ -56,7 +53,7 @@ import com.tibco.silverfabric.RuntimeContextVariable;
  *       engineId (only if info=blacklisted_names) * instance (only if
  *       info=blacklisted_names)
  */
-public abstract class AbstractSilverComponents extends Components {
+public abstract class AbstractSilverJSONComponents extends Components {
 
 	@Parameter
 	protected File plan;
@@ -89,7 +86,7 @@ public abstract class AbstractSilverComponents extends Components {
 	@Parameter
 	private LinkedList<Feature> features;
 	@Parameter
-	private List<Archive> archives;
+	private List<Archive> archives = new LinkedList<Archive>();
 	@Parameter
 	private List<DefaultAllocationSetting> defaultAllocationRuleSettings;
 	@Parameter
@@ -124,14 +121,24 @@ public abstract class AbstractSilverComponents extends Components {
 	/**
      * 
      */
-	private Component component;
+	private com.fedex.scm.Components component;
 
 	public void initialize() {
 		if (this.plan != null) {
-			getLog().info("loading plan " + this.plan);
-			JAXBElement<Component> _component = (JAXBElement<Component>) marshaller
-					.unmarshal(new StreamSource(this.plan));
-			component = _component.getValue();
+			getLog().info("loading JSON plan " + this.plan);
+			ObjectMapper m = new ObjectMapper();
+			try {
+				component = m.readValue(this.plan, com.fedex.scm.Components.class);
+			} catch (JsonParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (JsonMappingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			if (component != null) {
 				this.setEnablerName(component.getEnablerName());
 				this.setEnablerVersion(component.getEnablerVersion());
@@ -153,6 +160,7 @@ public abstract class AbstractSilverComponents extends Components {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	public void executeMojo() throws MojoExecutionException,
 			MojoFailureException {
 
@@ -583,7 +591,7 @@ public abstract class AbstractSilverComponents extends Components {
 		valueOf(request, "options", component != null ? component.getOptions()
 				: null, options);
 		valueOf(request, "runtimeContextVariables",
-				component != null ? component.getRuntimeVariables() : null,
+				component != null ? component.getRuntimeContextVariables() : null,
 				runtimeContextVariables);
 		valueOf(request, "features",
 				component != null ? component.getFeatures() : null, features);
@@ -614,64 +622,65 @@ public abstract class AbstractSilverComponents extends Components {
 	/**
 	 * @return the componentType
 	 */
-	public final String getComponentType() {
+	protected final String getComponentType() {
 		return componentType;
 	}
 
 	/**
 	 * @param componentType the componentType to set
 	 */
-	public final void setComponentType(String componentType) {
+	protected final void setComponentType(String componentType) {
 		this.componentType = componentType;
 	}
 
 	/**
 	 * @return the componentName
 	 */
-	public final String getComponentName() {
+	protected final String getComponentName() {
 		return componentName;
 	}
 
 	/**
 	 * @param componentName the componentName to set
 	 */
-	public final void setComponentName(String componentName) {
+	protected final void setComponentName(String componentName) {
 		this.componentName = componentName;
 	}
 
 	/**
 	 * @return the enablerName
 	 */
-	public final String getEnablerName() {
+	protected final String getEnablerName() {
 		return enablerName;
 	}
 
 	/**
 	 * @param enablerName the enablerName to set
 	 */
-	public final void setEnablerName(String enablerName) {
+	protected final void setEnablerName(String enablerName) {
 		this.enablerName = enablerName;
 	}
 
 	/**
 	 * @return the enablerVersion
 	 */
-	public final String getEnablerVersion() {
+	protected final String getEnablerVersion() {
 		return enablerVersion;
 	}
 
 	/**
 	 * @param enablerVersion the enablerVersion to set
 	 */
-	public final void setEnablerVersion(String enablerVersion) {
+	protected final void setEnablerVersion(String enablerVersion) {
 		this.enablerVersion = enablerVersion;
 	}
 
 	/**
-	 * @return the component
+	 * @return the archives
 	 */
-	protected final Component getComponent() {
-		return component;
+	protected final List<Archive> getArchives() {
+		return archives;
 	}
+
 
 }

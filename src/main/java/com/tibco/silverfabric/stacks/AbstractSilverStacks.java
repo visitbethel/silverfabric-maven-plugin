@@ -47,12 +47,11 @@ import com.tibco.silverfabric.Stacks;
  *       type (i.e.: J2EE, "TIBCO Administrator) * engineId (only if
  *       info=blacklisted_names) * instance (only if info=blacklisted_names)
  */
-@Mojo(name = "stacks")
-public class AbstractSilverStacks extends Stacks {
-	
+public abstract class AbstractSilverStacks extends Stacks {
+
 	@Parameter
 	protected File plan;
-	
+
 	@Parameter
 	protected List<String> components;
 	@Parameter
@@ -79,8 +78,8 @@ public class AbstractSilverStacks extends Stacks {
 	protected String description;
 	@Parameter
 	protected List<Map> urls;
-	
-	private boolean breakout = false;
+
+	private boolean breakout = true;
 
 	/**
      * 
@@ -100,21 +99,30 @@ public class AbstractSilverStacks extends Stacks {
 		}
 		final AbstractSilverFabricMojo THIS = this;
 		if (this.breakout) {
-			getRestTemplate().getInterceptors().add(new ClientHttpRequestInterceptor() {
-				
-				@Override
-				public ClientHttpResponse intercept(HttpRequest arg0, byte[] arg1,
-						ClientHttpRequestExecution arg2) throws IOException {
-					// TODO Auto-generated method stub
-					THIS.getLog().info("message: \n\t" + new String(arg1, "UTF-8"));
-					return null;
-				}
-			});
+			getRestTemplate().getInterceptors().add(
+					new ClientHttpRequestInterceptor() {
+
+						@Override
+						public ClientHttpResponse intercept(HttpRequest arg0,
+								byte[] arg1, ClientHttpRequestExecution arg2)
+								throws IOException {
+							// TODO Auto-generated method stub
+							THIS.getLog()
+									.info("message: \n\t"
+											+ new String(arg1, "UTF-8"));
+							return null;
+						}
+					});
 		}
-	}	
-	
+	}
+
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public void executeMojo() throws MojoExecutionException,
 			MojoFailureException {
+
+		initialize();
+
+		getLog().info("execute from " + this.getClass());
 
 		List<String> actionList = getActions() != null ? getActions()
 				: new ArrayList<String>();
@@ -284,24 +292,272 @@ public class AbstractSilverStacks extends Stacks {
 		HashMap<Object, Object> request = new LinkedHashMap<Object, Object>();
 		request.put("name",
 				valueOf(stack != null ? stack.getName() : null, stackName));
-		request.put("policies", policies);
-		request.put("components", components);
-		request.put("icon", icon);
-		request.put("description", description);
+		request.put("policies",
+				valueOf(stack != null ? stack.getPolicies() : null, policies));
+		request.put(
+				"components",
+				valueOf(stack != null ? stack.getComponents() : null,
+						components));
+		request.put("icon",
+				valueOf(stack != null ? stack.getIcon() : null, icon));
+		request.put(
+				"description",
+				valueOf(stack != null ? stack.getDescription() : null,
+						description));
 
-		if (owner != null)
-			request.put("owner", owner);
-		if (mode != null)
-			request.put("mode", mode);
-		if (templateLevel != null)
-			request.put("templateLevel", templateLevel);
-		if (propertyOverrides != null)
-			request.put("propertyOverrides", propertyOverrides);
-		if (technology != null)
-			request.put("technology", technology);
-		if (urls != null)
-			request.put("urls", urls);
+		request.put("owner",
+				valueOf(stack != null ? stack.getOwner() : null, owner));
+		request.put("mode",
+				valueOf(stack != null ? stack.getMode() : null, mode));
+		request.put(
+				"templateLevel",
+				valueOf(stack != null ? stack.getTemplateLevel() : null,
+						templateLevel));
+		request.put(
+				"propertyOverrides",
+				valueOf(stack != null ? stack.getPropertyOverrides() : null,
+						propertyOverrides));
+		request.put(
+				"technology",
+				valueOf(stack != null ? stack.getTechnology() : null,
+						technology));
+		request.put("urls",
+				valueOf(stack != null ? stack.getUrls() : null, urls));
 
 		return request;
 	}
+
+	/**
+	 * @return the plan
+	 */
+	protected final File getPlan() {
+		return plan;
+	}
+
+	/**
+	 * @param plan
+	 *            the plan to set
+	 */
+	protected final void setPlan(File plan) {
+		this.plan = plan;
+	}
+
+	/**
+	 * @return the components
+	 */
+	protected final List<String> getComponents() {
+		return components;
+	}
+
+	/**
+	 * @param components
+	 *            the components to set
+	 */
+	protected final void setComponents(List<String> components) {
+		this.components = components;
+	}
+
+	/**
+	 * @return the stackName
+	 */
+	protected final String getStackName() {
+		return stackName;
+	}
+
+	/**
+	 * @param stackName
+	 *            the stackName to set
+	 */
+	protected final void setStackName(String stackName) {
+		this.stackName = stackName;
+	}
+
+	/**
+	 * @return the mode
+	 */
+	protected final String getMode() {
+		return mode;
+	}
+
+	/**
+	 * @param mode
+	 *            the mode to set
+	 */
+	protected final void setMode(String mode) {
+		this.mode = mode;
+	}
+
+	/**
+	 * @return the templateLevel
+	 */
+	protected final String getTemplateLevel() {
+		return templateLevel;
+	}
+
+	/**
+	 * @param templateLevel
+	 *            the templateLevel to set
+	 */
+	protected final void setTemplateLevel(String templateLevel) {
+		this.templateLevel = templateLevel;
+	}
+
+	/**
+	 * @return the policies
+	 */
+	protected final List<Policy> getPolicies() {
+		return policies;
+	}
+
+	/**
+	 * @param policies
+	 *            the policies to set
+	 */
+	protected final void setPolicies(List<Policy> policies) {
+		this.policies = policies;
+	}
+
+	/**
+	 * @return the accountName
+	 */
+	protected final String getAccountName() {
+		return accountName;
+	}
+
+	/**
+	 * @param accountName
+	 *            the accountName to set
+	 */
+	protected final void setAccountName(String accountName) {
+		this.accountName = accountName;
+	}
+
+	/**
+	 * @return the runMode
+	 */
+	protected final String getRunMode() {
+		return runMode;
+	}
+
+	/**
+	 * @param runMode
+	 *            the runMode to set
+	 */
+	protected final void setRunMode(String runMode) {
+		this.runMode = runMode;
+	}
+
+	/**
+	 * @return the propertyOverrides
+	 */
+	protected final List<PropertyOverride> getPropertyOverrides() {
+		return propertyOverrides;
+	}
+
+	/**
+	 * @param propertyOverrides
+	 *            the propertyOverrides to set
+	 */
+	protected final void setPropertyOverrides(
+			List<PropertyOverride> propertyOverrides) {
+		this.propertyOverrides = propertyOverrides;
+	}
+
+	/**
+	 * @return the owner
+	 */
+	protected final String getOwner() {
+		return owner;
+	}
+
+	/**
+	 * @param owner
+	 *            the owner to set
+	 */
+	protected final void setOwner(String owner) {
+		this.owner = owner;
+	}
+
+	/**
+	 * @return the technology
+	 */
+	protected final String getTechnology() {
+		return technology;
+	}
+
+	/**
+	 * @param technology
+	 *            the technology to set
+	 */
+	protected final void setTechnology(String technology) {
+		this.technology = technology;
+	}
+
+	/**
+	 * @return the icon
+	 */
+	protected final String getIcon() {
+		return icon;
+	}
+
+	/**
+	 * @param icon
+	 *            the icon to set
+	 */
+	protected final void setIcon(String icon) {
+		this.icon = icon;
+	}
+
+	/**
+	 * @return the description
+	 */
+	protected final String getDescription() {
+		return description;
+	}
+
+	/**
+	 * @param description
+	 *            the description to set
+	 */
+	protected final void setDescription(String description) {
+		this.description = description;
+	}
+
+	/**
+	 * @return the urls
+	 */
+	protected final List<Map> getUrls() {
+		return urls;
+	}
+
+	/**
+	 * @param urls
+	 *            the urls to set
+	 */
+	protected final void setUrls(List<Map> urls) {
+		this.urls = urls;
+	}
+
+	/**
+	 * @return the breakout
+	 */
+	protected final boolean isBreakout() {
+		return breakout;
+	}
+
+	/**
+	 * @param breakout
+	 *            the breakout to set
+	 */
+	protected final void setBreakout(boolean breakout) {
+		this.breakout = breakout;
+	}
+
+	/**
+	 * @return the stack
+	 */
+	protected final Stack getStack() {
+		return stack;
+	}
+
 }

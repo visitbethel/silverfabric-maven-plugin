@@ -6,9 +6,12 @@
  */
 package com.tibco.silverfabric.components;
 
+import java.io.File;
 import java.util.LinkedList;
 
 import org.apache.maven.plugins.annotations.Mojo;
+
+import com.tibco.silverfabric.BrokerConfig;
 
 /**
  * Actions related to components.
@@ -21,10 +24,19 @@ import org.apache.maven.plugins.annotations.Mojo;
  *       info=blacklisted_names)
  */
 @Mojo(name = "delete-components")
-public class DeleteComponents extends AbstractSilverComponents {
+public class DeleteComponents extends AbstractSilverXMLComponents {
 
 	public DeleteComponents() {
 		super();
+	}
+	public DeleteComponents(File plan) {
+		super();
+		this.plan = plan;
+	}
+	public DeleteComponents(BrokerConfig config, File plan) {
+		super();
+		this.plan = plan;
+		this.setBrokerConfig(config);
 	}
 	public void initialize() {
 		super.initialize();
