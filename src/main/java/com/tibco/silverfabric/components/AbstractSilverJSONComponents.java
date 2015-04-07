@@ -7,7 +7,6 @@
 package com.tibco.silverfabric.components;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -19,9 +18,7 @@ import java.util.Map;
 
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
-import org.apache.maven.plugins.annotations.Component;
 import org.apache.maven.plugins.annotations.Parameter;
-import org.apache.maven.shared.filtering.MavenFileFilter;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -35,19 +32,14 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.HttpClientErrorException;
 
-import com.fasterxml.jackson.core.JsonFactory;
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fedex.scm.DefaultSetting;
+import com.fedex.scm.Feature;
+import com.fedex.scm.Option;
+import com.fedex.scm.RuntimeContextVariable;
 import com.tibco.silverfabric.AbstractSilverFabricMojo;
 import com.tibco.silverfabric.Archive;
 import com.tibco.silverfabric.Components;
 import com.tibco.silverfabric.DefaultAllocationSetting;
-import com.tibco.silverfabric.DefaultSetting;
-import com.tibco.silverfabric.Feature;
-import com.tibco.silverfabric.Option;
-import com.tibco.silverfabric.RuntimeContextVariable;
 import com.tibco.silverfabric.SilverFabricConfig;
 import com.tibco.silverfabric.model.Plan;
 

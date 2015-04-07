@@ -8,6 +8,8 @@ package com.tibco.silverfabric;
 
 import java.util.List;
 
+import com.fedex.scm.Property;
+
 public class DefaultAllocationSetting {
     private List<Property> properties;
     private String type;

@@ -17,6 +17,7 @@ import com.tibco.silverfabric.components.DeleteComponentsJSON;
 import com.tibco.silverfabric.components.GetComponentsJSON;
 import com.tibco.silverfabric.model.Plan;
 import com.tibco.silverfabric.stacks.CreateStacks;
+import com.tibco.silverfabric.stacks.DeleteStacks;
 
 public abstract class AbstractSilverJSONTest {
 
@@ -29,7 +30,7 @@ public abstract class AbstractSilverJSONTest {
 		// TODO Auto-generated constructor stub
 	}
 
-	//@After
+	// @After
 	public void cleanup() {
 		System.err.println("\n=========== CLEANUP ===================\n");
 		executeDeleteComponent(plan);
@@ -53,6 +54,7 @@ public abstract class AbstractSilverJSONTest {
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			if (!e.getMessage().contains("already exists")) {
+				e.printStackTrace();
 				fail(e.getMessage());
 			}
 		}
@@ -64,8 +66,16 @@ public abstract class AbstractSilverJSONTest {
 	 * @param c
 	 */
 	public void executeDeleteComponent(Plan planz) {
+		executeDeleteComponent(planz, this.getClass());
+	}
+	/**
+	 * 
+	 * @param planz
+	 * @param c
+	 */
+	public void executeDeleteComponent(Plan planz, Class clazz) {
 		DeleteComponentsJSON d = new DeleteComponentsJSON(config, plan);
-		d.setComponentName(Utils.getEntityName(this.getClass(),
+		d.setComponentName(Utils.getEntityName(clazz,
 				Utils.PREFIX_COMPONENT));
 		try {
 			d.execute();
@@ -76,39 +86,65 @@ public abstract class AbstractSilverJSONTest {
 		}
 	}
 	
+
 	/**
 	 * 
 	 * @param plan
 	 * @param s
-	 * @throws MojoFailureException 
+	 * @throws MojoFailureException
 	 */
-	public void executeCreateStack(Plan stackplan, CreateComponentsJSON c) throws MojoFailureException {
+	public void executeCreateStack(Plan stackplan, CreateComponentsJSON c)
+			throws MojoFailureException {
 
 		CreateStacks s = new CreateStacks(config, stackplan);
-		s.initialize();
-		s.setStackName(Utils.PREFIX_STACK + "-" + this.getClass());
+		s.setStackName(Utils.getEntityName(this.getClass(), Utils.PREFIX_STACK));
 		s.setComponents(Arrays.asList(new String[] { c.getComponentName() }));
+		s.initialize();
 
 		System.out.println(s.getStack());
-		
+
 		assertNotNull(s.restTemplate);
 		try {
 			s.execute();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
-			if (e.getMessage() == null || !e.getMessage().contains("already exists")) {
+			if (e.getMessage() == null
+					|| !e.getMessage().contains("already exists")) {
 				e.printStackTrace();
 				fail(e.getMessage());
 			}
 		}
-		
-	}	
+
+	}
 
 	/**
 	 * 
+	 * @throws MojoFailureException
 	 */
-	@Before
-	public void setup() {
+	protected void executeDeleteStack(Plan stackplan)
+			throws MojoFailureException {
+		executeDeleteStack(stackplan, this.getClass());
+	}
+
+	protected void executeDeleteStack(Plan stackplan, Class clazz)
+			throws MojoFailureException {
+		DeleteStacks s = new DeleteStacks(config, stackplan);
+		s.setStackName(Utils.getEntityName(clazz, Utils.PREFIX_STACK));
+		s.initialize();
+		try {
+			s.execute();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			if (e.getMessage() == null
+					|| !e.getMessage().contains("does not exist")) {
+				e.printStackTrace();
+				fail(e.getMessage());
+			}
+		}
+
+	}
+
+	public void setBrokerConfig() {
 		config = new BrokerConfig();
 		config.setUsername("sefsdev_operate");
 		config.setPassword("test123");
@@ -119,6 +155,14 @@ public abstract class AbstractSilverJSONTest {
 			e.printStackTrace();
 			fail(e.getMessage());
 		}
+	}
+
+	/**
+	 * 
+	 */
+	@Before
+	public void setup() {
+		setBrokerConfig();
 		/** remove previous component */
 		GetComponentsJSON g = new GetComponentsJSON(config);
 		try {

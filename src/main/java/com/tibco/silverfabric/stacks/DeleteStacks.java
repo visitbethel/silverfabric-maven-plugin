@@ -3,7 +3,6 @@
  */
 package com.tibco.silverfabric.stacks;
 
-import java.io.File;
 import java.util.LinkedList;
 
 import org.apache.maven.plugin.MojoFailureException;
@@ -25,11 +24,12 @@ public class DeleteStacks extends AbstractSilverStacks {
 	public DeleteStacks() {
 		super();
 	}
-	public DeleteStacks(BrokerConfig config, Plan splan) {
+	public DeleteStacks(BrokerConfig config, Plan stackplan) {
 		super();
-		this.plan = splan;
 		this.setBrokerConfig(config);
+		this.plan = stackplan;
 	}
+	
 	public void initialize() throws MojoFailureException {
 		super.initialize();
 		if (getActions() == null) {

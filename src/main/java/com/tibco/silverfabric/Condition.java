@@ -8,6 +8,8 @@ package com.tibco.silverfabric;
 
 import java.util.List;
 
+import com.fedex.scm.Property;
+
 public class Condition {
     private List<Property> properties;
     private String type;

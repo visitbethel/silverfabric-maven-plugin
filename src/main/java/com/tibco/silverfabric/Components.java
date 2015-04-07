@@ -26,6 +26,11 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.HttpClientErrorException;
 
+import com.fedex.scm.DefaultSetting;
+import com.fedex.scm.Feature;
+import com.fedex.scm.Option;
+import com.fedex.scm.RuntimeContextVariable;
+
 /**
  * Actions related to components.
  *

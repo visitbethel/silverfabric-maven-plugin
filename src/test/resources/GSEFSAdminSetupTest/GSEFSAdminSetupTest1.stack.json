@@ -4,10 +4,10 @@
   ],
   "capturedOn":0,
   "components":[
-    "__UNIT_COMPONENT__-GSEFSAdminTest"
+    "__UNIT_COMPONENT__-GSEFSAdminSetupTest"
   ],
-  "description":"__UNIT_STACK__-GSEFSAdminTest-Stack",
-  "displayName":"__UNIT_STACK__-GSEFSAdminTest-Stack",
+  "description":"__UNIT_STACK__-GSEFSAdminSetupTest-Stack",
+  "displayName":"__UNIT_STACK__-GSEFSAdminSetupTest-Stack",
   "exportedOn":0,
   "extras":[
     
@@ -17,7 +17,7 @@
   "mode":"manual",
   "modified":false,
   "modifiedBy":"sefsdev_operate",
-  "name":"__UNIT_STACK__-GSEFSAdminTest-Stack",
+  "name":"__UNIT_STACK__-GSEFSAdminSetupTest-Stack",
   "owner":"",
   "policies":[
     {
@@ -75,7 +75,7 @@
           ],
           "max":1,
           "min":1,
-          "name":"__UNIT_COMPONENT__-GSEFSAdminTest",
+          "name":"__UNIT_COMPONENT__-GSEFSAdminSetupTest",
           "priority":4
         }
       ],
@@ -98,7 +98,7 @@
         "message":"Stack Name must be unique among all of your stacks",
         "unique":"owner"
       },
-      "value":"__UNIT_STACK__-GSEFSAdminTest-Stack"
+      "value":"__UNIT_STACK__-GSEFSAdminSetupTest-Stack"
     },
     {
       "datatype":"string",
