@@ -20,8 +20,6 @@ public class CreateStacksTest extends AbstractSilverJSONTest {
 
 	private static final String PREFIX = "__UNIT-STACK";
 
-	private String componentName = null;
-
 	Plan stackplan;
 
 
@@ -39,9 +37,10 @@ public class CreateStacksTest extends AbstractSilverJSONTest {
 		executeCreateComponent(stackplan, c);
 
 		CreateStacks s = new CreateStacks(config, stackplan);
-		s.initialize();
 		s.setStackName(PREFIX + "-" + this.getClass());
-		s.getStack().setComponents(Arrays.asList(new String[] { c.getComponentName() }));
+		s.setComponents(Arrays.asList(new String[] { c.getComponentName() }));
+		s.initialize();
+		s.getLog().info(s.getComponents().toString());
 
 		assertNotNull(s.restTemplate);
 		try {

@@ -42,7 +42,7 @@
                 },
                 {
                   "name":"propertyValue",
-                  "value":"${app.deploy.host}"
+                  "value":"irh00601"
                 }
               ],
               "ruleAction":null,

@@ -22,6 +22,9 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.web.client.HttpClientErrorException;
 
+import com.fedex.scm.Policy;
+import com.fedex.scm.PropertyOverride;
+
 /**
  * Actions related to stacks.
  *

@@ -27,9 +27,9 @@ import org.springframework.http.client.ClientHttpRequestInterceptor;
 import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.web.client.HttpClientErrorException;
 
+import com.fedex.scm.Policy;
+import com.fedex.scm.PropertyOverride;
 import com.tibco.silverfabric.AbstractSilverFabricMojo;
-import com.tibco.silverfabric.Policy;
-import com.tibco.silverfabric.PropertyOverride;
 import com.tibco.silverfabric.SilverFabricConfig;
 import com.tibco.silverfabric.Stacks;
 import com.tibco.silverfabric.model.Plan;
@@ -88,7 +88,7 @@ public abstract class AbstractSilverStacks extends Stacks {
 	 */
 	@SuppressWarnings("unchecked")
 	public void initialize() throws MojoFailureException {
-		
+
 		if (this.plan != null) {
 			try {
 				this.stack = SilverFabricConfig.loadingRESTPlan(this,
@@ -97,12 +97,13 @@ public abstract class AbstractSilverStacks extends Stacks {
 				throw new MojoFailureException("Plan not found", e);
 			}
 		}
-		if (this.stack != null) {
+		if (this.stack != null && this.stackName == null) {
 			this.stackName = this.stack.getName();
 		}
 		final AbstractSilverFabricMojo THIS = this;
 		if (this.breakout) {
-			getLog().warn("[[[[[[[[[[[ BREAK OUT IS ON MALFUNCTIONING EXPECTED ]]]]]]]]");
+			getLog().warn(
+					"[[[[[[[[[[[ BREAK OUT IS ON MALFUNCTIONING EXPECTED ]]]]]]]]");
 			getRestTemplate().getInterceptors().add(
 					new ClientHttpRequestInterceptor() {
 
@@ -127,10 +128,12 @@ public abstract class AbstractSilverStacks extends Stacks {
 		initialize();
 
 		getLog().info("execute from " + this.getClass());
-		
+
 		if (this.stack == null) {
-			throw new MojoExecutionException("Unable to create stack, plan loading failed.");
+			throw new MojoExecutionException(
+					"Unable to create stack, plan loading failed.");
 		}
+		mergeStackPlan();
 		if (this.stack.getComponents() == null || this.stack.getComponents().isEmpty()) {
 			throw new MojoExecutionException("The components parameters are required to create a stack");
 		}
@@ -299,51 +302,57 @@ public abstract class AbstractSilverStacks extends Stacks {
 		}
 	}
 
+	private void mergeStackPlan() {
+		if (this.getComponents() == null || this.getComponents().isEmpty()) {
+			this.setComponents(this.stack.getComponents());
+		}
+		if (this.getPolicies() == null || this.getPolicies().isEmpty()) {
+			this.setPolicies(this.stack.getPolicies());
+		}
+		if (this.getStackName() == null) {
+			this.setStackName(this.stack.getName());
+		}
+		if (this.getPropertyOverrides() == null || this.getPropertyOverrides().isEmpty()) {
+			this.setPropertyOverrides(this.stack.getPropertyOverrides());
+		}
+		if (this.mode == null && this.stack.getMode() != null) {
+			this.mode = this.stack.getMode();
+		}
+		if (this.templateLevel == null && this.stack.getTemplateLevel() != null) {
+			this.templateLevel = this.stack.getTemplateLevel();
+		}
+		if (this.technology == null && this.stack.getTechnology() != null) {
+			this.technology = this.stack.getTechnology();
+		}
+		if (this.urls == null && this.stack.getUrls() != null) {
+			//this.urls = this.stack.getUrls();
+		}
+	}
+
 	@SuppressWarnings("rawtypes")
 	private HashMap<Object, Object> setStackRequest() {
-		
-		List _policies = stack != null ? stack.getPolicies() : policies;
-		List<String> _components = stack != null ? stack.getComponents() : components;
-		
 
-		HashMap<Object, Object> request = new LinkedHashMap<Object, Object>();
-		request.put("name",
-				valueOf(stack != null ? stack.getName() : null, stackName));
-		request.put("policies", _policies);
-		request.put(
-				"components", _components);
-		request.put("icon",
-				valueOf(stack != null ? stack.getIcon() : null, icon));
-		request.put(
-				"description",
-				valueOf(stack != null ? stack.getDescription() : null,
-						description));
+        HashMap<Object, Object> request = new LinkedHashMap<Object, Object>();
+        request.put("name", stackName);
+        request.put("policies", policies);
+        request.put("components", components);
+        request.put("icon", icon);
+        request.put("description", description);
 
-		request.put("owner",
-				valueOf(stack != null ? stack.getOwner() : null, owner));
-		request.put("mode",
-				valueOf(stack != null ? stack.getMode() : null, mode));
-		request.put(
-				"templateLevel",
-				valueOf(stack != null ? stack.getTemplateLevel() : null,
-						templateLevel));
-		request.put(
-				"propertyOverrides",
-				valueOf(stack != null ? stack.getPropertyOverrides() : null,
-						propertyOverrides));
-		request.put(
-				"technology",
-				valueOf(stack != null ? stack.getTechnology() : null,
-						technology));
-		request.put("urls",
-				valueOf(stack != null ? stack.getUrls() : null, urls));
+        if (owner != null) request.put("owner", owner);
+        if (mode != null) request.put("mode", mode);
+        if (templateLevel != null) request.put("templateLevel", templateLevel);
+        if (propertyOverrides != null) request.put("propertyOverrides", propertyOverrides);
+        if (technology != null) request.put("technology", technology);
+        if (urls != null) request.put("urls", urls);
+
 		return request;
 	}
 
 	/**
 	 * @return the components
 	 */
-	protected final List<String> getComponents() {
+	public final List<String> getComponents() {
 		return components;
 	}
 
@@ -351,14 +360,14 @@ public abstract class AbstractSilverStacks extends Stacks {
 	 * @param components
 	 *            the components to set
 	 */
-	protected final void setComponents(List<String> components) {
+	public final void setComponents(List<String> components) {
 		this.components = components;
 	}
 
 	/**
 	 * @return the stackName
 	 */
-	protected final String getStackName() {
+	public final String getStackName() {
 		return stackName;
 	}
 
@@ -366,14 +375,14 @@ public abstract class AbstractSilverStacks extends Stacks {
 	 * @param stackName
 	 *            the stackName to set
 	 */
-	protected final void setStackName(String stackName) {
+	public final void setStackName(String stackName) {
 		this.stackName = stackName;
 	}
 
 	/**
 	 * @return the mode
 	 */
-	protected final String getMode() {
+	public final String getMode() {
 		return mode;
 	}
 
@@ -381,14 +390,14 @@ public abstract class AbstractSilverStacks extends Stacks {
 	 * @param mode
 	 *            the mode to set
 	 */
-	protected final void setMode(String mode) {
+	public final void setMode(String mode) {
 		this.mode = mode;
 	}
 
 	/**
 	 * @return the templateLevel
 	 */
-	protected final String getTemplateLevel() {
+	public final String getTemplateLevel() {
 		return templateLevel;
 	}
 
@@ -396,14 +405,14 @@ public abstract class AbstractSilverStacks extends Stacks {
 	 * @param templateLevel
 	 *            the templateLevel to set
 	 */
-	protected final void setTemplateLevel(String templateLevel) {
+	public final void setTemplateLevel(String templateLevel) {
 		this.templateLevel = templateLevel;
 	}
 
 	/**
 	 * @return the policies
 	 */
-	protected final List<Policy> getPolicies() {
+	public final List<Policy> getPolicies() {
 		return policies;
 	}
 
@@ -411,14 +420,14 @@ public abstract class AbstractSilverStacks extends Stacks {
 	 * @param policies
 	 *            the policies to set
 	 */
-	protected final void setPolicies(List<Policy> policies) {
+	public final void setPolicies(List<Policy> policies) {
 		this.policies = policies;
 	}
 
 	/**
 	 * @return the accountName
 	 */
-	protected final String getAccountName() {
+	public final String getAccountName() {
 		return accountName;
 	}
 
@@ -426,14 +435,14 @@ public abstract class AbstractSilverStacks extends Stacks {
 	 * @param accountName
 	 *            the accountName to set
 	 */
-	protected final void setAccountName(String accountName) {
+	public final void setAccountName(String accountName) {
 		this.accountName = accountName;
 	}
 
 	/**
 	 * @return the runMode
 	 */
-	protected final String getRunMode() {
+	public final String getRunMode() {
 		return runMode;
 	}
 
@@ -441,14 +450,14 @@ public abstract class AbstractSilverStacks extends Stacks {
 	 * @param runMode
 	 *            the runMode to set
 	 */
-	protected final void setRunMode(String runMode) {
+	public final void setRunMode(String runMode) {
 		this.runMode = runMode;
 	}
 
 	/**
 	 * @return the propertyOverrides
 	 */
-	protected final List<PropertyOverride> getPropertyOverrides() {
+	public final List<PropertyOverride> getPropertyOverrides() {
 		return propertyOverrides;
 	}
 
@@ -456,7 +465,7 @@ public abstract class AbstractSilverStacks extends Stacks {
 	 * @param propertyOverrides
 	 *            the propertyOverrides to set
 	 */
-	protected final void setPropertyOverrides(
+	public final void setPropertyOverrides(
 			List<PropertyOverride> propertyOverrides) {
 		this.propertyOverrides = propertyOverrides;
 	}
@@ -464,7 +473,7 @@ public abstract class AbstractSilverStacks extends Stacks {
 	/**
 	 * @return the owner
 	 */
-	protected final String getOwner() {
+	public final String getOwner() {
 		return owner;
 	}
 
@@ -472,14 +481,14 @@ public abstract class AbstractSilverStacks extends Stacks {
 	 * @param owner
 	 *            the owner to set
 	 */
-	protected final void setOwner(String owner) {
+	public final void setOwner(String owner) {
 		this.owner = owner;
 	}
 
 	/**
 	 * @return the technology
 	 */
-	protected final String getTechnology() {
+	public final String getTechnology() {
 		return technology;
 	}
 
@@ -487,14 +496,14 @@ public abstract class AbstractSilverStacks extends Stacks {
 	 * @param technology
 	 *            the technology to set
 	 */
-	protected final void setTechnology(String technology) {
+	public final void setTechnology(String technology) {
 		this.technology = technology;
 	}
 
 	/**
 	 * @return the icon
 	 */
-	protected final String getIcon() {
+	public final String getIcon() {
 		return icon;
 	}
 
@@ -502,14 +511,14 @@ public abstract class AbstractSilverStacks extends Stacks {
 	 * @param icon
 	 *            the icon to set
 	 */
-	protected final void setIcon(String icon) {
+	public final void setIcon(String icon) {
 		this.icon = icon;
 	}
 
 	/**
 	 * @return the description
 	 */
-	protected final String getDescription() {
+	public final String getDescription() {
 		return description;
 	}
 
@@ -517,14 +526,14 @@ public abstract class AbstractSilverStacks extends Stacks {
 	 * @param description
 	 *            the description to set
 	 */
-	protected final void setDescription(String description) {
+	public final void setDescription(String description) {
 		this.description = description;
 	}
 
 	/**
 	 * @return the urls
 	 */
-	protected final List<Map> getUrls() {
+	public final List<Map> getUrls() {
 		return urls;
 	}
 
@@ -532,14 +541,14 @@ public abstract class AbstractSilverStacks extends Stacks {
 	 * @param urls
 	 *            the urls to set
 	 */
-	protected final void setUrls(List<Map> urls) {
+	public final void setUrls(List<Map> urls) {
 		this.urls = urls;
 	}
 
 	/**
 	 * @return the breakout
 	 */
-	protected final boolean isBreakout() {
+	public final boolean isBreakout() {
 		return breakout;
 	}
 
@@ -547,14 +556,14 @@ public abstract class AbstractSilverStacks extends Stacks {
 	 * @param breakout
 	 *            the breakout to set
 	 */
-	protected final void setBreakout(boolean breakout) {
+	public final void setBreakout(boolean breakout) {
 		this.breakout = breakout;
 	}
 
 	/**
 	 * @return the stack
 	 */
-	protected final com.fedex.scm.Stacks getStack() {
+	public final com.fedex.scm.Stacks getStack() {
 		return stack;
 	}
 

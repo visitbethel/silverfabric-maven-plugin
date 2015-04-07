@@ -36,7 +36,7 @@ public class GSEFSAdminTest extends AbstractSilverJSONTest {
 
 		executeCreateComponent(plan, c);
 		
-		executeCreateStack(plan, s);
+		executeCreateStack(plan, c);
 	}
 
 

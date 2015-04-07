@@ -5,7 +5,9 @@ import static org.junit.Assert.fail;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Arrays;
 
+import org.apache.maven.plugin.MojoFailureException;
 import org.junit.After;
 import org.junit.Before;
 
@@ -74,8 +76,31 @@ public abstract class AbstractSilverJSONTest {
 		}
 	}
 	
-	public void executeCreateStack(Plan plan, CreateStacks s) {
-		// TODO Auto-generated method stub
+	/**
+	 * 
+	 * @param plan
+	 * @param s
+	 * @throws MojoFailureException 
+	 */
+	public void executeCreateStack(Plan stackplan, CreateComponentsJSON c) throws MojoFailureException {
+
+		CreateStacks s = new CreateStacks(config, stackplan);
+		s.initialize();
+		s.setStackName(Utils.PREFIX_STACK + "-" + this.getClass());
+		s.setComponents(Arrays.asList(new String[] { c.getComponentName() }));
+
+		System.out.println(s.getStack());
+		
+		assertNotNull(s.restTemplate);
+		try {
+			s.execute();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			if (e.getMessage() == null || !e.getMessage().contains("already exists")) {
+				e.printStackTrace();
+				fail(e.getMessage());
+			}
+		}
 		
 	}	
 
