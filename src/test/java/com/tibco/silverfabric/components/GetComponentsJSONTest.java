@@ -20,7 +20,7 @@ public class GetComponentsJSONTest extends AbstractSilverJSONTest {
 	public void testGetComponentsFeatures1() throws MojoExecutionException,
 			MojoFailureException {
 		plan = new Plan();
-		plan.componentTemplateURI = Utils.getTestFile(CreateComponentsJSONTest.class, 1, "json").getAbsolutePath();
+		plan.componentPlan = Utils.getTestFile(CreateComponentsJSONTest.class, 1, "json").getAbsolutePath();
 		CreateComponentsJSON c = new CreateComponentsJSON(config,plan);
 		executeCreateComponent(plan, c);
 		

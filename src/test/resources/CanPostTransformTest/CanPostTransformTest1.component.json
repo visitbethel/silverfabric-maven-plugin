@@ -18,7 +18,7 @@
       "value":"3"
     }
   ],
-  "description":"GSEFS CanPostTransformer",
+  "description":"SEFS CORE BW suAddress",
   "enablerName":"TIBCO ActiveMatrix BusinessWorks container",
   "enablerVersion":"2.6.0.8",
   "features":[
@@ -48,7 +48,7 @@
       "properties":[
         {
           "name":"Archive",
-          "value":"sefs_suAddress.zip"
+          "value":"CanPostTransformer.ear.zip"
         },
         {
           "name":"Start Archives On Activation",
@@ -84,10 +84,10 @@
       ]
     }
   ],
-  "lastModified":1428079444279,
+  "lastModified":1428445451042,
   "modified":false,
   "modifiedBy":"sefsdev_operate",
-  "name":"GRD-BW-CanPostTransformer",
+  "name":"__UNIT_COMPONENT__-CanPostTransformTest",
   "options":[
     {
       "name":"Activation Delay",
@@ -220,7 +220,7 @@
       "export":false,
       "name":"BW_INPUT_APPMANAGE_DEPLOYCONFIGFILE",
       "type":0,
-      "value":"sefs_suAddress_template.xml.${ENGINE_USERNAME}.xml"
+      "value":"CanPostTransformer.ear.xml"
     },
     {
       "autoIncrementType":0,
@@ -316,7 +316,7 @@
       "export":true,
       "name":"LOGICAL_MACHINE_NAME",
       "type":1,
-      "value":"GRD-BW-CanPostTransformer"
+      "value":"__UNIT_COMPONENT__-CanPostTransformTest"
     },
     {
       "autoIncrementType":0,
@@ -707,6 +707,6 @@
     "BW Memory Free Bytes",
     "BW Percentage of Memory Used",
     "BW Process Count",
-    "BW Total Number Error"
+    "BW Total NumberError"
   ]
 }

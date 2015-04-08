@@ -28,9 +28,9 @@ public class CreateStacksTest extends AbstractSilverJSONTest {
 			MojoFailureException {
 
 		stackplan = new Plan();
-		stackplan.componentTemplateURI = Utils.getTestFile(
+		stackplan.componentPlan = Utils.getTestFile(
 				CreateComponentsJSONTest.class, 1, "json").getAbsolutePath();
-		stackplan.stackTemplateURI = Utils.getTestFile(CreateStacksTest.class,
+		stackplan.stackPlan = Utils.getTestFile(CreateStacksTest.class,
 				1, "json").getAbsolutePath();
 
 		CreateComponentsJSON c = new CreateComponentsJSON();

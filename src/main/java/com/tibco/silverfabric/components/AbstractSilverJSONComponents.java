@@ -92,23 +92,23 @@ public abstract class AbstractSilverJSONComponents extends Components {
 	@Parameter
 	private LinkedList<Option> options;
 	@Parameter
-	private LinkedList<RuntimeContextVariable> runtimeContextVariables;
+	private LinkedList<RuntimeContextVariable> runtimeContextVariables = new LinkedList<RuntimeContextVariable>();
 	@Parameter
-	private LinkedList<Feature> features;
+	private LinkedList<Feature> features = new LinkedList<Feature>();
 	@Parameter
 	private List<Archive> archives = new LinkedList<Archive>();
 	@Parameter
-	private List<DefaultAllocationSetting> defaultAllocationRuleSettings;
+	private List<DefaultAllocationSetting> defaultAllocationRuleSettings = new LinkedList<DefaultAllocationSetting>();
 	@Parameter
-	private List<DefaultSetting> defaultSettings;
+	private List<DefaultSetting> defaultSettings = new LinkedList<DefaultSetting>();
 	@Parameter
-	private List<String> allocationConstraints;
+	private List<String> allocationConstraints = new LinkedList<String>();
 	@Parameter
 	private String accountName;
 	@Parameter
 	private Archive configFile;
 	@Parameter
-	private List<Archive> contentFiles;
+	private List<Archive> contentFiles = new LinkedList<Archive>();
 	@Parameter
 	private String contentFileRegex;
 	@Parameter
@@ -141,7 +141,8 @@ public abstract class AbstractSilverJSONComponents extends Components {
 	 */
 	public void initialize() throws MojoFailureException {
 		if (this.plan != null) {
-			File outPlan = filterFile(this.outputDirectory, new File(this.plan.componentTemplateURI));
+			File outPlan = filterFile(this.outputDirectory, plan.getComponentPlanPath());
+			getLog().info("loading plan from " + outPlan);
 			try {
 				component = SilverFabricConfig.loadingRESTPlan(this,
 						outPlan,
@@ -151,6 +152,7 @@ public abstract class AbstractSilverJSONComponents extends Components {
 			}
 		}
 		if (component != null) {
+			this.setComponentName(component.getName());
 			this.setEnablerName(component.getEnablerName());
 			this.setEnablerVersion(component.getEnablerVersion());
 			this.setComponentType(component.getComponentType());
@@ -697,6 +699,104 @@ public abstract class AbstractSilverJSONComponents extends Components {
 	 */
 	public final List<Archive> getArchives() {
 		return archives;
+	}
+
+	/**
+	 * @return the configFile
+	 */
+	public final Archive getConfigFile() {
+		return configFile;
+	}
+
+	/**
+	 * @param configFile the configFile to set
+	 */
+	public final void setConfigFile(Archive configFile) {
+		this.configFile = configFile;
+	}
+
+	/**
+	 * @return the contentFiles
+	 */
+	public final List<Archive> getContentFiles() {
+		return contentFiles;
+	}
+
+	/**
+	 * @param contentFiles the contentFiles to set
+	 */
+	public final void setContentFiles(List<Archive> contentFiles) {
+		this.contentFiles = contentFiles;
+	}
+
+	/**
+	 * @return the scriptFile
+	 */
+	public final Archive getScriptFile() {
+		return scriptFile;
+	}
+
+	/**
+	 * @param scriptFile the scriptFile to set
+	 */
+	public final void setScriptFile(Archive scriptFile) {
+		this.scriptFile = scriptFile;
+	}
+
+	/**
+	 * @return the scriptLang
+	 */
+	public final String getScriptLang() {
+		return scriptLang;
+	}
+
+	/**
+	 * @param scriptLang the scriptLang to set
+	 */
+	public final void setScriptLang(String scriptLang) {
+		this.scriptLang = scriptLang;
+	}
+
+	/**
+	 * @return the scriptLangVersion
+	 */
+	public final String getScriptLangVersion() {
+		return scriptLangVersion;
+	}
+
+	/**
+	 * @param scriptLangVersion the scriptLangVersion to set
+	 */
+	public final void setScriptLangVersion(String scriptLangVersion) {
+		this.scriptLangVersion = scriptLangVersion;
+	}
+
+	/**
+	 * @return the scriptName
+	 */
+	public final String getScriptName() {
+		return scriptName;
+	}
+
+	/**
+	 * @param scriptName the scriptName to set
+	 */
+	public final void setScriptName(String scriptName) {
+		this.scriptName = scriptName;
+	}
+
+	/**
+	 * @return the scriptFileRegex
+	 */
+	public final String getScriptFileRegex() {
+		return scriptFileRegex;
+	}
+
+	/**
+	 * @param scriptFileRegex the scriptFileRegex to set
+	 */
+	public final void setScriptFileRegex(String scriptFileRegex) {
+		this.scriptFileRegex = scriptFileRegex;
 	}
 
 }

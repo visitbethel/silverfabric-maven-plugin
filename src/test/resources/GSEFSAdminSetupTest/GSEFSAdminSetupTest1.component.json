@@ -37,7 +37,7 @@
         },
         {
           "name":"Log File Pattern",
-          "value":"/../../../../../../..///opt/tibco/silver/persistentdata/L1_ADMIN_sefsAdmin/domaindata/tra/${TIBCO_DOMAIN_NAME}/logs/Hawk.log,/../../../../../../..///opt/tibco/silver/persistentdata/L1_ADMIN_sefsAdmin/domaindata/logs/domainutility.log,/../../../../../../..///opt/tibco/silver/persistentdata/L1_ADMIN_sefsAdmin/domaindata/tra/${TIBCO_DOMAIN_NAME}/logs/tsm.log,/../../../../../../..///opt/tibco/silver/persistentdata/L1_ADMIN_sefsAdmin/domaindata/tra/${TIBCO_DOMAIN_NAME}/logs/msghma.log,/../../../../../../..///opt/tibco/silver/persistentdata/L1_ADMIN_sefsAdmin/domaindata/admin/${TIBCO_DOMAIN_NAME}/logs/audit.log,/../../../../../../..///opt/tibco/silver/persistentdata/L1_ADMIN_sefsAdmin/domaindata/admin/${TIBCO_DOMAIN_NAME}/tomcat/logs/tomcat.log./../../../../../../..///opt/tibco/silver/persistentdata/L1_ADMIN_sefsAdmin/domaindata/tra/${TIBCO_DOMAIN_NAME}/logs/ApplicationManagement.log,/../../../../../../..///opt/tibco/silver/persistentdata/L1_ADMIN_sefsAdmin/domaindata/tra/${TIBCO_DOMAIN_NAME}/logs/HawkAgent.log,/../../../../../../..///opt/tibco/silver/persistentdata/L1_ADMIN_sefsAdmin/domaindata/tra/${TIBCO_DOMAIN_NAME}/logs/monitor.log,/../../../../../../..///opt/tibco/silver/persistentdata/L1_ADMIN_sefsAdmin/domaindata/tra/${TIBCO_DOMAIN_NAME}/logs/Administrator.log,/../../../../../../..///opt/tibco/silver/persistentdata/L1_ADMIN_sefsAdmin/tibco/tra/5.8/logs/traDBConfig.log,/../../../../../../..///opt/tibco/silver/persistentdata/L1_ADMIN_sefsAdmin/tibco/tra/5.8/logs/hma_${ami.hawk.service}_37475/Hawk_FileSystem.log,/../../../../../../..///opt/tibco/silver/persistentdata/L1_ADMIN_sefsAdmin/tibco/tra/5.8/logs/hma_${ami.hawk.service}_37475/Hawk_Network_000.log,/../../../../../../..///opt/tibco/silver/persistentdata/L1_ADMIN_sefsAdmin/tibco/tra/5.8/logs/hma_${ami.hawk.service}_37475/Hawk_FileStat_000.log,/../../../../../../..///opt/tibco/silver/persistentdata/L1_ADMIN_sefsAdmin/tibco/tra/5.8/logs/hma_${ami.hawk.service}_37475/Hawk_HMA_000.log,/../../../../../../..///opt/tibco/silver/persistentdata/L1_ADMIN_sefsAdmin/tibco/tra/5.8/logs/hma_${ami.hawk.service}_37475/Hawk_FileStat.log,/../../../../../../..///opt/tibco/silver/persistentdata/L1_ADMIN_sefsAdmin/tibco/tra/5.8/logs/hma_${ami.hawk.service}_37475/Hawk_Process_000.log,/../../../../../../..///opt/tibco/silver/persistentdata/L1_ADMIN_sefsAdmin/tibco/tra/5.8/logs/hma_${ami.hawk.service}_37475/Hawk_TibRendezvous_000.log,/../../../../../../..///opt/tibco/silver/persistentdata/L1_ADMIN_sefsAdmin/tibco/tra/5.8/logs/hma_${ami.hawk.service}_37475/Hawk_HMA.log,/../../../../../../..///opt/tibco/silver/persistentdata/L1_ADMIN_sefsAdmin/tibco/tra/5.8/logs/hma_${ami.hawk.service}_37475/Hawk_Network.log,/../../../../../../..///opt/tibco/silver/persistentdata/L1_ADMIN_sefsAdmin/tibco/tra/5.8/logs/hma_${ami.hawk.service}_37475/Hawk_Process.log,/../../../../../../..///opt/tibco/silver/persistentdata/L1_ADMIN_sefsAdmin/tibco/tra/5.8/logs/hma_${ami.hawk.service}_37475/Hawk_TibRendezvous.log,/../../../../../../..///opt/tibco/silver/persistentdata/L1_ADMIN_sefsAdmin/tibco/tra/5.8/logs/hma_${ami.hawk.service}_37475/Hawk_System_000.log,/../../../../../../..///opt/tibco/silver/persistentdata/L1_ADMIN_sefsAdmin/tibco/tra/5.8/logs/hma_${ami.hawk.service}_37475/Hawk_System.log,/../../../../../../..///opt/tibco/silver/persistentdata/L1_ADMIN_sefsAdmin/tibco/tra/5.8/logs/hma_${ami.hawk.service}_37475/Hawk_FileSystem_000.log,/../../../../../../..///opt/tibco/silver/persistentdata/L1_ADMIN_sefsAdmin/tibco/tra/5.8/logs/domainutility.log"
+          "value":"/../../../../../../..///opt/tibco/silver/persistentdata/GRD-ADMIN-BW/domaindata/tra/${TIBCO_DOMAIN_NAME}/logs/Hawk.log,/../../../../../../..///opt/tibco/silver/persistentdata/GRD-ADMIN-BW/domaindata/logs/domainutility.log,/../../../../../../..///opt/tibco/silver/persistentdata/GRD-ADMIN-BW/domaindata/tra/${TIBCO_DOMAIN_NAME}/logs/tsm.log,/../../../../../../..///opt/tibco/silver/persistentdata/GRD-ADMIN-BW/domaindata/tra/${TIBCO_DOMAIN_NAME}/logs/msghma.log,/../../../../../../..///opt/tibco/silver/persistentdata/GRD-ADMIN-BW/domaindata/admin/${TIBCO_DOMAIN_NAME}/logs/audit.log,/../../../../../../..///opt/tibco/silver/persistentdata/GRD-ADMIN-BW/domaindata/admin/${TIBCO_DOMAIN_NAME}/tomcat/logs/tomcat.log./../../../../../../..///opt/tibco/silver/persistentdata/GRD-ADMIN-BW/domaindata/tra/${TIBCO_DOMAIN_NAME}/logs/ApplicationManagement.log,/../../../../../../..///opt/tibco/silver/persistentdata/GRD-ADMIN-BW/domaindata/tra/${TIBCO_DOMAIN_NAME}/logs/HawkAgent.log,/../../../../../../..///opt/tibco/silver/persistentdata/GRD-ADMIN-BW/domaindata/tra/${TIBCO_DOMAIN_NAME}/logs/monitor.log,/../../../../../../..///opt/tibco/silver/persistentdata/GRD-ADMIN-BW/domaindata/tra/${TIBCO_DOMAIN_NAME}/logs/Administrator.log,/../../../../../../..///opt/tibco/silver/persistentdata/GRD-ADMIN-BW/tibco/tra/5.8/logs/traDBConfig.log,/../../../../../../..///opt/tibco/silver/persistentdata/GRD-ADMIN-BW/tibco/tra/5.8/logs/hma_${ami.hawk.service}_37475/Hawk_FileSystem.log,/../../../../../../..///opt/tibco/silver/persistentdata/GRD-ADMIN-BW/tibco/tra/5.8/logs/hma_${ami.hawk.service}_37475/Hawk_Network_000.log,/../../../../../../..///opt/tibco/silver/persistentdata/GRD-ADMIN-BW/tibco/tra/5.8/logs/hma_${ami.hawk.service}_37475/Hawk_FileStat_000.log,/../../../../../../..///opt/tibco/silver/persistentdata/GRD-ADMIN-BW/tibco/tra/5.8/logs/hma_${ami.hawk.service}_37475/Hawk_HMA_000.log,/../../../../../../..///opt/tibco/silver/persistentdata/GRD-ADMIN-BW/tibco/tra/5.8/logs/hma_${ami.hawk.service}_37475/Hawk_FileStat.log,/../../../../../../..///opt/tibco/silver/persistentdata/GRD-ADMIN-BW/tibco/tra/5.8/logs/hma_${ami.hawk.service}_37475/Hawk_Process_000.log,/../../../../../../..///opt/tibco/silver/persistentdata/GRD-ADMIN-BW/tibco/tra/5.8/logs/hma_${ami.hawk.service}_37475/Hawk_TibRendezvous_000.log,/../../../../../../..///opt/tibco/silver/persistentdata/GRD-ADMIN-BW/tibco/tra/5.8/logs/hma_${ami.hawk.service}_37475/Hawk_HMA.log,/../../../../../../..///opt/tibco/silver/persistentdata/GRD-ADMIN-BW/tibco/tra/5.8/logs/hma_${ami.hawk.service}_37475/Hawk_Network.log,/../../../../../../..///opt/tibco/silver/persistentdata/GRD-ADMIN-BW/tibco/tra/5.8/logs/hma_${ami.hawk.service}_37475/Hawk_Process.log,/../../../../../../..///opt/tibco/silver/persistentdata/GRD-ADMIN-BW/tibco/tra/5.8/logs/hma_${ami.hawk.service}_37475/Hawk_TibRendezvous.log,/../../../../../../..///opt/tibco/silver/persistentdata/GRD-ADMIN-BW/tibco/tra/5.8/logs/hma_${ami.hawk.service}_37475/Hawk_System_000.log,/../../../../../../..///opt/tibco/silver/persistentdata/GRD-ADMIN-BW/tibco/tra/5.8/logs/hma_${ami.hawk.service}_37475/Hawk_System.log,/../../../../../../..///opt/tibco/silver/persistentdata/GRD-ADMIN-BW/tibco/tra/5.8/logs/hma_${ami.hawk.service}_37475/Hawk_FileSystem_000.log,/../../../../../../..///opt/tibco/silver/persistentdata/GRD-ADMIN-BW/tibco/tra/5.8/logs/domainutility.log"
         }
       ]
     },
@@ -64,7 +64,7 @@
         },
         {
           "name":"Routing Prefix",
-          "value":"L1_ADMIN_sefsAdmin"
+          "value":"GRD-ADMIN-BW"
         }
       ]
     }
@@ -72,7 +72,7 @@
   "lastModified":1427994822241,
   "modified":false,
   "modifiedBy":"sefsdev_operate",
-  "name":"L1_ADMIN_sefsAdmin",
+  "name":"GRD-ADMIN-BW",
   "options":[
     {
       "name":"Activation Delay",
@@ -169,7 +169,7 @@
       "export":false,
       "name":"ADMIN_FT_ROOT",
       "type":1,
-      "value":"/opt/tibco/silver/persistentdata/L1_ADMIN_sefsAdmin"
+      "value":"/opt/tibco/silver/persistentdata/GRD-ADMIN-BW"
     },
     {
       "autoIncrementType":1,
@@ -673,7 +673,7 @@
       "export":false,
       "name":"sfs_DATACLEAN_PATHS",
       "type":1,
-      "value":"/opt/tibco/silver/persistentdata/L1_ADMIN_sefsAdmin"
+      "value":"/opt/tibco/silver/persistentdata/GRD-ADMIN-BW"
     },
     {
       "autoIncrementType":0,
@@ -761,7 +761,7 @@
       "export":true,
       "name":"TIBCO_DOMAIN_NAME",
       "type":1,
-      "value":"L1_ADMIN_sefsAdmin_DOMAIN"
+      "value":"GRD-ADMIN-BW_DOMAIN"
     },
     {
       "autoIncrementType":0,

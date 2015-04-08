@@ -22,31 +22,29 @@ import org.apache.maven.shared.filtering.MavenFileFilter;
 import org.apache.maven.shared.filtering.MavenFileFilterRequest;
 import org.apache.maven.shared.filtering.MavenFilteringException;
 import org.codehaus.plexus.util.IOUtil;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.web.client.RestTemplate;
 
 public abstract class AbstractSilverFabricMojo extends AbstractMojo {
 
-	///opt/tibco/silver/5.6.0/fabric/webapps/livecluster/WEB-INF/log/server
-	
-    /**
+	// /opt/tibco/silver/5.6.0/fabric/webapps/livecluster/WEB-INF/log/server
+
+	/**
 	 * 
 	 * @param request
 	 * @param string
 	 * @param description2
 	 * @param object
 	 */
-	protected static Object valueOf(HashMap<Object, Object> request, String string, Object a,
-			Object b) {
-				Object value = valueOf(a, b);
-				if (value != null) {
-					request.put(string, value);
-					return value;
-				}
-				return null;
-			}
+	protected static Object valueOf(HashMap<Object, Object> request,
+			String string, Object a, Object b) {
+		Object value = valueOf(a, b);
+		if (value != null) {
+			request.put(string, value);
+			return value;
+		}
+		return null;
+	}
 
 	/**
 	 * 
@@ -66,11 +64,11 @@ public abstract class AbstractSilverFabricMojo extends AbstractMojo {
 	}
 
 	@Parameter
-    private LinkedList<String> actions;
+	private LinkedList<String> actions;
 
-    @Parameter (required = true)
-    private BrokerConfig brokerConfig;
-    
+	@Parameter(required = true)
+	private BrokerConfig brokerConfig;
+
 	@Parameter(defaultValue = "${project}", readonly = true)
 	protected MavenProject project;
 
@@ -81,70 +79,80 @@ public abstract class AbstractSilverFabricMojo extends AbstractMojo {
 	 */
 	@Component
 	public MavenFileFilter mavenFileFilter;
-    
-    
-    ApplicationContext ctx = new AnnotationConfigApplicationContext(SilverFabricConfig.class);
 
-    public final RestTemplate restTemplate; // = ctx.getBean(RestTemplate.class);
-    public final HttpComponentsClientHttpRequestFactory clientRequestfactory ;
 
-    public AbstractSilverFabricMojo() {
+	public final RestTemplate restTemplate; // =
+											// ctx.getBean(RestTemplate.class);
+	public final HttpComponentsClientHttpRequestFactory clientRequestfactory;
+
+	public AbstractSilverFabricMojo() {
 		super();
 		this.restTemplate = new SilverFabricConfig().restTemplate();
-        this.clientRequestfactory = (HttpComponentsClientHttpRequestFactory) restTemplate.getRequestFactory();
+		this.clientRequestfactory = (HttpComponentsClientHttpRequestFactory) restTemplate
+				.getRequestFactory();
 	}
 
 	@Override
-    public void execute() throws MojoExecutionException, MojoFailureException {
-		DefaultHttpClient httpClient = (DefaultHttpClient) this.clientRequestfactory.getHttpClient();
-        httpClient.getCredentialsProvider().setCredentials(new AuthScope(brokerConfig.getBrokerURL().getHost(),brokerConfig.getBrokerURL().getPort(),AuthScope.ANY_REALM),new UsernamePasswordCredentials(brokerConfig.getUsername(), brokerConfig.getPassword()));
-        executeMojo();
-    }
+	public void execute() throws MojoExecutionException, MojoFailureException {
+		DefaultHttpClient httpClient = (DefaultHttpClient) this.clientRequestfactory
+				.getHttpClient();
+		httpClient.getCredentialsProvider().setCredentials(
+				new AuthScope(brokerConfig.getBrokerURL().getHost(),
+						brokerConfig.getBrokerURL().getPort(),
+						AuthScope.ANY_REALM),
+				new UsernamePasswordCredentials(brokerConfig.getUsername(),
+						brokerConfig.getPassword()));
+		executeMojo();
+	}
 
-    public abstract void executeMojo() throws MojoExecutionException, MojoFailureException;
+	public abstract void executeMojo() throws MojoExecutionException,
+			MojoFailureException;
 
-    public LinkedList<String> getActions() {
-        return actions;
-    }
+	public LinkedList<String> getActions() {
+		return actions;
+	}
 
-    public BrokerConfig getBrokerConfig() {
-        return brokerConfig;
-    }
+	public BrokerConfig getBrokerConfig() {
+		return brokerConfig;
+	}
 
-    /**
+	/**
 	 * @return the restTemplate
 	 */
 	public final RestTemplate getRestTemplate() {
 		return restTemplate;
 	}
 
-    public void setActions(LinkedList<String> actions) {
-        this.actions = actions;
-    }
+	public void setActions(LinkedList<String> actions) {
+		this.actions = actions;
+	}
 
 	public void setBrokerConfig(BrokerConfig brokerConfig) {
-        this.brokerConfig = brokerConfig;
-    }
-	
+		this.brokerConfig = brokerConfig;
+	}
+
 	/**
 	 * 
 	 * @param outputDirectory
 	 * @param path
 	 * @return
-	 * @throws MojoFailureException 
-	 * @throws IOException 
-	 * @throws FileNotFoundException 
+	 * @throws MojoFailureException
+	 * @throws IOException
+	 * @throws FileNotFoundException
 	 */
 	@SuppressWarnings("unchecked")
-	public File filterFile(File outputDirectory, File sourcePlan) throws MojoFailureException {
-		File outputPlan = new File(outputDirectory, sourcePlan.getName() + ".filtered");
-		/* if we are running testcases unharnessed with the maven runtime
-		 * we still want to be able to run, however without filtering.
+	public File filterFile(File outputDirectory, File sourcePlan)
+			throws MojoFailureException {
+		File outputPlan = new File(outputDirectory, sourcePlan.getName()
+				+ ".filtered");
+		/*
+		 * if we are running testcases unharnessed with the maven runtime we
+		 * still want to be able to run, however without filtering.
 		 */
 		if (project != null) {
-			MavenFileFilterRequest req = new MavenFileFilterRequest(
-					sourcePlan, outputPlan, true, project,
-					this.project.getFilters(), true, "UTF-8", session, null);
+			MavenFileFilterRequest req = new MavenFileFilterRequest(sourcePlan,
+					outputPlan, true, project, this.project.getFilters(), true,
+					"UTF-8", session, null);
 			try {
 				if (outputDirectory != null && !outputDirectory.exists()) {
 					if (!outputDirectory.mkdirs()) {
@@ -159,15 +167,16 @@ public abstract class AbstractSilverFabricMojo extends AbstractMojo {
 				throw new MojoFailureException("Publishing plan", e1);
 			}
 			return outputPlan;
-		}
-		else {
+		} else {
 			try {
-				IOUtil.copy(new FileInputStream(sourcePlan), new FileOutputStream(outputPlan));
+				IOUtil.copy(new FileInputStream(sourcePlan),
+						new FileOutputStream(outputPlan));
 				return outputPlan;
 			} catch (IOException e) {
-				throw new MojoFailureException("Unable to copy plan", e);
+				throw new MojoFailureException("Unable to copy plan '"
+						+ sourcePlan + "'.", e);
 
 			}
 		}
-	}	
+	}
 }

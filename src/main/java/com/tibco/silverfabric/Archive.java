@@ -21,10 +21,14 @@ public class Archive {
 	}
 
 	public Archive(File f) {
+    	this( f, "");
+	}
+	
+	public Archive(File f, String relativePath) {
+		this.relativePath = relativePath;
     	this.path = f.getParent();
     	this.name = f.getName();
 	}
-
 	public String getRelativePath() {
         return relativePath;
     }

@@ -3,7 +3,21 @@
  */
 package com.tibco.silverfabric.model;
 
-import java.util.Map;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.List;
+
+import org.apache.commons.io.filefilter.FileFilterUtils;
+import org.apache.maven.plugin.AbstractMojo;
+import org.apache.maven.plugins.annotations.Parameter;
+import org.codehaus.plexus.logging.AbstractLogEnabled;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.fedex.scm.Components;
+import com.fedex.scm.Stacks;
+import com.tibco.silverfabric.Archive;
+import com.tibco.silverfabric.components.CreateComponentsJSON;
 
 /**
  * @author akaan
@@ -11,12 +25,21 @@ import java.util.Map;
  */
 public class Plan {
 
-	public String componentTemplateURI;
-	public String stackTemplateURI;
-	public String level;
-	public String name;
-	public String type;
-	public Map<String, String> properties;
+	/**
+	 * 
+	 */
+	final static Logger LOGGER = LoggerFactory.getLogger(Plan.class);
+
+	@Parameter(defaultValue = "${project.build.directory}/work")
+	public File workDirectory;
+	public String componentPlan = "component.json";
+	public String stackPlan = "stack.json";
+	public String configFile = "config/configure.xml";
+	@Parameter(defaultValue = "content")
+	public String contentDirectory;
+	public String scriptLanguage = "python";
+	public String scriptLanguageVersion = "2.5";
+	public String scriptFile = "scripts/sfs_component_script.py";
 
 	/**
 	 * 
@@ -25,100 +48,112 @@ public class Plan {
 		// TODO Auto-generated constructor stub
 	}
 
-	/**
-	 * @return the componentTemplateURI
-	 */
-	protected final String getComponentTemplateURI() {
-		return componentTemplateURI;
-	}
-
-	/**
-	 * @param componentTemplateURI the componentTemplateURI to set
-	 */
-	protected final void setComponentTemplateURI(String componentTemplateURI) {
-		this.componentTemplateURI = componentTemplateURI;
-	}
-
-	/**
-	 * @return the stackTemplateURI
-	 */
-	protected final String getStackTemplateURI() {
-		return stackTemplateURI;
-	}
-
-	/**
-	 * @param stackTemplateURI the stackTemplateURI to set
-	 */
-	protected final void setStackTemplateURI(String stackTemplateURI) {
-		this.stackTemplateURI = stackTemplateURI;
-	}
-
-	/**
-	 * @return the level
-	 */
-	protected final String getLevel() {
-		return level;
-	}
-
-	/**
-	 * @param level the level to set
-	 */
-	protected final void setLevel(String level) {
-		this.level = level;
-	}
-
-	/**
-	 * @return the name
-	 */
-	protected final String getName() {
-		return name;
-	}
-
-	/**
-	 * @param name the name to set
-	 */
-	protected final void setName(String name) {
-		this.name = name;
-	}
-
-	/**
-	 * @return the type
-	 */
-	protected final String getType() {
-		return type;
-	}
-
-	/**
-	 * @param type the type to set
-	 */
-	protected final void setType(String type) {
-		this.type = type;
-	}
-
-	/**
-	 * @return the properties
-	 */
-	protected final Map<String, String> getProperties() {
-		return properties;
-	}
-
-	/**
-	 * @param properties the properties to set
-	 */
-	protected final void setProperties(Map<String, String> properties) {
-		this.properties = properties;
-	}
-
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
 	public String toString() {
-		return "Plan [componentTemplateURI=" + componentTemplateURI
-				+ ", stackTemplateURI=" + stackTemplateURI + ", level=" + level
-				+ ", name=" + name + ", type=" + type + ", properties="
-				+ properties + "]";
+		return "Plan [workDirectory=" + workDirectory + ", componentPlan="
+				+ componentPlan + ", stackPlan=" + stackPlan + ", configFile="
+				+ configFile + ", contentDirectory=" + contentDirectory
+				+ ", scriptLanguage=" + scriptLanguage
+				+ ", scriptLanguageVersion=" + scriptLanguageVersion
+				+ ", scriptFile=" + scriptFile + "]";
 	}
 
+	public void initialize() {
+
+	}
+
+	/**
+	 * 
+	 * @param c
+	 */
+	public void merge(AbstractMojo log, CreateComponentsJSON c)
+			throws Exception {
+		if (c == null) {
+			return;
+		}
+		if (this.workDirectory != null && !this.workDirectory.exists()) {
+			if (!this.workDirectory.mkdirs()) {
+				throw new FileNotFoundException("Create directory "
+						+ this.workDirectory + " failed!");
+			}
+		}
+		if (this.scriptFile != null) {
+			File af = new File(this.workDirectory.getAbsolutePath()
+					+ File.separator + scriptFile);
+			if (af.exists()) {
+				c.setScriptFile(new Archive(af));
+				c.setScriptLang(this.scriptLanguage);
+				c.setScriptLangVersion(this.scriptLanguageVersion);
+			} else {
+				log.getLog().warn(
+						"script files were not found at "
+								+ af.getAbsolutePath());
+			}
+		}
+		String contentPath = this.workDirectory.getAbsolutePath()
+				+ File.separator + this.contentDirectory;
+		log.getLog().info("reading content-files from " + contentPath);
+		File content = new File(contentPath);
+		if (content.exists()) {
+			recurseAdd(log, c.getContentFiles(), content, "");
+			log.getLog().info(
+					"registered " + c.getContentFiles().size()
+							+ " files for content-files.");
+		} else {
+			log.getLog().error(
+					"content path " + contentPath + " does not exist.");
+		}
+		String configFilePath = this.workDirectory.getAbsolutePath()
+				+ File.separator + this.configFile;
+		File configFile = new File(configFilePath);
+		if (configFile.exists()) {
+			c.setConfigFile(new Archive(configFile, ""));
+			log.getLog().info(
+					"registered " + configFile + " as configuration file.");
+		} else {
+			log.getLog().error(
+					"config file " + configFilePath + " does not exist.");
+		}
+
+	}
+
+	/**
+	 * 
+	 * @param mojo
+	 * @param root
+	 * @param dir
+	 */
+	private void recurseAdd(AbstractMojo log, List<Archive> root, File dir, String relPath) {
+		File[] fs = dir.listFiles();
+		for (int i = 0; i < fs.length; i++) {
+			if (fs[i].isDirectory()) {
+				recurseAdd(log, root, fs[i], fs[i].getName());
+			} else {
+				root.add(new Archive(fs[i], relPath));
+				log.getLog().info("adding " + fs[i] + " with path[" + relPath + "].");
+			}
+		}
+	}
+
+	/**
+	 * 
+	 * @return
+	 */
+	public File getComponentPlanPath() {
+		return new File(this.workDirectory, componentPlan);
+	}
+
+	/**
+	 * 
+	 * @return
+	 */
+	public File getStackPlanPath() {
+		return new File(this.workDirectory, stackPlan);
+	}
 
 }

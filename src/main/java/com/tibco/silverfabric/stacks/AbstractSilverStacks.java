@@ -6,6 +6,7 @@
  */
 package com.tibco.silverfabric.stacks;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -74,7 +75,7 @@ public abstract class AbstractSilverStacks extends Stacks {
 	protected String description;
 	@Parameter
 	protected List<Map> urls;
-
+	private File outputDirectory = new File("target");
 	private boolean breakout = false;
 
 	/**
@@ -90,14 +91,16 @@ public abstract class AbstractSilverStacks extends Stacks {
 	public void initialize() throws MojoFailureException {
 
 		if (this.plan != null) {
+			File outPlan = filterFile(this.outputDirectory, plan.getStackPlanPath());
+			getLog().info("loading plan from " + outPlan);
 			try {
 				this.stack = SilverFabricConfig.loadingRESTPlan(this,
-						this.plan.stackTemplateURI, com.fedex.scm.Stacks.class);
+						outPlan.getAbsolutePath(), com.fedex.scm.Stacks.class);
 			} catch (FileNotFoundException e) {
 				throw new MojoFailureException("Plan not found", e);
 			}
 		}
-		if (this.stack != null && this.stackName == null) {
+		if (this.stack != null) {
 			this.stackName = this.stack.getName();
 		}
 		final AbstractSilverFabricMojo THIS = this;
@@ -334,20 +337,22 @@ public abstract class AbstractSilverStacks extends Stacks {
 
         HashMap<Object, Object> request = new LinkedHashMap<Object, Object>();
         request.put("name", stackName);
-        request.put("policies", policies);
-        request.put("components", components);
-        request.put("icon", icon);
-        request.put("description", description);
-
-        if (owner != null) request.put("owner", owner);
-        if (mode != null) request.put("mode", mode);
-        if (templateLevel != null) request.put("templateLevel", templateLevel);
-        if (propertyOverrides != null) request.put("propertyOverrides", propertyOverrides);
-        if (technology != null) request.put("technology", technology);
-        if (urls != null) request.put("urls", urls);
+        request.put("policies", this.stack.getPolicies());
+        request.put("components", this.stack.getComponents());
+        request.put("icon", this.stack.getIcon() == null ? this.icon : this.stack.getIcon());
+        request.put("description", this.stack.getDescription() == null ? this.description : this.stack.getDescription());
+        
+        valueOf(request, "owner", this.stack.getOwner(), this.owner);
+        valueOf(request, "mode", this.stack.getMode(), this.mode);
+        valueOf(request, "templateLevel", this.stack.getTemplateLevel(), this.templateLevel);
+        valueOf(request, "propertyOverrides", this.stack.getPropertyOverrides(), this.propertyOverrides);
+        valueOf(request, "technology", this.stack.getTechnology(), this.technology);
+        valueOf(request, "urls", this.stack.getUrls(), this.urls);
 
 		return request;
 	}
+
+
 
 	/**
 	 * @return the components

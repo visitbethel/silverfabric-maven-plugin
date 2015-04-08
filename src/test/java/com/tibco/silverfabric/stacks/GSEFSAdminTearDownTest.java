@@ -40,9 +40,9 @@ public class GSEFSAdminTearDownTest extends AbstractSilverJSONTest {
 	public void testDeleteGSEFSAdminStackAndComponents()
 			throws MojoExecutionException, MojoFailureException {
 		plan = new Plan();
-		plan.componentTemplateURI = Utils.getTestFile(GSEFSAdminSetupTest.class, 1,
+		plan.componentPlan = Utils.getTestFile(GSEFSAdminSetupTest.class, 1,
 				"component.json").getAbsolutePath();
-		plan.stackTemplateURI = Utils.getTestFile(GSEFSAdminSetupTest.class, 1,
+		plan.stackPlan = Utils.getTestFile(GSEFSAdminSetupTest.class, 1,
 				"stack.json").getAbsolutePath();
 
 		try {

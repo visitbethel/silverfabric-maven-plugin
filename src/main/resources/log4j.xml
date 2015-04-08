@@ -23,6 +23,6 @@
   <root>
     <priority value="INFO" />
     <appender-ref ref="stdout" />
-   <!--  <appender-ref ref="stderr" />  -->
+   <appender-ref ref="stderr" />  
   </root>
 </log4j:configuration>
