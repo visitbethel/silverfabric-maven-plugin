@@ -62,4 +62,8 @@ public class Archive {
 		return "Archive [path=" + path + ", name=" + name + ", relativePath="
 				+ relativePath + "]";
 	}
+
+	public boolean exists() {
+		return new File(this.path, this.name).exists();
+	}
 }

@@ -128,6 +128,7 @@ public abstract class AbstractSilverJSONComponents extends Components {
 	@Parameter(property = "breakout")
 	private boolean breakout = false;
 	private File outputDirectory = new File("target");
+	private boolean failOnError = true;
 
 	/**
      * 
@@ -141,11 +142,11 @@ public abstract class AbstractSilverJSONComponents extends Components {
 	 */
 	public void initialize() throws MojoFailureException {
 		if (this.plan != null) {
-			File outPlan = filterFile(this.outputDirectory, plan.getComponentPlanPath());
+			File outPlan = filterFile(this.outputDirectory,
+					plan.getComponentPlanPath());
 			getLog().info("loading plan from " + outPlan);
 			try {
-				component = SilverFabricConfig.loadingRESTPlan(this,
-						outPlan,
+				component = SilverFabricConfig.loadingRESTPlan(this, outPlan,
 						com.fedex.scm.Components.class);
 			} catch (FileNotFoundException e) {
 				throw new MojoFailureException("Plan not found", e);
@@ -159,8 +160,9 @@ public abstract class AbstractSilverJSONComponents extends Components {
 		}
 		final AbstractSilverFabricMojo THIS = this;
 		if (this.breakout) {
-			getLog().warn("[[[[[[[[[[[ BREAK OUT IS ON MALFUNCTIONING EXPECTED ]]]]]]]]");
-			
+			getLog().warn(
+					"[[[[[[[[[[[ BREAK OUT IS ON MALFUNCTIONING EXPECTED ]]]]]]]]");
+
 			getRestTemplate().getInterceptors().add(
 					new ClientHttpRequestInterceptor() {
 
@@ -215,11 +217,13 @@ public abstract class AbstractSilverJSONComponents extends Components {
 					getLog().info(result.toString());
 					break;
 				case "publish":
+					failOnError = false;
 					restTemplate.put(url + "/{componentName}/published/true",
 							null, componentName);
 					getLog().info(componentName + " published!");
 					break;
 				case "unpublish":
+					failOnError = false;
 					restTemplate.put(url + "/{componentName}/published/false",
 							null, componentName);
 					getLog().info(componentName + " unpublished!");
@@ -262,14 +266,22 @@ public abstract class AbstractSilverJSONComponents extends Components {
 				case "add archives":
 					MultiValueMap<String, Object> parts = new LinkedMultiValueMap<>();
 					for (Archive archive : archives) {
-						parts.add("archiveFile",
-								new FileSystemResource(archive.getPath() + "/"
-										+ archive.getName()));
+						if (archive.exists()) {
+							parts.add("archiveFile",
+									new FileSystemResource(archive.getPath()
+											+ "/" + archive.getName()));
+						}
 					}
-					String addArchivesResponse = restTemplate.postForObject(url
-							+ "/{componentName}/archives", parts, String.class,
-							componentName);
-					getLog().info(addArchivesResponse);
+					if (!parts.isEmpty()) {
+						String addArchivesResponse = restTemplate
+								.postForObject(url
+										+ "/{componentName}/archives", parts,
+										String.class, componentName);
+						getLog().info(addArchivesResponse);
+					} else {
+						getLog().warn(
+								"no archives detected as [" + archives + "]");
+					}
 					break;
 				case "remove archive":
 					restTemplate.delete(url
@@ -579,10 +591,14 @@ public abstract class AbstractSilverJSONComponents extends Components {
 						"Error when running " + action + " on component "
 								+ componentName + " : "
 								+ httpException.getResponseBodyAsString());
-				throw new MojoExecutionException("Error when running " + action
-						+ " on component " + componentName + " : "
-						+ httpException.getResponseBodyAsString(),
-						httpException);
+				if (failOnError) {
+					throw new MojoExecutionException("Error when running "
+							+ action + " on component " + componentName + " : "
+							+ httpException.getResponseBodyAsString(),
+							httpException);
+				}
+			} finally {
+				failOnError = true;
 			}
 		}
 	}
@@ -709,7 +725,8 @@ public abstract class AbstractSilverJSONComponents extends Components {
 	}
 
 	/**
-	 * @param configFile the configFile to set
+	 * @param configFile
+	 *            the configFile to set
 	 */
 	public final void setConfigFile(Archive configFile) {
 		this.configFile = configFile;
@@ -723,7 +740,8 @@ public abstract class AbstractSilverJSONComponents extends Components {
 	}
 
 	/**
-	 * @param contentFiles the contentFiles to set
+	 * @param contentFiles
+	 *            the contentFiles to set
 	 */
 	public final void setContentFiles(List<Archive> contentFiles) {
 		this.contentFiles = contentFiles;
@@ -737,7 +755,8 @@ public abstract class AbstractSilverJSONComponents extends Components {
 	}
 
 	/**
-	 * @param scriptFile the scriptFile to set
+	 * @param scriptFile
+	 *            the scriptFile to set
 	 */
 	public final void setScriptFile(Archive scriptFile) {
 		this.scriptFile = scriptFile;
@@ -751,7 +770,8 @@ public abstract class AbstractSilverJSONComponents extends Components {
 	}
 
 	/**
-	 * @param scriptLang the scriptLang to set
+	 * @param scriptLang
+	 *            the scriptLang to set
 	 */
 	public final void setScriptLang(String scriptLang) {
 		this.scriptLang = scriptLang;
@@ -765,7 +785,8 @@ public abstract class AbstractSilverJSONComponents extends Components {
 	}
 
 	/**
-	 * @param scriptLangVersion the scriptLangVersion to set
+	 * @param scriptLangVersion
+	 *            the scriptLangVersion to set
 	 */
 	public final void setScriptLangVersion(String scriptLangVersion) {
 		this.scriptLangVersion = scriptLangVersion;
@@ -779,7 +800,8 @@ public abstract class AbstractSilverJSONComponents extends Components {
 	}
 
 	/**
-	 * @param scriptName the scriptName to set
+	 * @param scriptName
+	 *            the scriptName to set
 	 */
 	public final void setScriptName(String scriptName) {
 		this.scriptName = scriptName;
@@ -793,7 +815,8 @@ public abstract class AbstractSilverJSONComponents extends Components {
 	}
 
 	/**
-	 * @param scriptFileRegex the scriptFileRegex to set
+	 * @param scriptFileRegex
+	 *            the scriptFileRegex to set
 	 */
 	public final void setScriptFileRegex(String scriptFileRegex) {
 		this.scriptFileRegex = scriptFileRegex;
