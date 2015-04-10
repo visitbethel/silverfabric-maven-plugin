@@ -9,47 +9,57 @@ package com.tibco.silverfabric;
 import java.io.File;
 
 public class Archive {
-    private String path;
-    private String name;
-    private String relativePath = "";
+	private String path;
+	private String name;
+	private String relativePath = "";
 
-    
-    
-    public Archive() {
+	public Archive() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
 	public Archive(File f) {
-    	this( f, "");
+		this(f, "");
 	}
-	
+
 	public Archive(File f, String relativePath) {
 		this.relativePath = relativePath;
-    	this.path = f.getParent();
-    	this.name = f.getName();
+		this.path = f.getParent();
+		this.name = f.getName();
 	}
+
 	public String getRelativePath() {
-        return relativePath;
-    }
+		return relativePath;
+	}
 
-    public void setRelativePath(String relativePath) {
-        this.relativePath = relativePath;
-    }
+	public void setRelativePath(String relativePath) {
+		this.relativePath = relativePath;
+	}
 
-    public String getPath() {
-        return path;
-    }
+	public String getPath() {
+		return path;
+	}
 
-    public void setPath(String path) {
-        this.path = path;
-    }
+	public void setPath(String path) {
+		this.path = path;
+	}
 
-    public String getName() {
-        return name;
-    }
+	public String getName() {
+		return name;
+	}
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return "Archive [path=" + path + ", name=" + name + ", relativePath="
+				+ relativePath + "]";
+	}
 }

@@ -40,6 +40,7 @@ public class CreateComponentsJSON extends AbstractSilverJSONComponents {
 
 	public void initialize() throws MojoFailureException {
 		super.initialize();
+		getLog().info("initializing component " + this.toString());
 		if (getActions() == null) {
 			LinkedList<String> list = new LinkedList<String>();
 			list.add("create");
@@ -59,6 +60,23 @@ public class CreateComponentsJSON extends AbstractSilverJSONComponents {
 			setActions(list);
 		}
 		getLog().info("assign action " + getActions());
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return "CreateComponentsJSON [getComponentType()=" + getComponentType()
+				+ ", getComponentName()=" + getComponentName()
+				+ ", getEnablerName()=" + getEnablerName()
+				+ ", getEnablerVersion()=" + getEnablerVersion()
+				+ ", getArchives()=" + getArchives() + ", getConfigFile()="
+				+ getConfigFile() + ", getContentFiles()=" + getContentFiles()
+				+ ", getScriptFile()=" + getScriptFile() + ", getScriptLang()="
+				+ getScriptLang() + ", getScriptLangVersion()="
+				+ getScriptLangVersion() + ", getScriptName()="
+				+ getScriptName() + "]";
 	}
 
 	

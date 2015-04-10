@@ -5,6 +5,8 @@ package com.tibco.silverfabric.model;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 
 import org.apache.commons.io.filefilter.FileFilterUtils;
@@ -40,6 +42,7 @@ public class Plan {
 	public String scriptLanguage = "python";
 	public String scriptLanguageVersion = "2.5";
 	public String scriptFile = "scripts/sfs_component_script.py";
+	private List<Archive> archives = new LinkedList<Archive>();
 
 	/**
 	 * 
@@ -60,11 +63,7 @@ public class Plan {
 				+ configFile + ", contentDirectory=" + contentDirectory
 				+ ", scriptLanguage=" + scriptLanguage
 				+ ", scriptLanguageVersion=" + scriptLanguageVersion
-				+ ", scriptFile=" + scriptFile + "]";
-	}
-
-	public void initialize() {
-
+				+ ", scriptFile=" + scriptFile + ", archives=" + archives + "]";
 	}
 
 	/**
@@ -119,6 +118,18 @@ public class Plan {
 			log.getLog().error(
 					"config file " + configFilePath + " does not exist.");
 		}
+		if (this.archives != null && !this.archives.isEmpty()) {
+			for (Iterator iterator = archives.iterator(); iterator.hasNext();) {
+				Archive archive = (Archive) iterator.next();
+				c.getArchives().add(archive);
+			}
+			log.getLog().info(
+					"registered " + c.getArchives().size()
+							+ " file(s) as archives.");
+		}
+		else {
+			log.getLog().warn("No archives included in this plan.");
+		}
 
 	}
 
@@ -128,14 +139,16 @@ public class Plan {
 	 * @param root
 	 * @param dir
 	 */
-	private void recurseAdd(AbstractMojo log, List<Archive> root, File dir, String relPath) {
+	private void recurseAdd(AbstractMojo log, List<Archive> root, File dir,
+			String relPath) {
 		File[] fs = dir.listFiles();
 		for (int i = 0; i < fs.length; i++) {
 			if (fs[i].isDirectory()) {
 				recurseAdd(log, root, fs[i], fs[i].getName());
 			} else {
 				root.add(new Archive(fs[i], relPath));
-				log.getLog().info("adding " + fs[i] + " with path[" + relPath + "].");
+				log.getLog().info(
+						"adding " + fs[i] + " with path[" + relPath + "].");
 			}
 		}
 	}

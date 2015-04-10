@@ -96,6 +96,16 @@ public abstract class AbstractSilverFabricMojo extends AbstractMojo {
 	public void execute() throws MojoExecutionException, MojoFailureException {
 		DefaultHttpClient httpClient = (DefaultHttpClient) this.clientRequestfactory
 				.getHttpClient();
+		if (this.brokerConfig == null) {
+			throw new MojoExecutionException("Missing brokerConfig!");
+		}
+		if (httpClient == null) {
+			throw new MojoExecutionException("Missing httpClient!");
+		}
+		if (httpClient.getCredentialsProvider() == null) {
+			throw new MojoExecutionException("Missing httpClient.credential provider!");
+		}
+		getLog().info(brokerConfig.toString());
 		httpClient.getCredentialsProvider().setCredentials(
 				new AuthScope(brokerConfig.getBrokerURL().getHost(),
 						brokerConfig.getBrokerURL().getPort(),
