@@ -204,31 +204,27 @@ public abstract class AbstractSilverJSONComponents extends Components {
 				throw new MojoFailureException(
 						"The parameter \"componentName\" is required by the component action: "
 								+ action);
+			String result = "";			
 			try {
-				switch (action) {
-				case "create":
+				if ("create".equals(action)) {
 					Map<Object, Object> mapCreate = setComponentRequest();
 					if (mapCreate == null)
 						throw new MojoFailureException(
 								"The following parameters are required to create a component: enablerName, enablerVersion, componentType");
-					String result = "";
 					result = restTemplate.postForObject(url, mapCreate,
 							String.class);
-					getLog().info(result.toString());
-					break;
-				case "publish":
+					getLog().info(">>>>>>>>>> COMPONENT[" + result.toString() + "]");
+				} else if ("publish".equals(action)) {
 					failOnError = false;
 					restTemplate.put(url + "/{componentName}/published/true",
 							null, componentName);
-					getLog().info(componentName + " published!");
-					break;
-				case "unpublish":
+					getLog().info(">>>>>>>>>> COMPONENT[" + componentName + "] published!");
+				} else if ("unpublish".equals(action)) {
 					failOnError = false;
 					restTemplate.put(url + "/{componentName}/published/false",
 							null, componentName);
-					getLog().info(componentName + " unpublished!");
-					break;
-				case "update":
+					getLog().info(">>>>>>>>>> COMPONENT[" + componentName + "] unpublished!");
+				} else if ("update".equals(action)) {
 					Map<Object, Object> mapUpdate = setComponentRequest();
 					if (mapUpdate == null)
 						throw new MojoFailureException(
@@ -237,14 +233,12 @@ public abstract class AbstractSilverJSONComponents extends Components {
 										+ " a component: enablerName, enablerVersion, componentType");
 					restTemplate.put(url + "/{componentName}", mapUpdate,
 							componentName);
-					getLog().info(componentName + " updated!");
-					break;
-				case "delete":
+					getLog().info(">>>>>>>>>> COMPONENT[" + componentName + "] updated!");
+				} else if ("delete".equals(action)) {
 					restTemplate.delete(url + "/" + "{componentName}",
 							componentName);
-					getLog().info(componentName + " deleted!");
-					break;
-				case "get info":
+					getLog().info(">>>>>>>>>> COMPONENT[" + componentName + "] deleted!");
+				} else if ("get info".equals(action)) {
 					LinkedHashMap<String, LinkedHashMap<String, Object>> infoLinkedHashMap;
 					infoLinkedHashMap = restTemplate.getForObject(url
 							+ "/{componentName}", LinkedHashMap.class,
@@ -255,16 +249,14 @@ public abstract class AbstractSilverJSONComponents extends Components {
 					if (internalCallback != null) {
 						internalCallback.process(infoLinkedHashMap);
 					}
-					break;
-				case "get archives":
+				} else if ("get archives".equals(action)) {
 					getLog().info(
 							restTemplate.getForObject(
 									url + "/{componentName}/archives",
 									LinkedHashMap.class, componentName)
 									.toString());
-					break;
-				case "add archives":
-					MultiValueMap<String, Object> parts = new LinkedMultiValueMap<>();
+				} else if ("add archives".equals(action)) {
+					MultiValueMap<String, Object> parts = new LinkedMultiValueMap();
 					for (Archive archive : archives) {
 						if (archive.exists()) {
 							parts.add("archiveFile",
@@ -282,30 +274,27 @@ public abstract class AbstractSilverJSONComponents extends Components {
 						getLog().warn(
 								"no archives detected as [" + archives + "]");
 					}
-					break;
-				case "remove archive":
+				} else if ("remove archive".equals(action)) {
 					restTemplate.delete(url
 							+ "/{componentName}/archives/{archive}",
 							componentName, archives.get(0).getName());
 					getLog().info("Archive deleted!");
 					break;
-				case "remove archives":
+				} else if ("remove archives".equals(action)) {
 					restTemplate.delete(url + "/{componentName}/archives",
 							componentName);
 					getLog().info("Archives deleted!");
-					break;
-				case "assign to non cloud":
-					Map<String, String> accountNameMap = new HashMap<>();
+				} else if ("assign to non cloud".equals(action)) {
+					Map<String, String> accountNameMap = new HashMap();
 					accountNameMap.put("name", "name");
 					accountNameMap.put("value", accountName);
 					result = restTemplate.postForObject(url
 							+ "/{componentName}/assign-to-non-cloud",
 							accountNameMap, String.class, componentName);
 					getLog().info(result.toString());
-					break;
-				case "get config file":
+				} else if ("get config file".equals(action)) {
 					HttpHeaders requestHeaders = new HttpHeaders();
-					List<MediaType> mediaTypes = new ArrayList<>();
+					List<MediaType> mediaTypes = new ArrayList();
 					mediaTypes.add(MediaType.TEXT_PLAIN);
 					requestHeaders.setAccept(mediaTypes);
 					HttpEntity<?> requestEntity = new HttpEntity(requestHeaders);
@@ -314,10 +303,9 @@ public abstract class AbstractSilverJSONComponents extends Components {
 									url + "/{componentName}/config-file",
 									HttpMethod.GET, requestEntity,
 									String.class, componentName).toString());
-					break;
-				case "update config file":
+				} else if ("update config file".equals(action)) {
 					HttpHeaders updateRequestHeaders = new HttpHeaders();
-					List<MediaType> updateMediaTypes = new ArrayList<>();
+					List<MediaType> updateMediaTypes = new ArrayList();
 					updateMediaTypes.add(MediaType.APPLICATION_JSON);
 					updateRequestHeaders.setAccept(updateMediaTypes);
 					updateRequestHeaders.setContentType(MediaType.TEXT_PLAIN);
@@ -330,18 +318,16 @@ public abstract class AbstractSilverJSONComponents extends Components {
 							componentName);
 					getLog().info(componentName + " updated config file!");
 					break;
-				case "delete config file":
+				} else if ("delete config file".equals(action)) {
 					restTemplate.delete(url + "/{componentName}/config-file",
 							componentName);
-					break;
-				case "get content file path":
+				} else if ("get content file path".equals(action)) {
 					getLog().info(
 							restTemplate.getForObject(
 									url + "/{componentName}/content-files",
 									LinkedHashMap.class, componentName)
 									.toString());
-					break;
-				case "get content file path with regexp":
+				} else if ("get content file path with regexp".equals(action)) {
 					getLog().info(
 							restTemplate
 									.getForObject(
@@ -349,13 +335,12 @@ public abstract class AbstractSilverJSONComponents extends Components {
 													+ "/{componentName}/content-files-by-regex?regex={contentFileRegex}",
 											LinkedHashMap.class, componentName,
 											contentFileRegex).toString());
-					break;
-				case "delete content file path with regex":
-					HashMap<String, String> deleteContentFileParts = new HashMap<>();
+				} else if ("delete content file path with regex".equals(action)) {
+					HashMap<String, String> deleteContentFileParts = new HashMap();
 					deleteContentFileParts.put("name", "regex");
 					deleteContentFileParts.put("value", contentFileRegex);
 					HttpHeaders deleteContentFileRequestHeaders = new HttpHeaders();
-					List<MediaType> deleteContentFileMediaTypes = new ArrayList<>();
+					List<MediaType> deleteContentFileMediaTypes = new ArrayList();
 					deleteContentFileMediaTypes.add(MediaType.APPLICATION_JSON);
 					deleteContentFileRequestHeaders
 							.setAccept(deleteContentFileMediaTypes);
@@ -368,10 +353,9 @@ public abstract class AbstractSilverJSONComponents extends Components {
 							+ "/{componentName}/content-files-by-regex",
 							HttpMethod.POST, deleteContentFileRequestEntity,
 							String.class, componentName);
-					break;
-				case "add content file":
+				} else if ("add content file".equals(action)) {
 					for (Archive contentFile : contentFiles) {
-						MultiValueMap<String, Object> addContentFileParts = new LinkedMultiValueMap<>();
+						MultiValueMap<String, Object> addContentFileParts = new LinkedMultiValueMap();
 						addContentFileParts.add("contentFile",
 								new FileSystemResource(contentFile.getPath()
 										+ "/" + contentFile.getName()));
@@ -385,22 +369,19 @@ public abstract class AbstractSilverJSONComponents extends Components {
 						getLog().info(
 								contentFile.getName() + addContentFileResponse);
 					}
-					break;
-				case "get http-urls":
+				} else if ("get http-urls".equals(action)) {
 					LinkedHashMap<Object, Object> getHttpUrl = restTemplate
 							.getForObject(url + "/{component}/http-urls",
 									LinkedHashMap.class, componentName);
 					getLog().info(getHttpUrl.get("result").toString());
-					break;
-				case "delete http-urls":
+				} else if ("delete http-urls".equals(action)) {
 					getLog().info(
 							restTemplate.exchange(
 									url + "/{component}/http-urls",
 									HttpMethod.DELETE, null, String.class,
 									componentName).toString());
-					break;
-				case "add http-urls":
-					List<String> addHttpUrlsRequest = new ArrayList<>();
+				} else if ("add http-urls".equals(action)) {
+					List<String> addHttpUrlsRequest = new ArrayList();
 					for (String relativeURL : relativeURLs) {
 						addHttpUrlsRequest.add(relativeURL);
 					}
@@ -409,9 +390,8 @@ public abstract class AbstractSilverJSONComponents extends Components {
 									url + "/{component}/http-urls",
 									addHttpUrlsRequest, String.class,
 									componentName).toString());
-					break;
-				case "update http-urls":
-					List<String> updateHttpUrlsRequest = new ArrayList<>();
+				} else if ("update http-urls".equals(action)) {
+					List<String> updateHttpUrlsRequest = new ArrayList();
 					for (String relativeURL : relativeURLs) {
 						updateHttpUrlsRequest.add(relativeURL);
 					}
@@ -419,7 +399,7 @@ public abstract class AbstractSilverJSONComponents extends Components {
 							updateHttpUrlsRequest, componentName);
 					getLog().info("http urls updated!");
 					break;
-				case "auto-detect http-urls":
+				} else if ("auto-detect http-urls".equals(action)) {
 					restTemplate.postForObject(url
 							+ "/{component}/http-urls/auto-detect", null,
 							String.class, componentName);
@@ -429,20 +409,19 @@ public abstract class AbstractSilverJSONComponents extends Components {
 									null, String.class, componentName)
 									.toString());
 					break;
-				case "get patches":
+				} else if ("get patches".equals(action)) {
 					LinkedHashMap<Object, Object> getPatches = restTemplate
 							.getForObject(url + "/{component}/patches",
 									LinkedHashMap.class, componentName);
 					getLog().info(getPatches.get("result").toString());
 					break;
-				case "get script-files":
+				} else if ("get script-files".equals(action)) {
 					LinkedHashMap<Object, Object> getScriptFiles = restTemplate
 							.getForObject(url + "/{component}/script-files",
 									LinkedHashMap.class, componentName);
 					getLog().info(getScriptFiles.get("result").toString());
-					break;
-				case "add script-files":
-					MultiValueMap<String, Object> addScriptFilesParts = new LinkedMultiValueMap<>();
+				} else if ("add script-files".equals(action)) {
+					MultiValueMap<String, Object> addScriptFilesParts = new LinkedMultiValueMap();
 					addScriptFilesParts.add("scriptFile",
 							new FileSystemResource(scriptFile.getPath() + "/"
 									+ scriptFile.getName()));
@@ -453,10 +432,9 @@ public abstract class AbstractSilverJSONComponents extends Components {
 							url + "/{componentName}/script-files",
 							addScriptFilesParts, String.class, componentName);
 					getLog().info(addScriptFilesResponse);
-					break;
-				case "get script-files content":
+				} else if ("get script-files content".equals(action)) {
 					HttpHeaders getScriptFileHeaders = new HttpHeaders();
-					List<MediaType> mediaTypesScriptFile = new ArrayList<>();
+					List<MediaType> mediaTypesScriptFile = new ArrayList();
 					mediaTypesScriptFile.add(MediaType.TEXT_PLAIN);
 					getScriptFileHeaders.setAccept(mediaTypesScriptFile);
 					HttpEntity<?> getScriptFileEntity = new HttpEntity(
@@ -470,12 +448,11 @@ public abstract class AbstractSilverJSONComponents extends Components {
 											getScriptFileEntity, String.class,
 											componentName, scriptName)
 									.toString());
-					break;
-				case "update script-files content":
+				} else if ("update script-files content".equals(action)) {
 					HttpHeaders updateScriptFileRequestHeaders = new HttpHeaders();
 					updateScriptFileRequestHeaders
 							.setContentType(MediaType.TEXT_PLAIN);
-					List<MediaType> scriptFileMediaTypeList = new ArrayList<>();
+					List<MediaType> scriptFileMediaTypeList = new ArrayList();
 					scriptFileMediaTypeList.add(MediaType.APPLICATION_JSON);
 					updateScriptFileRequestHeaders
 							.setAccept(scriptFileMediaTypeList);
@@ -487,8 +464,7 @@ public abstract class AbstractSilverJSONComponents extends Components {
 							+ "/{componentName}/script-files/{script-name}",
 							HttpMethod.PUT, updateScriptFileRequestEntity,
 							String.class, componentName, scriptName);
-					break;
-				case "remove script-files":
+				} else if ("remove script-files".equals(action)) {
 					getLog().info(
 							restTemplate
 									.exchange(
@@ -497,8 +473,7 @@ public abstract class AbstractSilverJSONComponents extends Components {
 											HttpMethod.DELETE, null,
 											String.class, componentName,
 											scriptName).toString());
-					break;
-				case "get script-files path with regex":
+				} else if ("get script-files path with regex".equals(action)) {
 					getLog().info(
 							restTemplate
 									.getForObject(
@@ -506,9 +481,8 @@ public abstract class AbstractSilverJSONComponents extends Components {
 													+ "/{componentName}/script-files-by-regex?regex={scriptFileRegex}",
 											LinkedHashMap.class, componentName,
 											scriptFileRegex).toString());
-					break;
-				case "delete script-files path with regex":
-					HashMap<String, String> deleteScriptFileParts = new HashMap<>();
+				} else if ("delete script-files path with regex".equals(action)) {
+					HashMap<String, String> deleteScriptFileParts = new HashMap();
 					deleteScriptFileParts.put("name", "regex");
 					deleteScriptFileParts.put("value", scriptFileRegex);
 					HttpEntity<?> deleteScriptFileRequestEntity = new HttpEntity(
@@ -518,22 +492,19 @@ public abstract class AbstractSilverJSONComponents extends Components {
 									+ "/{componentName}/script-files-by-regex",
 									deleteScriptFileRequestEntity,
 									String.class, componentName));
-					break;
-				case "get type names":
+				} else if ("get type names".equals(action)) {
 					getLog().info(
 							restTemplate
 									.getForObject(url + "/type-names",
 											LinkedHashMap.class).get("result")
 									.toString());
-					break;
-				case "get types":
+				} else if ("get types".equals(action)) {
 					getLog().info(
 							restTemplate
 									.getForObject(url + "/types",
 											LinkedHashMap.class).get("result")
 									.toString());
-					break;
-				case "get":
+				} else if ("get".equals(action)) {
 					String getRequest = url + "?info=" + info;
 					if (type != null && !type.isEmpty())
 						getRequest += "&type=" + type;
@@ -558,8 +529,7 @@ public abstract class AbstractSilverJSONComponents extends Components {
 						getLog().warn("Status = " + status);
 						getLog().warn(response.get("result").toString());
 					}
-					break;
-				case "clean":
+				} else if ("clean".equals(action)) {
 					LinkedHashMap<Object, Object> getResponse = restTemplate
 							.getForObject(url + "?info=names",
 									LinkedHashMap.class);
@@ -582,9 +552,6 @@ public abstract class AbstractSilverJSONComponents extends Components {
 						getLog().warn("Status = " + getStatus);
 						getLog().warn(getResponse.get("result").toString());
 					}
-					break;
-				default:
-					break;
 				}
 			} catch (HttpClientErrorException httpException) {
 				getLog().info(

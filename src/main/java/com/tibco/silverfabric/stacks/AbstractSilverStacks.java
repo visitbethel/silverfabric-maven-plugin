@@ -91,7 +91,8 @@ public abstract class AbstractSilverStacks extends Stacks {
 	public void initialize() throws MojoFailureException {
 
 		if (this.plan != null) {
-			File outPlan = filterFile(this.outputDirectory, plan.getStackPlanPath());
+			File outPlan = filterFile(this.outputDirectory,
+					plan.getStackPlanPath());
 			getLog().info("loading plan from " + outPlan);
 			try {
 				this.stack = SilverFabricConfig.loadingRESTPlan(this,
@@ -137,11 +138,15 @@ public abstract class AbstractSilverStacks extends Stacks {
 					"Unable to create stack, plan loading failed.");
 		}
 		mergeStackPlan();
-		if (this.stack.getComponents() == null || this.stack.getComponents().isEmpty()) {
-			throw new MojoExecutionException("The components parameters are required to create a stack");
+		if (this.stack.getComponents() == null
+				|| this.stack.getComponents().isEmpty()) {
+			throw new MojoExecutionException(
+					"The components parameters are required to create a stack");
 		}
-		if (this.stack.getPolicies() == null || this.stack.getPolicies().isEmpty()) {
-			throw new MojoExecutionException("The policies parameters are required to create a stack");
+		if (this.stack.getPolicies() == null
+				|| this.stack.getPolicies().isEmpty()) {
+			throw new MojoExecutionException(
+					"The policies parameters are required to create a stack");
 		}
 
 		List<String> actionList = getActions() != null ? getActions()
@@ -161,8 +166,7 @@ public abstract class AbstractSilverStacks extends Stacks {
 						"The parameter \"stackName\" is required by the stack action: "
 								+ action);
 			try {
-				switch (action) {
-				case "create":
+				if ("create".equals(action)) {
 					Map<Object, Object> mapCreate = setStackRequest();
 					if (mapCreate == null)
 						throw new MojoFailureException(
@@ -170,18 +174,15 @@ public abstract class AbstractSilverStacks extends Stacks {
 					getLog().info(
 							restTemplate.postForObject(url, mapCreate,
 									String.class).toString());
-					break;
-				case "publish":
+				} else if ("publish".equals(action)) {
 					restTemplate.put(url + "/{stackName}/published/true", null,
 							stackName);
-					getLog().info(stackName + " published!");
-					break;
-				case "unpublish":
+					getLog().info(">>>>>>>>>> STACK [" + stackName + "] published!");
+				} else if ("unpublish".equals(action)) {
 					restTemplate.put(url + "/{stackName}/published/false",
 							null, stackName);
-					getLog().info(stackName + " unpublished!");
-					break;
-				case "update":
+					getLog().info(">>>>>>>>>> STACK [" + stackName + "] unpublished!");
+				} else if ("update".equals(action)) {
 					Map<Object, Object> mapUpdate = setStackRequest();
 					if (mapUpdate == null)
 						throw new MojoFailureException(
@@ -190,22 +191,19 @@ public abstract class AbstractSilverStacks extends Stacks {
 										+ " a component: enablerName, enablerVersion, componentType");
 					restTemplate
 							.put(url + "/{stackName}", mapUpdate, stackName);
-					getLog().info(stackName + " updated!");
-					break;
-				case "delete":
+					getLog().info(">>>>>>>>>> STACK [" + stackName + "] updated!");
+				} else if ("delete".equals(action)) {
 					restTemplate.delete(url + "/" + "{stackName}", stackName);
-					getLog().info(stackName + " deleted!");
-					break;
-				case "get info":
+					getLog().info(">>>>>>>>>> STACK [" + stackName + "] deleted!");
+				} else if ("get info".equals(action)) {
 					LinkedHashMap<String, LinkedHashMap<String, Object>> infoLinkedHashMap;
 					infoLinkedHashMap = restTemplate.getForObject(url
 							+ "/{stackName}", LinkedHashMap.class, stackName);
 					getLog().info(
 							infoLinkedHashMap.get("result").get("value")
 									.toString());
-					break;
-				case "assign to non cloud":
-					Map<String, String> accountNameMap = new HashMap<>();
+				} else if ("assign to non cloud".equals(action)) {
+					Map<String, String> accountNameMap = new HashMap();
 					accountNameMap.put("name", "name");
 					accountNameMap.put("value", accountName);
 					getLog().info(
@@ -213,10 +211,9 @@ public abstract class AbstractSilverStacks extends Stacks {
 									url + "/{stackName}/assign-to-non-cloud",
 									accountNameMap, String.class, stackName)
 									.toString());
-					break;
-				case "get config file":
+				} else if ("get config file".equals(action)) {
 					HttpHeaders requestHeaders = new HttpHeaders();
-					List<MediaType> mediaTypes = new ArrayList<>();
+					List<MediaType> mediaTypes = new ArrayList();
 					mediaTypes.add(MediaType.TEXT_PLAIN);
 					requestHeaders.setAccept(mediaTypes);
 					HttpEntity<?> requestEntity = new HttpEntity(requestHeaders);
@@ -225,13 +222,12 @@ public abstract class AbstractSilverStacks extends Stacks {
 									url + "/{stackName}/config-file",
 									HttpMethod.GET, requestEntity,
 									String.class, stackName).toString());
-					break;
-				case "set run mode":
+				} else if ("set run mode".equals(action)) {
 					restTemplate.put(url + "/{stackName}/mode/{run-mode}",
 							null, stackName, runMode);
 					getLog().info("run mode set to " + runMode + " !");
-					break;
-				case "auto-detect http-urls":
+				} else if ("auto-detect http-urls".equals(action)) {
+
 					restTemplate.postForObject(url
 							+ "/{component}/http-urls/auto-detect", null,
 							String.class, stackName);
@@ -239,39 +235,33 @@ public abstract class AbstractSilverStacks extends Stacks {
 							restTemplate.postForObject(
 									url + "/{component}/http-urls/auto-detect",
 									null, String.class, stackName).toString());
-					break;
-				case "get patches":
+				} else if ("get patches".equals(action)) {
 					LinkedHashMap<Object, Object> getPatches = restTemplate
 							.getForObject(url + "/{component}/patches",
 									LinkedHashMap.class, stackName);
 					getLog().info(getPatches.get("result").toString());
-					break;
-				case "get script-files":
+				} else if ("get script-files".equals(action)) {
 					LinkedHashMap<Object, Object> getScriptFiles = restTemplate
 							.getForObject(url + "/{component}/script-files",
 									LinkedHashMap.class, stackName);
 					getLog().info(getScriptFiles.get("result").toString());
-					break;
-				case "get type names":
+				} else if ("get type names".equals(action)) {
 					getLog().info(
 							restTemplate
 									.getForObject(url + "/type-names",
 											LinkedHashMap.class).get("result")
 									.toString());
-					break;
-				case "get types":
+				} else if ("get types".equals(action)) {
 					getLog().info(
 							restTemplate
 									.getForObject(url + "/types",
 											LinkedHashMap.class).get("result")
 									.toString());
-					break;
-				case "get":
+				} else if ("get".equals(action)) {
 					getLog().info(
 							restTemplate.getForObject(url, LinkedHashMap.class)
 									.get("result").toString());
-					break;
-				case "clean":
+				} else if ("clean".equals(action)) {
 					LinkedHashMap<Object, Object> getResponse = restTemplate
 							.getForObject(url, LinkedHashMap.class);
 					Integer status = (Integer) getResponse.get("status");
@@ -292,9 +282,6 @@ public abstract class AbstractSilverStacks extends Stacks {
 						getLog().warn("Status = " + status);
 						getLog().warn(getResponse.get("result").toString());
 					}
-					break;
-				default:
-					break;
 				}
 			} catch (HttpClientErrorException httpException) {
 				getLog().info(
@@ -315,7 +302,8 @@ public abstract class AbstractSilverStacks extends Stacks {
 		if (this.getStackName() == null) {
 			this.setStackName(this.stack.getName());
 		}
-		if (this.getPropertyOverrides() == null || this.getPropertyOverrides().isEmpty()) {
+		if (this.getPropertyOverrides() == null
+				|| this.getPropertyOverrides().isEmpty()) {
 			this.setPropertyOverrides(this.stack.getPropertyOverrides());
 		}
 		if (this.mode == null && this.stack.getMode() != null) {
@@ -328,31 +316,35 @@ public abstract class AbstractSilverStacks extends Stacks {
 			this.technology = this.stack.getTechnology();
 		}
 		if (this.urls == null && this.stack.getUrls() != null) {
-			//this.urls = this.stack.getUrls();
+			// this.urls = this.stack.getUrls();
 		}
 	}
 
 	@SuppressWarnings("rawtypes")
 	private HashMap<Object, Object> setStackRequest() {
 
-        HashMap<Object, Object> request = new LinkedHashMap<Object, Object>();
-        request.put("name", stackName);
-        request.put("policies", this.stack.getPolicies());
-        request.put("components", this.stack.getComponents());
-        request.put("icon", this.stack.getIcon() == null ? this.icon : this.stack.getIcon());
-        request.put("description", this.stack.getDescription() == null ? this.description : this.stack.getDescription());
-        
-        valueOf(request, "owner", this.stack.getOwner(), this.owner);
-        valueOf(request, "mode", this.stack.getMode(), this.mode);
-        valueOf(request, "templateLevel", this.stack.getTemplateLevel(), this.templateLevel);
-        valueOf(request, "propertyOverrides", this.stack.getPropertyOverrides(), this.propertyOverrides);
-        valueOf(request, "technology", this.stack.getTechnology(), this.technology);
-        valueOf(request, "urls", this.stack.getUrls(), this.urls);
+		HashMap<Object, Object> request = new LinkedHashMap<Object, Object>();
+		request.put("name", stackName);
+		request.put("policies", this.stack.getPolicies());
+		request.put("components", this.stack.getComponents());
+		request.put("icon", this.stack.getIcon() == null ? this.icon
+				: this.stack.getIcon());
+		request.put("description",
+				this.stack.getDescription() == null ? this.description
+						: this.stack.getDescription());
+
+		valueOf(request, "owner", this.stack.getOwner(), this.owner);
+		valueOf(request, "mode", this.stack.getMode(), this.mode);
+		valueOf(request, "templateLevel", this.stack.getTemplateLevel(),
+				this.templateLevel);
+		valueOf(request, "propertyOverrides",
+				this.stack.getPropertyOverrides(), this.propertyOverrides);
+		valueOf(request, "technology", this.stack.getTechnology(),
+				this.technology);
+		valueOf(request, "urls", this.stack.getUrls(), this.urls);
 
 		return request;
 	}
-
-
 
 	/**
 	 * @return the components
