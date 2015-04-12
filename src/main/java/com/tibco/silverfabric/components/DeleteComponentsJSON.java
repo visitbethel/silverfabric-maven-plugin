@@ -39,6 +39,12 @@ public class DeleteComponentsJSON extends AbstractSilverJSONComponents {
 		this.plan = plan;
 		this.setBrokerConfig(config);
 	}
+	public DeleteComponentsJSON(BrokerConfig brokerConfig, Plan plan,
+			String component) {
+		this.componentName = component;
+		this.plan = plan;
+		this.setBrokerConfig(brokerConfig);
+	}
 	/**
 	 * 
 	 */

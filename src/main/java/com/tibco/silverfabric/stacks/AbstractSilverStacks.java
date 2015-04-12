@@ -11,7 +11,9 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -28,6 +30,7 @@ import org.springframework.http.client.ClientHttpRequestInterceptor;
 import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.web.client.HttpClientErrorException;
 
+import com.fedex.scm.ComponentAllocationInfo;
 import com.fedex.scm.Policy;
 import com.fedex.scm.PropertyOverride;
 import com.tibco.silverfabric.AbstractSilverFabricMojo;
@@ -50,7 +53,7 @@ public abstract class AbstractSilverStacks extends Stacks {
 	protected Plan plan;
 
 	@Parameter
-	protected List<String> components;
+	protected List<String> components = new LinkedList<String>();
 	@Parameter
 	protected String stackName;
 	@Parameter
@@ -100,9 +103,31 @@ public abstract class AbstractSilverStacks extends Stacks {
 			} catch (FileNotFoundException e) {
 				throw new MojoFailureException("Plan not found", e);
 			}
+			if (this.plan.components != null) {
+				for (Iterator<String> iterator = this.plan.components.iterator(); iterator
+						.hasNext();) {
+					this.components.add(iterator.next());
+				}
+				
+			}
 		}
+		//
+		// HERE THE LOCATION FOR ANY EXTERNAL STACK CHANGES
+		//
+		getLog().info("initialize " + this.components.toString() + ".");
 		if (this.stack != null) {
 			this.stackName = this.stack.getName();
+			Policy p = Plan.getFirstPolicy(this.stack);
+			//if (components != null) {
+				for (Iterator<String> iterator = this.components.iterator(); iterator
+						.hasNext();) {
+					String component = (String) iterator.next();
+					this.stack.getComponents().add(component);
+					ComponentAllocationInfo c = Plan
+							.toComponentAllocation(component);
+					p.getComponentAllocationInfo().add(c);
+				}
+			//}
 		}
 		final AbstractSilverFabricMojo THIS = this;
 		if (this.breakout) {
@@ -177,11 +202,13 @@ public abstract class AbstractSilverStacks extends Stacks {
 				} else if ("publish".equals(action)) {
 					restTemplate.put(url + "/{stackName}/published/true", null,
 							stackName);
-					getLog().info(">>>>>>>>>> STACK [" + stackName + "] published!");
+					getLog().info(
+							">>>>>>>>>> STACK [" + stackName + "] published!");
 				} else if ("unpublish".equals(action)) {
 					restTemplate.put(url + "/{stackName}/published/false",
 							null, stackName);
-					getLog().info(">>>>>>>>>> STACK [" + stackName + "] unpublished!");
+					getLog().info(
+							">>>>>>>>>> STACK [" + stackName + "] unpublished!");
 				} else if ("update".equals(action)) {
 					Map<Object, Object> mapUpdate = setStackRequest();
 					if (mapUpdate == null)
@@ -191,10 +218,12 @@ public abstract class AbstractSilverStacks extends Stacks {
 										+ " a component: enablerName, enablerVersion, componentType");
 					restTemplate
 							.put(url + "/{stackName}", mapUpdate, stackName);
-					getLog().info(">>>>>>>>>> STACK [" + stackName + "] updated!");
+					getLog().info(
+							">>>>>>>>>> STACK [" + stackName + "] updated!");
 				} else if ("delete".equals(action)) {
 					restTemplate.delete(url + "/" + "{stackName}", stackName);
-					getLog().info(">>>>>>>>>> STACK [" + stackName + "] deleted!");
+					getLog().info(
+							">>>>>>>>>> STACK [" + stackName + "] deleted!");
 				} else if ("get info".equals(action)) {
 					LinkedHashMap<String, LinkedHashMap<String, Object>> infoLinkedHashMap;
 					infoLinkedHashMap = restTemplate.getForObject(url

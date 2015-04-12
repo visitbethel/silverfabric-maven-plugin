@@ -293,7 +293,6 @@ public abstract class AbstractSilverJSONComponents extends AbstractSilverFabricM
 							+ "/{componentName}/archives/{archive}",
 							componentName, archives.get(0).getName());
 					getLog().info("Archive deleted!");
-					break;
 				} else if ("remove archives".equals(action)) {
 					restTemplate.delete(url + "/{componentName}/archives",
 							componentName);
@@ -331,7 +330,6 @@ public abstract class AbstractSilverJSONComponents extends AbstractSilverFabricM
 							HttpMethod.PUT, updateRequestEntity, String.class,
 							componentName);
 					getLog().info(componentName + " updated config file!");
-					break;
 				} else if ("delete config file".equals(action)) {
 					restTemplate.delete(url + "/{componentName}/config-file",
 							componentName);
@@ -412,7 +410,6 @@ public abstract class AbstractSilverJSONComponents extends AbstractSilverFabricM
 					restTemplate.put(url + "/{component}/http-urls",
 							updateHttpUrlsRequest, componentName);
 					getLog().info("http urls updated!");
-					break;
 				} else if ("auto-detect http-urls".equals(action)) {
 					restTemplate.postForObject(url
 							+ "/{component}/http-urls/auto-detect", null,
@@ -422,13 +419,11 @@ public abstract class AbstractSilverJSONComponents extends AbstractSilverFabricM
 									url + "/{component}/http-urls/auto-detect",
 									null, String.class, componentName)
 									.toString());
-					break;
 				} else if ("get patches".equals(action)) {
 					LinkedHashMap<Object, Object> getPatches = restTemplate
 							.getForObject(url + "/{component}/patches",
 									LinkedHashMap.class, componentName);
 					getLog().info(getPatches.get("result").toString());
-					break;
 				} else if ("get script-files".equals(action)) {
 					LinkedHashMap<Object, Object> getScriptFiles = restTemplate
 							.getForObject(url + "/{component}/script-files",

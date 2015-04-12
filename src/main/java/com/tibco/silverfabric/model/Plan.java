@@ -14,6 +14,8 @@ import org.apache.maven.plugins.annotations.Parameter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.fedex.scm.ComponentAllocationInfo;
+import com.fedex.scm.Policy;
 import com.tibco.silverfabric.Archive;
 import com.tibco.silverfabric.components.CreateComponentsJSON;
 
@@ -39,7 +41,7 @@ public class Plan {
 	public String scriptLanguageVersion = "2.5";
 	public String scriptFile = "scripts/sfs_component_script.py";
 	private List<Archive> archives = new LinkedList<Archive>();
-	
+
 	public List<String> components = new LinkedList<String>();
 
 	/**
@@ -48,9 +50,9 @@ public class Plan {
 	public Plan() {
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
+	
+
+	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
@@ -60,8 +62,11 @@ public class Plan {
 				+ configFile + ", contentDirectory=" + contentDirectory
 				+ ", scriptLanguage=" + scriptLanguage
 				+ ", scriptLanguageVersion=" + scriptLanguageVersion
-				+ ", scriptFile=" + scriptFile + ", archives=" + archives + "]";
+				+ ", scriptFile=" + scriptFile + ", archives=" + archives
+				+ ", components=" + components + "]";
 	}
+
+
 
 	/**
 	 * 
@@ -116,15 +121,14 @@ public class Plan {
 					"config file " + configFilePath + " does not exist.");
 		}
 		if (this.archives != null && !this.archives.isEmpty()) {
-			for (Iterator iterator = archives.iterator(); iterator.hasNext();) {
+			for (Iterator<Archive> iterator = archives.iterator(); iterator.hasNext();) {
 				Archive archive = (Archive) iterator.next();
 				c.getArchives().add(archive);
 			}
 			log.getLog().info(
 					"registered " + c.getArchives().size()
 							+ " file(s) as archives.");
-		}
-		else {
+		} else {
 			log.getLog().warn("No archives included in this plan.");
 		}
 
@@ -164,6 +168,47 @@ public class Plan {
 	 */
 	public File getStackPlanPath() {
 		return new File(this.workDirectory, stackPlan);
+	}
+
+	public static ComponentAllocationInfo toComponentAllocation(String component) {
+		ComponentAllocationInfo info = new ComponentAllocationInfo();
+		info.setMax(1);
+		info.setMin(1);
+		info.setPriority(new Integer(4));
+		info.setName(component);
+		return info;
+	}
+
+	/**
+	 * 
+	 * @param stack
+	 * @return
+	 */
+	public static Policy getFirstPolicy(com.fedex.scm.Stacks stack) {
+		if (stack.getPolicies().isEmpty()) {
+			Policy p = new Policy();
+			p.setScheduled(false);
+			p.setScheduleName(null);
+			stack.getPolicies().add(p);
+			return p;
+		} else {
+			return stack.getPolicies().get(0);
+		}
+	}
+
+	/**
+	 * 
+	 * @param p
+	 * @return
+	 */
+	public static ComponentAllocationInfo getFirstComponentAllocationInfo(
+			String name) {
+		ComponentAllocationInfo ca = new ComponentAllocationInfo();
+		ca.setMax(1);
+		ca.setMin(1);
+		ca.setPriority(4);
+		ca.setName(name);
+		return ca;
 	}
 
 }

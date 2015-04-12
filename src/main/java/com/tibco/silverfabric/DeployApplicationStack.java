@@ -56,7 +56,7 @@ public class DeployApplicationStack extends AbstractMojo {
 
 		getLog().info("found " + plan.components.size() + " listed components.");
 		int count = 1;
-		for (Iterator iterator = plan.components.iterator(); iterator.hasNext();) {
+		for (Iterator<String> iterator = plan.components.iterator(); iterator.hasNext();) {
 			String component = (String) iterator.next();
 			getLog().info(">> Deploying #" + count + ": " + component + ".");
 			CreateComponentsJSON c = new CreateComponentsJSON(brokerConfig, plan, component);
