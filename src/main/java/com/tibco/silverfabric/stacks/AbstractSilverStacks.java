@@ -92,7 +92,7 @@ public abstract class AbstractSilverStacks extends Stacks {
 
 		if (this.plan != null) {
 			File outPlan = filterFile(this.outputDirectory,
-					plan.getStackPlanPath());
+					plan.getStackPlanPath(), null);
 			getLog().info("loading plan from " + outPlan);
 			try {
 				this.stack = SilverFabricConfig.loadingRESTPlan(this,

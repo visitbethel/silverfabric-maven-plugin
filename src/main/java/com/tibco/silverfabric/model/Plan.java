@@ -9,15 +9,11 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.apache.commons.io.filefilter.FileFilterUtils;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugins.annotations.Parameter;
-import org.codehaus.plexus.logging.AbstractLogEnabled;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.fedex.scm.Components;
-import com.fedex.scm.Stacks;
 import com.tibco.silverfabric.Archive;
 import com.tibco.silverfabric.components.CreateComponentsJSON;
 
@@ -43,12 +39,13 @@ public class Plan {
 	public String scriptLanguageVersion = "2.5";
 	public String scriptFile = "scripts/sfs_component_script.py";
 	private List<Archive> archives = new LinkedList<Archive>();
+	
+	public List<String> components = new LinkedList<String>();
 
 	/**
 	 * 
 	 */
 	public Plan() {
-		// TODO Auto-generated constructor stub
 	}
 
 	/*

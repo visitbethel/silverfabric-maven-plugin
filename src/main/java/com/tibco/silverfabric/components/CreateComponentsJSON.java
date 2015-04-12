@@ -27,27 +27,30 @@ import com.tibco.silverfabric.model.Plan;
 @Mojo(name = "create-components-json")
 public class CreateComponentsJSON extends AbstractSilverJSONComponents {
 
-	public CreateComponentsJSON() {
-		super();
-	}
-	
 	public CreateComponentsJSON(BrokerConfig config, Plan plan) {
-		super();
-		this.plan = plan;
-		setBrokerConfig(config);
+		this(config, plan, null);
 	}
 
+	public CreateComponentsJSON(BrokerConfig brokerConfig, Plan plan,
+			String componentName) {
+		super();
+		this.componentName = componentName;
+		this.plan = plan;
+		setBrokerConfig(brokerConfig);
+
+	}
 
 	public void initialize() throws MojoFailureException {
 		super.initialize();
-		getLog().info("initializing component " + this.toString());
+		getLog().info("initializing component [" + this.componentName + "]: " + this.toString());
 		if (getActions() == null) {
 			LinkedList<String> list = new LinkedList<String>();
 			list.add("create");
 			if (this.getConfigFile() != null) {
 				list.add("update config file");
 			}
-			if (this.getContentFiles() != null && this.getContentFiles().size() > 0) {
+			if (this.getContentFiles() != null
+					&& this.getContentFiles().size() > 0) {
 				list.add("add content file");
 			}
 			if (this.getArchives() != null && this.getArchives().size() > 0) {
@@ -62,7 +65,9 @@ public class CreateComponentsJSON extends AbstractSilverJSONComponents {
 		getLog().info("assign action " + getActions());
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
@@ -79,5 +84,4 @@ public class CreateComponentsJSON extends AbstractSilverJSONComponents {
 				+ getScriptName() + "]";
 	}
 
-	
 }

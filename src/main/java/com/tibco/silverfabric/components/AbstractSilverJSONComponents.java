@@ -15,6 +15,7 @@ import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
@@ -47,7 +48,7 @@ import com.tibco.silverfabric.model.Plan;
  * Actions related to components.
  *
  */
-public abstract class AbstractSilverJSONComponents extends Components {
+public abstract class AbstractSilverJSONComponents extends AbstractSilverFabricMojo {
 
 	public abstract static class InternalCallback {
 		public abstract void process(Object result);
@@ -80,7 +81,7 @@ public abstract class AbstractSilverJSONComponents extends Components {
 	@Parameter
 	private String componentType;
 	@Parameter
-	private String componentName;
+	public String componentName;
 	@Parameter
 	private String enablerName;
 	@Parameter
@@ -129,6 +130,7 @@ public abstract class AbstractSilverJSONComponents extends Components {
 	private boolean breakout = false;
 	private File outputDirectory = new File("target");
 	private boolean failOnError = true;
+	protected String componentPlanPath;
 
 	/**
      * 
@@ -142,9 +144,9 @@ public abstract class AbstractSilverJSONComponents extends Components {
 	 */
 	public void initialize() throws MojoFailureException {
 		if (this.plan != null) {
-			File outPlan = filterFile(this.outputDirectory,
-					plan.getComponentPlanPath());
-			getLog().info("loading plan from " + outPlan);
+			File outPlan = filterFile(this.outputDirectory, plan.getComponentPlanPath(), this.componentName);
+			getLog().info("loading plan from " + outPlan + " for component " + this.componentName);
+
 			try {
 				component = SilverFabricConfig.loadingRESTPlan(this, outPlan,
 						com.fedex.scm.Components.class);
@@ -153,7 +155,10 @@ public abstract class AbstractSilverJSONComponents extends Components {
 			}
 		}
 		if (component != null) {
-			this.setComponentName(component.getName());
+			// only overwrite if a componentName was specified.
+			if (this.componentName != null) {
+				component.setName(this.componentName);
+			}
 			this.setEnablerName(component.getEnablerName());
 			this.setEnablerVersion(component.getEnablerVersion());
 			this.setComponentType(component.getComponentType());
@@ -204,7 +209,7 @@ public abstract class AbstractSilverJSONComponents extends Components {
 				throw new MojoFailureException(
 						"The parameter \"componentName\" is required by the component action: "
 								+ action);
-			String result = "";			
+			String result = "";
 			try {
 				if ("create".equals(action)) {
 					Map<Object, Object> mapCreate = setComponentRequest();
@@ -213,17 +218,22 @@ public abstract class AbstractSilverJSONComponents extends Components {
 								"The following parameters are required to create a component: enablerName, enablerVersion, componentType");
 					result = restTemplate.postForObject(url, mapCreate,
 							String.class);
-					getLog().info(">>>>>>>>>> COMPONENT[" + result.toString() + "]");
+					getLog().info(
+							">>>>>>>>>> COMPONENT [" + result.toString() + "]");
 				} else if ("publish".equals(action)) {
 					failOnError = false;
 					restTemplate.put(url + "/{componentName}/published/true",
 							null, componentName);
-					getLog().info(">>>>>>>>>> COMPONENT[" + componentName + "] published!");
+					getLog().info(
+							">>>>>>>>>> COMPONENT [" + componentName
+									+ "] published!");
 				} else if ("unpublish".equals(action)) {
 					failOnError = false;
 					restTemplate.put(url + "/{componentName}/published/false",
 							null, componentName);
-					getLog().info(">>>>>>>>>> COMPONENT[" + componentName + "] unpublished!");
+					getLog().info(
+							">>>>>>>>>> COMPONENT [" + componentName
+									+ "] unpublished!");
 				} else if ("update".equals(action)) {
 					Map<Object, Object> mapUpdate = setComponentRequest();
 					if (mapUpdate == null)
@@ -233,11 +243,15 @@ public abstract class AbstractSilverJSONComponents extends Components {
 										+ " a component: enablerName, enablerVersion, componentType");
 					restTemplate.put(url + "/{componentName}", mapUpdate,
 							componentName);
-					getLog().info(">>>>>>>>>> COMPONENT[" + componentName + "] updated!");
+					getLog().info(
+							">>>>>>>>>> COMPONENT [" + componentName
+									+ "] updated!");
 				} else if ("delete".equals(action)) {
 					restTemplate.delete(url + "/" + "{componentName}",
 							componentName);
-					getLog().info(">>>>>>>>>> COMPONENT[" + componentName + "] deleted!");
+					getLog().info(
+							">>>>>>>>>> COMPONENT [" + componentName
+									+ "] deleted!");
 				} else if ("get info".equals(action)) {
 					LinkedHashMap<String, LinkedHashMap<String, Object>> infoLinkedHashMap;
 					infoLinkedHashMap = restTemplate.getForObject(url

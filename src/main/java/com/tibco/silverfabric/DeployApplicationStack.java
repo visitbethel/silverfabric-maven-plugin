@@ -3,6 +3,8 @@
  */
 package com.tibco.silverfabric;
 
+import java.util.Iterator;
+
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
@@ -52,13 +54,20 @@ public class DeployApplicationStack extends AbstractMojo {
 		}
 
 
-		CreateComponentsJSON c = new CreateComponentsJSON(brokerConfig, plan);
-		try {
-			plan.merge(this, c);
-		} catch (Exception e) {
-			throw new MojoExecutionException(e.getMessage(), e);
+		getLog().info("found " + plan.components.size() + " listed components.");
+		int count = 1;
+		for (Iterator iterator = plan.components.iterator(); iterator.hasNext();) {
+			String component = (String) iterator.next();
+			getLog().info(">> Deploying #" + count + ": " + component + ".");
+			CreateComponentsJSON c = new CreateComponentsJSON(brokerConfig, plan, component);
+			try {
+				plan.merge(this, c);
+			} catch (Exception e) {
+				throw new MojoExecutionException(e.getMessage(), e);
+			}
+			c.execute();
+			count++;
 		}
-		c.execute();
 
 		getLog().info("Executing Stack Creation for Component ");
 

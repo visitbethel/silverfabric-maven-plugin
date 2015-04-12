@@ -69,11 +69,12 @@ public abstract class AbstractSilverFabricMojo extends AbstractMojo {
 	@Parameter(required = true)
 	private BrokerConfig brokerConfig;
 
-	@Parameter(defaultValue = "${project}", readonly = true)
-	protected MavenProject project;
+    @Parameter( defaultValue = "${session}", readonly = true )
+    protected MavenSession session;
 
-	@Parameter(defaultValue = "${session}", readonly = true)
-	protected MavenSession session;
+    @Parameter( defaultValue = "${project}", readonly = true )
+    protected MavenProject project;
+    
 	/**
 	 * Maven shared filtering utility.
 	 */
@@ -98,6 +99,10 @@ public abstract class AbstractSilverFabricMojo extends AbstractMojo {
 				.getHttpClient();
 		if (this.brokerConfig == null) {
 			throw new MojoExecutionException("Missing brokerConfig!");
+		}
+		if (this.brokerConfig == null || this.brokerConfig.getBrokerURL() == null) {
+			getLog().error(this.brokerConfig.toString());
+			throw new MojoExecutionException("Missing brokerConfig credentials!");
 		}
 		if (httpClient == null) {
 			throw new MojoExecutionException("Missing httpClient!");
@@ -151,7 +156,7 @@ public abstract class AbstractSilverFabricMojo extends AbstractMojo {
 	 * @throws FileNotFoundException
 	 */
 	@SuppressWarnings("unchecked")
-	public File filterFile(File outputDirectory, File sourcePlan)
+	public File filterFile(File outputDirectory, File sourcePlan, String componentName)
 			throws MojoFailureException {
 		File outputPlan = new File(outputDirectory, sourcePlan.getName()
 				+ ".filtered");
@@ -160,6 +165,10 @@ public abstract class AbstractSilverFabricMojo extends AbstractMojo {
 		 * still want to be able to run, however without filtering.
 		 */
 		if (project != null) {
+			if (componentName != null) {
+				this.session.getUserProperties().setProperty("sf.component.name", componentName);
+				getLog().info(this.session.getUserProperties().toString());
+			}
 			MavenFileFilterRequest req = new MavenFileFilterRequest(sourcePlan,
 					outputPlan, true, project, this.project.getFilters(), true,
 					"UTF-8", session, null);
