@@ -15,7 +15,6 @@ import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
@@ -39,7 +38,6 @@ import com.fedex.scm.Option;
 import com.fedex.scm.RuntimeContextVariable;
 import com.tibco.silverfabric.AbstractSilverFabricMojo;
 import com.tibco.silverfabric.Archive;
-import com.tibco.silverfabric.Components;
 import com.tibco.silverfabric.DefaultAllocationSetting;
 import com.tibco.silverfabric.SilverFabricConfig;
 import com.tibco.silverfabric.model.Plan;
@@ -48,7 +46,8 @@ import com.tibco.silverfabric.model.Plan;
  * Actions related to components.
  *
  */
-public abstract class AbstractSilverJSONComponents extends AbstractSilverFabricMojo {
+public abstract class AbstractSilverJSONComponents extends
+		AbstractSilverFabricMojo {
 
 	public abstract static class InternalCallback {
 		public abstract void process(Object result);
@@ -144,8 +143,11 @@ public abstract class AbstractSilverJSONComponents extends AbstractSilverFabricM
 	 */
 	public void initialize() throws MojoFailureException {
 		if (this.plan != null) {
-			File outPlan = filterFile(this.outputDirectory, plan.getComponentPlanPath(), this.componentName);
-			getLog().info("loading plan from " + outPlan + " for component " + this.componentName);
+			File outPlan = filterFile(this.outputDirectory,
+					plan.getComponentPlanPath(), this.componentName);
+			getLog().info(
+					"loading plan from " + outPlan + " for component "
+							+ this.componentName);
 
 			try {
 				component = SilverFabricConfig.loadingRESTPlan(this, outPlan,
@@ -159,9 +161,6 @@ public abstract class AbstractSilverJSONComponents extends AbstractSilverFabricM
 			if (this.componentName != null) {
 				component.setName(this.componentName);
 			}
-			this.setEnablerName(component.getEnablerName());
-			this.setEnablerVersion(component.getEnablerVersion());
-			this.setComponentType(component.getComponentType());
 		}
 		final AbstractSilverFabricMojo THIS = this;
 		if (this.breakout) {
@@ -270,7 +269,7 @@ public abstract class AbstractSilverJSONComponents extends AbstractSilverFabricM
 									LinkedHashMap.class, componentName)
 									.toString());
 				} else if ("add archives".equals(action)) {
-					MultiValueMap<String, Object> parts = new LinkedMultiValueMap();
+					MultiValueMap<String, Object> parts = new LinkedMultiValueMap<String, Object>();
 					for (Archive archive : archives) {
 						if (archive.exists()) {
 							parts.add("archiveFile",
@@ -298,7 +297,7 @@ public abstract class AbstractSilverJSONComponents extends AbstractSilverFabricM
 							componentName);
 					getLog().info("Archives deleted!");
 				} else if ("assign to non cloud".equals(action)) {
-					Map<String, String> accountNameMap = new HashMap();
+					Map<String, String> accountNameMap = new HashMap<String, String>();
 					accountNameMap.put("name", "name");
 					accountNameMap.put("value", accountName);
 					result = restTemplate.postForObject(url
@@ -307,7 +306,7 @@ public abstract class AbstractSilverJSONComponents extends AbstractSilverFabricM
 					getLog().info(result.toString());
 				} else if ("get config file".equals(action)) {
 					HttpHeaders requestHeaders = new HttpHeaders();
-					List<MediaType> mediaTypes = new ArrayList();
+					List<MediaType> mediaTypes = new ArrayList<MediaType>();
 					mediaTypes.add(MediaType.TEXT_PLAIN);
 					requestHeaders.setAccept(mediaTypes);
 					HttpEntity<?> requestEntity = new HttpEntity(requestHeaders);
@@ -318,7 +317,7 @@ public abstract class AbstractSilverJSONComponents extends AbstractSilverFabricM
 									String.class, componentName).toString());
 				} else if ("update config file".equals(action)) {
 					HttpHeaders updateRequestHeaders = new HttpHeaders();
-					List<MediaType> updateMediaTypes = new ArrayList();
+					List<MediaType> updateMediaTypes = new ArrayList<MediaType>();
 					updateMediaTypes.add(MediaType.APPLICATION_JSON);
 					updateRequestHeaders.setAccept(updateMediaTypes);
 					updateRequestHeaders.setContentType(MediaType.TEXT_PLAIN);
@@ -348,7 +347,7 @@ public abstract class AbstractSilverJSONComponents extends AbstractSilverFabricM
 											LinkedHashMap.class, componentName,
 											contentFileRegex).toString());
 				} else if ("delete content file path with regex".equals(action)) {
-					HashMap<String, String> deleteContentFileParts = new HashMap();
+					HashMap<String, String> deleteContentFileParts = new HashMap<String, String>();
 					deleteContentFileParts.put("name", "regex");
 					deleteContentFileParts.put("value", contentFileRegex);
 					HttpHeaders deleteContentFileRequestHeaders = new HttpHeaders();
@@ -594,19 +593,10 @@ public abstract class AbstractSilverJSONComponents extends AbstractSilverFabricM
 	protected HashMap<Object, Object> setComponentRequest() {
 		HashMap<Object, Object> request = new LinkedHashMap<Object, Object>();
 
-		request.put(
-				"componentType",
-				valueOf(component != null ? component.getComponentType() : null,
-						componentType));
-		request.put("name", componentName);
-		request.put(
-				"enablerName",
-				valueOf(component != null ? component.getEnablerName() : null,
-						enablerName));
-		request.put(
-				"enablerVersion",
-				valueOf(component != null ? component.getEnablerVersion()
-						: null, enablerVersion));
+		request.put("componentType", component.getComponentType());
+		request.put("name", component.getName());
+		request.put("enablerName", component.getEnablerName());
+		request.put("enablerVersion", component.getEnablerVersion());
 		valueOf(request, "description", description, null);
 		valueOf(request, "trackedStatistics", trackedStatistics, null);
 		valueOf(request, "options", component != null ? component.getOptions()

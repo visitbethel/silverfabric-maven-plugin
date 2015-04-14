@@ -76,6 +76,7 @@ public abstract class AbstractSilverStacks extends Stacks {
 	protected String icon;
 	@Parameter(defaultValue = "Default Template Description.")
 	protected String description;
+	@SuppressWarnings("rawtypes")
 	@Parameter
 	protected List<Map> urls;
 	private File outputDirectory = new File("target");
@@ -90,7 +91,6 @@ public abstract class AbstractSilverStacks extends Stacks {
 	 * 
 	 * @throws MojoFailureException
 	 */
-	@SuppressWarnings("unchecked")
 	public void initialize() throws MojoFailureException {
 
 		if (this.plan != null) {
@@ -104,11 +104,11 @@ public abstract class AbstractSilverStacks extends Stacks {
 				throw new MojoFailureException("Plan not found", e);
 			}
 			if (this.plan.components != null) {
-				for (Iterator<String> iterator = this.plan.components.iterator(); iterator
-						.hasNext();) {
+				for (Iterator<String> iterator = this.plan.components
+						.iterator(); iterator.hasNext();) {
 					this.components.add(iterator.next());
 				}
-				
+
 			}
 		}
 		//
@@ -118,16 +118,24 @@ public abstract class AbstractSilverStacks extends Stacks {
 		if (this.stack != null) {
 			this.stackName = this.stack.getName();
 			Policy p = Plan.getFirstPolicy(this.stack);
-			//if (components != null) {
-				for (Iterator<String> iterator = this.components.iterator(); iterator
-						.hasNext();) {
-					String component = (String) iterator.next();
+			boolean wasEmpty = p.getComponentAllocationInfo().isEmpty();
+			for (Iterator<String> iterator = this.components.iterator(); iterator
+					.hasNext();) {
+				String component = (String) iterator.next();
+				getLog().info(">> component add: " + component + " -> " +  this.stack.getComponents());
+				// only add component if it is not registered yet.
+				if (!this.stack.getComponents().contains(component)) {
 					this.stack.getComponents().add(component);
+				}
+				if (wasEmpty) {
 					ComponentAllocationInfo c = Plan
 							.toComponentAllocation(component);
 					p.getComponentAllocationInfo().add(c);
+				} else {
+					// leave the allocations alone and not populate them
 				}
-			//}
+			}
+			getLog().info(this.stack.getPolicies().toString());
 		}
 		final AbstractSilverFabricMojo THIS = this;
 		if (this.breakout) {
@@ -349,7 +357,10 @@ public abstract class AbstractSilverStacks extends Stacks {
 		}
 	}
 
-	@SuppressWarnings("rawtypes")
+	/**
+	 * 
+	 * @return
+	 */
 	private HashMap<Object, Object> setStackRequest() {
 
 		HashMap<Object, Object> request = new LinkedHashMap<Object, Object>();
