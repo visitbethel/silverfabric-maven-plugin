@@ -7,6 +7,7 @@
 package com.tibco.silverfabric.components;
 
 import java.util.LinkedList;
+import java.util.Properties;
 
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.Mojo;
@@ -28,13 +29,14 @@ import com.tibco.silverfabric.model.Plan;
 public class CreateComponentsJSON extends AbstractSilverJSONComponents {
 
 	public CreateComponentsJSON(BrokerConfig config, Plan plan) {
-		this(config, plan, null);
+		this(config, plan, null, null);
 	}
 
 	public CreateComponentsJSON(BrokerConfig brokerConfig, Plan plan,
-			String componentName) {
+			String componentName, Properties filterProperties) {
 		super();
 		this.componentName = componentName;
+		this.componentProperties = filterProperties;
 		this.plan = plan;
 		setBrokerConfig(brokerConfig);
 

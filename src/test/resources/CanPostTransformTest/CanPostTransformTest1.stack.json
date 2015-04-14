@@ -4,7 +4,7 @@
   ],
   "capturedOn":0,
   "components":[
-    "GRD-BW-CanPostTransformer"
+    "__UNIT_COMPONENT__-CanPostTransformTest"
   ],
   "description":"__UNIT_STACK__-CanPostTransformTest",
   "displayName":"__UNIT_STACK__-CanPostTransformTest",

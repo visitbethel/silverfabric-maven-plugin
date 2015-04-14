@@ -18,6 +18,7 @@ import com.fedex.scm.ComponentAllocationInfo;
 import com.fedex.scm.Policy;
 import com.tibco.silverfabric.Archive;
 import com.tibco.silverfabric.components.CreateComponentsJSON;
+import com.tibco.silverfabric.stacks.CreateStacks;
 
 /**
  * @author akaan
@@ -31,7 +32,7 @@ public class Plan {
 	final static Logger LOGGER = LoggerFactory.getLogger(Plan.class);
 
 	@Parameter(defaultValue = "${project.build.directory}/work")
-	public File workDirectory;
+	public File workDirectory = new File("target/work");
 	public String componentPlan = "component.json";
 	public String stackPlan = "stack.json";
 	public String configFile = "config/configure.xml";
@@ -50,9 +51,9 @@ public class Plan {
 	public Plan() {
 	}
 
-	
-
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
@@ -65,8 +66,6 @@ public class Plan {
 				+ ", scriptFile=" + scriptFile + ", archives=" + archives
 				+ ", components=" + components + "]";
 	}
-
-
 
 	/**
 	 * 
@@ -121,7 +120,8 @@ public class Plan {
 					"config file " + configFilePath + " does not exist.");
 		}
 		if (this.archives != null && !this.archives.isEmpty()) {
-			for (Iterator<Archive> iterator = archives.iterator(); iterator.hasNext();) {
+			for (Iterator<Archive> iterator = archives.iterator(); iterator
+					.hasNext();) {
 				Archive archive = (Archive) iterator.next();
 				c.getArchives().add(archive);
 			}
@@ -132,6 +132,16 @@ public class Plan {
 			log.getLog().warn("No archives included in this plan.");
 		}
 
+	}
+
+	/**
+	 * 
+	 * @param c
+	 */
+	public void merge(AbstractMojo log, CreateStacks c) throws Exception {
+		if (c == null) {
+			return;
+		}
 	}
 
 	/**
@@ -159,7 +169,10 @@ public class Plan {
 	 * @return
 	 */
 	public File getComponentPlanPath() {
-		return new File(this.workDirectory, componentPlan);
+		if (componentPlan.startsWith("/")) {
+			return new File(componentPlan);
+		}
+		return new File(this.workDirectory.getAbsoluteFile(), componentPlan);
 	}
 
 	/**
@@ -167,6 +180,9 @@ public class Plan {
 	 * @return
 	 */
 	public File getStackPlanPath() {
+		if (this.stackPlan != null && this.stackPlan.startsWith("/")) { 
+			return new File(this.stackPlan);
+		}
 		return new File(this.workDirectory, stackPlan);
 	}
 

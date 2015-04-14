@@ -66,11 +66,11 @@ public class PlanHelper {
 		xs.alias("stack", Stack.class);
 		xs.registerConverter(new PropertiesConverter());
 		xs.addImplicitCollection(PlanModel.class, "models", Model.class);
-		xs.addImplicitCollection(Model.class, "componentDependencies",
+		xs.addImplicitCollection(Stack.class, "componentDependencies",
 				ComponentDependency.class);
-		xs.addImplicitCollection(Model.class, "components", "component",
+		xs.addImplicitCollection(Stack.class, "components", "component",
 				Component.class);
-		xs.addImplicitCollection(Component.class, "stacks", "stack",
+		xs.addImplicitCollection(Model.class, "stacks", "stack",
 				Stack.class);
 		Object planmodel = xs.fromXML(f);
 

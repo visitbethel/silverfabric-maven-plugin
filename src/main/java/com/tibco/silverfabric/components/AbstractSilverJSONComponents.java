@@ -15,6 +15,7 @@ import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
@@ -65,6 +66,7 @@ public abstract class AbstractSilverJSONComponents extends
 	 */
 	@Parameter
 	public Plan plan;
+	public Properties componentProperties = new Properties();
 
 	/* interface */
 
@@ -144,7 +146,7 @@ public abstract class AbstractSilverJSONComponents extends
 	public void initialize() throws MojoFailureException {
 		if (this.plan != null) {
 			File outPlan = filterFile(this.outputDirectory,
-					plan.getComponentPlanPath(), this.componentName);
+					plan.getComponentPlanPath(), componentProperties);
 			getLog().info(
 					"loading plan from " + outPlan + " for component "
 							+ this.componentName);

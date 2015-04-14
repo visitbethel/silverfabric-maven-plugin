@@ -3,60 +3,64 @@
     <id>L1</id>
     <!-- Typical AS Configuration -->
     <!-- One Component with multiple stacks -->
-    <component>
-      <name>GSEFS_DDS_AS_L1</name>
-      <stack>
-        <name>GSEFS_DDS_AS_L1_Stack#1</name>
+
+    <stack>
+      <name>GSEFS_DDS_AS_L1_Stack#1</name>
+      <component>
+        <name>GSEFS_DDS_AS_L1</name>
         <properties>
           <as.stack.hostname>urh00609</as.stack.hostname>
         </properties>
-      </stack>
-      <stack>
-        <name>GSEFS_DDS_AS_L1_Stack#2</name>
+      </component>
+    </stack>
+    <stack>
+      <name>GSEFS_DDS_AS_L1_Stack#2</name>
+      <component>
+        <name>GSEFS_DDS_AS_L1</name>
         <properties>
           <as.stack.hostname>urh00609</as.stack.hostname>
         </properties>
-      </stack>
-    </component>
+      </component>
+    </stack>
   </model>
   <model>
     <id>L2</id>
     <!-- Typical BW Configuration -->
     <!-- One Component with One Stack dependent on Admin -->
-    <componentDependency>
-      <name>GSEFS_ADMIN_L1</name>
-    </componentDependency>
-    <component>
-      <name>GSEFS_StopGateway_BW_L1</name>
-      <stack>
-        <name>GSEFS_StopGateway_BW_L1_Stack</name>
+    <stack>
+      <name>GSEFS_StopGateway_BW_L1_Stack</name>
+      <componentDependency>
+        <name>GSEFS_ADMIN_L1</name>
+      </componentDependency>
+      <component>
+        <name>GSEFS_StopGateway_BW_L1</name>
         <properties>
           <as.stack.hostname>urh00600</as.stack.hostname>
         </properties>
-      </stack>
-    </component>
+      </component>
+    </stack>
   </model>
   <model>
     <id>L2</id>
     <!-- Typical BE Configuration -->
     <!-- Multiple Components with One Stack -->
-    <component>
-      <name>GSEFS_StopCore_BE_L1</name>
-      <stack>
-        <name>GSEFS_StopCore_BE_L1_Stack</name>
+    <stack>
+      <name>GSEFS_StopCore_BE_L1_Stack</name>
+      <component>
+        <name>GSEFS_StopCore_BE_L1</name>
         <properties>
           <as.stack.hostname>urh00600</as.stack.hostname>
         </properties>
-      </stack>
-    </component>
-    <component>
-      <name>GSEFS_StopCoreCache_BE_L1</name>
-      <stack>
-        <name>GSEFS_StopCore_BE_L1_Stack</name>
+      </component>
+    </stack>
+    <stack>
+      <name>GSEFS_StopCoreCache_BE_L1_Stack</name>
+      <component>
+        <name>GSEFS_StopCoreCache_BE_L1</name>
         <properties>
           <as.stack.hostname>urh00600</as.stack.hostname>
         </properties>
-      </stack>
-    </component>
+      </component>
+    </stack>
   </model>
 </planModel>

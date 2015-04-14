@@ -128,8 +128,7 @@ public abstract class AbstractSilverJSONTest {
 
 	protected void executeDeleteStack(Plan stackplan, Class clazz)
 			throws MojoFailureException {
-		DeleteStacks s = new DeleteStacks(config, stackplan);
-		s.setStackName(Utils.getEntityName(clazz, Utils.PREFIX_STACK));
+		DeleteStacks s = new DeleteStacks(config, stackplan, Utils.getEntityName(clazz, Utils.PREFIX_STACK) );
 		s.initialize();
 		try {
 			s.execute();
@@ -147,9 +146,10 @@ public abstract class AbstractSilverJSONTest {
 	public void setBrokerConfig() {
 		config = new BrokerConfig();
 		config.setUsername("sefsdev_operate");
-		config.setPassword("test123");
+		config.setPassword("lkmM2jIt67RH");
 		try {
-			config.setBrokerURL(new URL("http://irh00610.ute.fedex.com:8080"));
+			//config.setBrokerURL(new URL("http://irh00610.ute.fedex.com:8080"));
+			config.setBrokerURL(new URL("http://urh00172.ute.fedex.com:8080"));
 		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

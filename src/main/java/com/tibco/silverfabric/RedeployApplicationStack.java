@@ -30,6 +30,8 @@ public class RedeployApplicationStack extends AbstractMojo {
 	public Plan plan;
 	@Parameter
 	public BrokerConfig brokerConfig;
+	@Parameter
+	public String stackName;
 
 	/**
 	 * 
@@ -54,7 +56,7 @@ public class RedeployApplicationStack extends AbstractMojo {
 		}
 
 		try {
-			DeleteStacks ds = new DeleteStacks(brokerConfig, plan);
+			DeleteStacks ds = new DeleteStacks(brokerConfig, plan, stackName);
 			ds.execute();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

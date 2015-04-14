@@ -26,9 +26,7 @@ public class DeployApplicationStackTest {
 		BrokerConfig config = new BrokerConfig(broker, "sefsdev_operate",
 				"test123");
 
-		DeployApplicationStack deploy = new DeployApplicationStack();
-		deploy.brokerConfig = config;
-		deploy.plan = p;
+		DeployApplicationStack deploy = new DeployApplicationStack(config, p);
 		deploy.execute();
 
 	}

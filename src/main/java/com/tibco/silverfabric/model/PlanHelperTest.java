@@ -19,7 +19,7 @@ public class PlanHelperTest {
 		PlanModel model = helper.loadPlan(f);
 		assertNotNull(model);
 		assertEquals(model.models.get(0).id, "L1");
-		assertEquals(model.models.get(0).components.get(0).stacks.get(0).properties.get("as.stack.hostname"), "urh00609");
+		assertEquals(model.models.get(0).stacks.get(0).components.get(0).properties.get("as.stack.hostname"), "urh00609");
 	}
 
 }

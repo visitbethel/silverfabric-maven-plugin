@@ -5,8 +5,7 @@ import java.util.List;
 public class Model {
 
 	public String id;
-	public List<Component> components;
-	public List<ComponentDependency> componentDependencies;
+	public List<Stack> stacks;
 
 	public Model() {
 	}

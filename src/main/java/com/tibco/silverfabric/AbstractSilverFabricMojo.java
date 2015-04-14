@@ -7,11 +7,13 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Properties;
 
 import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.maven.execution.MavenSession;
+import org.apache.maven.model.DeploymentRepository;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
@@ -21,6 +23,7 @@ import org.apache.maven.project.MavenProject;
 import org.apache.maven.shared.filtering.MavenFileFilter;
 import org.apache.maven.shared.filtering.MavenFileFilterRequest;
 import org.apache.maven.shared.filtering.MavenFilteringException;
+import org.codehaus.plexus.logging.console.ConsoleLogger;
 import org.codehaus.plexus.util.IOUtil;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.web.client.RestTemplate;
@@ -69,18 +72,17 @@ public abstract class AbstractSilverFabricMojo extends AbstractMojo {
 	@Parameter(required = true)
 	private BrokerConfig brokerConfig;
 
-    @Parameter( defaultValue = "${session}", readonly = true )
-    protected MavenSession session;
+	@Parameter(defaultValue = "${session}", readonly = true)
+	protected MavenSession session;
 
-    @Parameter( defaultValue = "${project}", readonly = true )
-    protected MavenProject project;
-    
+	@Parameter(defaultValue = "${project}", readonly = true)
+	protected MavenProject project;
+
 	/**
 	 * Maven shared filtering utility.
 	 */
 	@Component
 	public MavenFileFilter mavenFileFilter;
-
 
 	public final RestTemplate restTemplate; // =
 											// ctx.getBean(RestTemplate.class);
@@ -100,15 +102,18 @@ public abstract class AbstractSilverFabricMojo extends AbstractMojo {
 		if (this.brokerConfig == null) {
 			throw new MojoExecutionException("Missing brokerConfig!");
 		}
-		if (this.brokerConfig == null || this.brokerConfig.getBrokerURL() == null) {
+		if (this.brokerConfig == null
+				|| this.brokerConfig.getBrokerURL() == null) {
 			getLog().error(this.brokerConfig.toString());
-			throw new MojoExecutionException("Missing brokerConfig credentials!");
+			throw new MojoExecutionException(
+					"Missing brokerConfig credentials!");
 		}
 		if (httpClient == null) {
 			throw new MojoExecutionException("Missing httpClient!");
 		}
 		if (httpClient.getCredentialsProvider() == null) {
-			throw new MojoExecutionException("Missing httpClient.credential provider!");
+			throw new MojoExecutionException(
+					"Missing httpClient.credential provider!");
 		}
 		getLog().info(brokerConfig.toString());
 		httpClient.getCredentialsProvider().setCredentials(
@@ -156,20 +161,27 @@ public abstract class AbstractSilverFabricMojo extends AbstractMojo {
 	 * @throws FileNotFoundException
 	 */
 	@SuppressWarnings("unchecked")
-	public File filterFile(File outputDirectory, File sourcePlan, String componentName)
-			throws MojoFailureException {
-		File outputPlan = new File(outputDirectory, sourcePlan.getName()
+	public File filterFile(File outputDirectory, File sourcePlan,
+			Properties filterProperties) throws MojoFailureException {
+		File prefiltered = new File(outputDirectory, sourcePlan.getName()
+				+ ".prefiltered");
+		DeploymentFileFilter ff = new DeploymentFileFilter();
+		ff.enableLogging(new ConsoleLogger());
+		try {
+			ff.copyFile(sourcePlan, prefiltered, true, filterProperties, "UTF-8");
+		} catch (Exception e2) {
+			// TODO Auto-generated catch block
+			throw new MojoFailureException("Filtering plan " + prefiltered
+					+ ".", e2);
+		}
+		File outputPlan = new File(outputDirectory, prefiltered.getName()
 				+ ".filtered");
 		/*
 		 * if we are running testcases unharnessed with the maven runtime we
 		 * still want to be able to run, however without filtering.
 		 */
 		if (project != null) {
-			if (componentName != null) {
-				this.session.getUserProperties().setProperty("sf.component.name", componentName);
-				getLog().info(this.session.getUserProperties().toString());
-			}
-			MavenFileFilterRequest req = new MavenFileFilterRequest(sourcePlan,
+			MavenFileFilterRequest req = new MavenFileFilterRequest(prefiltered,
 					outputPlan, true, project, this.project.getFilters(), true,
 					"UTF-8", session, null);
 			try {
@@ -188,7 +200,7 @@ public abstract class AbstractSilverFabricMojo extends AbstractMojo {
 			return outputPlan;
 		} else {
 			try {
-				IOUtil.copy(new FileInputStream(sourcePlan),
+				IOUtil.copy(new FileInputStream(prefiltered),
 						new FileOutputStream(outputPlan));
 				return outputPlan;
 			} catch (IOException e) {

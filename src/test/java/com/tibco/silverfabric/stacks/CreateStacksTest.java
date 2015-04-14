@@ -56,4 +56,39 @@ public class CreateStacksTest extends AbstractSilverJSONTest {
 		assertNotNull(s.getStack().getPolicies());
 		assertEquals(1, s.getStack().getPolicies().size());
 	}
+
+
+	@Test
+	public void testDeleteStacksTest1() throws MojoExecutionException,
+			MojoFailureException {
+	
+		stackplan = new Plan();
+		stackplan.componentPlan = Utils.getTestFile(
+				CreateComponentsJSONTest.class, 1, "json").getAbsolutePath();
+		stackplan.stackPlan = Utils.getTestFile(CreateStacksTest.class,
+				1, "json").getAbsolutePath();
+	
+		CreateComponentsJSON c = new CreateComponentsJSON(getConfig(), stackplan);
+		executeCreateComponent(stackplan, c);
+	
+		CreateStacks s = new CreateStacks(config, stackplan);
+		s.setStackName(PREFIX + "-" + this.getClass());
+		s.setComponents(Arrays.asList(new String[] { c.getComponentName() }));
+		s.initialize();
+		s.getLog().info(s.getComponents().toString());
+	
+		assertNotNull(s.restTemplate);
+		try {
+			s.execute();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			if (e.getMessage() == null || !e.getMessage().contains("already exists")) {
+				e.printStackTrace();
+				fail(e.getMessage());
+			}
+		}
+		assertNotNull(s.getStack());
+		assertNotNull(s.getStack().getPolicies());
+		assertEquals(1, s.getStack().getPolicies().size());
+	}
 }

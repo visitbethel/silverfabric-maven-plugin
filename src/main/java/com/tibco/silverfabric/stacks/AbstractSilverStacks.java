@@ -16,6 +16,7 @@ import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
@@ -37,6 +38,7 @@ import com.tibco.silverfabric.AbstractSilverFabricMojo;
 import com.tibco.silverfabric.SilverFabricConfig;
 import com.tibco.silverfabric.Stacks;
 import com.tibco.silverfabric.model.Plan;
+import com.tibco.silverfabric.model.Stack;
 
 /**
  * Actions related to stacks.
@@ -50,7 +52,8 @@ import com.tibco.silverfabric.model.Plan;
 public abstract class AbstractSilverStacks extends Stacks {
 
 	@Parameter
-	protected Plan plan;
+	protected Plan plan = new Plan();
+	public Properties stackProperties = new Properties();
 
 	@Parameter
 	protected List<String> components = new LinkedList<String>();
@@ -86,6 +89,7 @@ public abstract class AbstractSilverStacks extends Stacks {
      * 
      */
 	private com.fedex.scm.Stacks stack;
+	protected Stack stackModel;
 
 	/**
 	 * 
@@ -94,23 +98,20 @@ public abstract class AbstractSilverStacks extends Stacks {
 	public void initialize() throws MojoFailureException {
 
 		if (this.plan != null) {
+			getLog().info("attempting load plan from " + plan.getStackPlanPath() + " from " + this.outputDirectory);
 			File outPlan = filterFile(this.outputDirectory,
-					plan.getStackPlanPath(), null);
+					plan.getStackPlanPath(), this.stackProperties);
 			getLog().info("loading plan from " + outPlan);
+			// LOADING THE STACK TEMPLATE
 			try {
 				this.stack = SilverFabricConfig.loadingRESTPlan(this,
 						outPlan.getAbsolutePath(), com.fedex.scm.Stacks.class);
 			} catch (FileNotFoundException e) {
 				throw new MojoFailureException("Plan not found", e);
 			}
-			if (this.plan.components != null) {
-				for (Iterator<String> iterator = this.plan.components
-						.iterator(); iterator.hasNext();) {
-					this.components.add(iterator.next());
-				}
-
-			}
 		}
+
+
 		//
 		// HERE THE LOCATION FOR ANY EXTERNAL STACK CHANGES
 		//

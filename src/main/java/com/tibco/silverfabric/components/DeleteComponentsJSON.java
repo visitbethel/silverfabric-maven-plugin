@@ -7,6 +7,7 @@
 package com.tibco.silverfabric.components;
 
 import java.util.LinkedList;
+import java.util.Properties;
 
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.Mojo;
@@ -41,8 +42,14 @@ public class DeleteComponentsJSON extends AbstractSilverJSONComponents {
 	}
 	public DeleteComponentsJSON(BrokerConfig brokerConfig, Plan plan,
 			String component) {
-		this.componentName = component;
+		this(brokerConfig,plan,component,new Properties());
+	}
+	public DeleteComponentsJSON(BrokerConfig brokerConfig, Plan plan,
+			String name, Properties filters) {
+		super();
+		this.componentName = name;
 		this.plan = plan;
+		this.componentProperties = filters;
 		this.setBrokerConfig(brokerConfig);
 	}
 	/**

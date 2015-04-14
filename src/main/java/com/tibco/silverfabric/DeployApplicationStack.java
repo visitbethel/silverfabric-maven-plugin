@@ -6,6 +6,7 @@ package com.tibco.silverfabric;
 import java.io.File;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Properties;
 
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -34,7 +35,7 @@ public class DeployApplicationStack extends AbstractMojo {
 	/**
 	 */
 	@Parameter
-	public Plan plan;
+	public Plan plan = new Plan();
 	@Parameter
 	public BrokerConfig brokerConfig;
 	@Parameter
@@ -43,8 +44,10 @@ public class DeployApplicationStack extends AbstractMojo {
 	/**
 	 * 
 	 */
-	public DeployApplicationStack() {
+	public DeployApplicationStack(BrokerConfig config, Plan plan) {
 		super();
+		this.plan = plan;
+		this.brokerConfig = config;
 	}
 
 	/*
@@ -70,6 +73,7 @@ public class DeployApplicationStack extends AbstractMojo {
 				throw new MojoExecutionException("Planfile "
 						+ pf.getAbsolutePath() + " does not exist.");
 			}
+			getLog().info("loading external plan from " + pf.getAbsolutePath());
 			executePlanFile(pf);
 		} else if (plan.components != null && !plan.components.isEmpty()) {
 			executeLocalPlan(plan.components);
@@ -77,28 +81,6 @@ public class DeployApplicationStack extends AbstractMojo {
 			throw new MojoExecutionException(
 					"planFile or localPlan must be specified");
 		}
-
-		getLog().info("found " + plan.components.size() + " listed components.");
-		int count = 1;
-		for (Iterator<String> iterator = plan.components.iterator(); iterator
-				.hasNext();) {
-			String component = (String) iterator.next();
-			getLog().info(">> Deploying #" + count + ": " + component + ".");
-			CreateComponentsJSON c = new CreateComponentsJSON(brokerConfig,
-					plan, component);
-			try {
-				plan.merge(this, c);
-			} catch (Exception e) {
-				throw new MojoExecutionException(e.getMessage(), e);
-			}
-			c.execute();
-			count++;
-		}
-
-		getLog().info("Executing Stack Creation for Component ");
-
-		CreateStacks s = new CreateStacks(brokerConfig, plan);
-		s.execute();
 	}
 
 	/**
@@ -107,41 +89,50 @@ public class DeployApplicationStack extends AbstractMojo {
 	 * @throws MojoExecutionException
 	 * @throws MojoFailureException
 	 */
-	private void executePlanFile(File pf) throws MojoExecutionException, MojoFailureException {
+	private void executePlanFile(File pf) throws MojoExecutionException,
+			MojoFailureException {
 		PlanHelper helper = new PlanHelper();
 		PlanModel model = helper.loadPlan(pf);
 		Model m = model.models.get(0);
-		getLog().info("found " + m.components.size() + " listed components.");
-		getLog().info("found " + m.componentDependencies.size() + " listed componentdependencies.");
-		List<Component> components = m.components;
+
+		getLog().info("found " + m.stacks.size() + " listed stacks.");
+
 		int count = 1;
-		for (Iterator<Component> iterator = components.iterator(); iterator
-				.hasNext();) {
-			Component component = (Component) iterator.next();
-			getLog().info(">> Deploying #" + count + ": " + component + ".");
-			CreateComponentsJSON c = new CreateComponentsJSON(brokerConfig,
-					plan, component.name);
-			try {
-				plan.merge(this, c);
-			} catch (Exception e) {
-				throw new MojoExecutionException(e.getMessage(), e);
+		for (Iterator<Stack> iterator = m.stacks.iterator(); iterator.hasNext();) {
+			Stack stack = iterator.next();
+
+			for (Iterator<Component> iter = stack.components.iterator(); iter
+					.hasNext();) {
+				Component component = (Component) iter.next();
+				getLog().info(">> Deploying #" + count + ": " + component + ".");
+				Properties filters = new Properties();
+				if (stack.properties != null) {
+					filters.putAll(stack.properties);
+				}
+				if (component.properties != null ) {
+					filters.putAll(component.properties);
+				}
+				filters.putAll(component.properties);
+				getLog().info("component.properties: " + filters);
+				CreateComponentsJSON c = new CreateComponentsJSON(brokerConfig,
+						plan, component.name, filters);
+				try {
+					plan.merge(this, c);
+				} catch (Exception e) {
+					throw new MojoExecutionException(e.getMessage(), e);
+				}
+				c.execute();
+
+				// STACKS
 			}
-			c.execute();
-			
-			// STACKS
-			List<Stack> stax = component.stacks;
-			for (Iterator iterator2 = stax.iterator(); iterator2.hasNext();) {
-				Stack stack = (Stack) iterator2.next();
-				CreateStacks s = new CreateStacks(brokerConfig, plan, stack.name);
-				s.execute();
-			}
-			
-			
+			getLog().info("stack.properties: " + stack.properties);
+
+			CreateStacks s = new CreateStacks(brokerConfig, plan.stackPlan,
+					stack.components, stack.properties);
+			s.execute();
+
 			count++;
 		}
-
-		
-		
 	}
 
 	/**
@@ -159,7 +150,7 @@ public class DeployApplicationStack extends AbstractMojo {
 			String component = (String) iterator.next();
 			getLog().info(">> Deploying #" + count + ": " + component + ".");
 			CreateComponentsJSON c = new CreateComponentsJSON(brokerConfig,
-					plan, component);
+					plan, component, new Properties());
 			try {
 				plan.merge(this, c);
 			} catch (Exception e) {
