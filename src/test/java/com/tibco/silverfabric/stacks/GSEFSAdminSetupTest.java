@@ -26,14 +26,15 @@ public class GSEFSAdminSetupTest extends AbstractSilverJSONTest {
 	@Test
 	public void testCreateGSEFSAdminTest1()
 			throws MojoExecutionException, MojoFailureException {
-		CreateComponentsJSON c = new CreateComponentsJSON();
-		CreateStacks s = new CreateStacks();
-
 		plan = new Plan();
 		plan.componentPlan = Utils.getTestFile(GSEFSAdminSetupTest.class, 1,
 				"component.json").getAbsolutePath();
 		plan.stackPlan = Utils.getTestFile(GSEFSAdminSetupTest.class, 1,
 				"stack.json").getAbsolutePath();
+
+		CreateComponentsJSON c = new CreateComponentsJSON(getConfig(), plan);
+		CreateStacks s = new CreateStacks();
+
 
 		executeCreateComponent(plan, c);
 		

@@ -31,6 +31,13 @@ public class CreateStacks extends AbstractSilverStacks {
 		setBrokerConfig(config);
 	}
 
+	public CreateStacks(BrokerConfig brokerConfig, Plan plan, String name) {
+		super();
+		this.plan = plan;
+		setBrokerConfig(brokerConfig);
+		this.stackName = name;
+	}
+
 	public void initialize() throws MojoFailureException {
 		super.initialize();
 		if (getActions() == null) {

@@ -31,9 +31,9 @@ public class CanPostTransformTest extends AbstractSilverJSONTest {
 	@Test
 	public void testCreateComponentsForCanPostTransform1() throws MojoExecutionException,
 			MojoFailureException {
-		CreateComponentsJSON c = new CreateComponentsJSON();
-
 		plan = new Plan();
+		CreateComponentsJSON c = new CreateComponentsJSON(getConfig(), plan);
+
 		plan.componentPlan = Utils.getTestFile(CanPostTransformTest.class, 1, "component.json").getAbsolutePath();
 		plan.stackPlan = Utils.getTestFile(CanPostTransformTest.class, 1, "stack.json").getAbsolutePath();
 		

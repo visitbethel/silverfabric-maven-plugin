@@ -33,7 +33,7 @@ public class CreateStacksTest extends AbstractSilverJSONTest {
 		stackplan.stackPlan = Utils.getTestFile(CreateStacksTest.class,
 				1, "json").getAbsolutePath();
 
-		CreateComponentsJSON c = new CreateComponentsJSON();
+		CreateComponentsJSON c = new CreateComponentsJSON(getConfig(), stackplan);
 		executeCreateComponent(stackplan, c);
 
 		CreateStacks s = new CreateStacks(config, stackplan);
