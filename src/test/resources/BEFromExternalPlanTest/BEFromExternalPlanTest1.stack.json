@@ -1,0 +1,75 @@
+{
+  "archiveScalingRules":[
+    
+  ],
+  "capturedOn":0,
+  "components":[
+  ],
+  "description":"BE ${sf.component.name}_Stack",
+  "displayName":"${sf.component.name}_Stack",
+  "exportedOn":0,
+  "extras":[
+    
+  ],
+  "icon":"/livecluster/admin/images/icons/stackIcons/defaults/1_Skyway_TIBCO_Generic_Default_Icon.png",
+  "lastModified":1428784577075,
+  "mode":"manual",
+  "modified":true,
+  "modifiedBy":"sefsdev_operate",
+  "name":"${sf.component.name}_Stack",
+  "owner":"",
+  "policies":[
+    {
+      "componentAllocationInfo":[
+        {
+          "allocationRules":null,
+          "max":1,
+          "min":1,
+          "name":"${sf.component.name}",
+          "priority":4
+        }
+      ],
+      "scheduleName":"",
+      "scheduled":false
+    }
+  ],
+  "propertyOverrides":[
+    {
+      "datatype":"string",
+      "description":"The stack's name, as shown in Skyway",
+      "displayName":"Stack Name",
+      "name":"displayName",
+      "order":0,
+      "readonly":false,
+      "required":true,
+      "requiredForProvisioning":false,
+      "source":null,
+      "validations":{
+        "message":"Stack Name must be unique among all of your stacks",
+        "unique":"owner"
+      },
+      "value":"${sf.component.name}_Stack"
+    },
+    {
+      "datatype":"string",
+      "description":"The stack's description",
+      "displayName":"Stack Description",
+      "name":"description",
+      "order":1,
+      "readonly":false,
+      "required":false,
+      "requiredForProvisioning":false,
+      "source":null,
+      "validations":{
+        
+      },
+      "value":null
+    }
+  ],
+  "startOn":0,
+  "technology":"",
+  "templateLevel":"--",
+  "urls":[
+    
+  ]
+}

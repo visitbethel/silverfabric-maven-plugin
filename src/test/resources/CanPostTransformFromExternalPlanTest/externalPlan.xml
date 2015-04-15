@@ -1,0 +1,24 @@
+<planModel>
+  <model>
+    <id>L2</id>
+    <!-- Typical BW Configuration -->
+    <!-- One Component with One Stack dependent on Admin -->
+    <stack>
+      <name>__UNITTEST_STACK__GSEFS_SABLE_BW_Stack</name>
+      <componentDependency>
+        <name>GSEFS_ADMIN_L1</name>
+      </componentDependency>
+      <component>
+        <name>__ABCDEF_COMPONENT__GSEFS_StopGateway_BW</name>
+        <properties>
+          <as.stack.hostname>urh00600</as.stack.hostname>
+        </properties>
+      </component>
+      <properties>
+        <sf.component.name>__ABCDEF_COMPONENT__GSEFS_StopGateway_BW</sf.component.name>
+        <sf.admin.component.name>GSEFS_ADMIN_L1</sf.admin.component.name>
+      </properties>
+    </stack>
+  </model>
+
+</planModel>

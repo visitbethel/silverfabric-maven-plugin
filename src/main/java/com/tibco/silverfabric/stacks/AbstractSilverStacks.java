@@ -37,6 +37,7 @@ import com.fedex.scm.PropertyOverride;
 import com.tibco.silverfabric.AbstractSilverFabricMojo;
 import com.tibco.silverfabric.SilverFabricConfig;
 import com.tibco.silverfabric.Stacks;
+import com.tibco.silverfabric.model.Component;
 import com.tibco.silverfabric.model.Plan;
 import com.tibco.silverfabric.model.Stack;
 
@@ -98,7 +99,9 @@ public abstract class AbstractSilverStacks extends Stacks {
 	public void initialize() throws MojoFailureException {
 
 		if (this.plan != null) {
-			getLog().info("attempting load plan from " + plan.getStackPlanPath() + " from " + this.outputDirectory);
+			getLog().info(
+					"attempting load plan from " + plan.getStackPlanPath()
+							+ " from " + this.outputDirectory);
 			File outPlan = filterFile(this.outputDirectory,
 					plan.getStackPlanPath(), this.stackProperties);
 			getLog().info("loading plan from " + outPlan);
@@ -111,32 +114,59 @@ public abstract class AbstractSilverStacks extends Stacks {
 			}
 		}
 
-
 		//
 		// HERE THE LOCATION FOR ANY EXTERNAL STACK CHANGES
 		//
 		getLog().info("initialize " + this.components.toString() + ".");
 		if (this.stack != null) {
-			this.stackName = this.stack.getName();
-			Policy p = Plan.getFirstPolicy(this.stack);
-			boolean wasEmpty = p.getComponentAllocationInfo().isEmpty();
-			for (Iterator<String> iterator = this.components.iterator(); iterator
-					.hasNext();) {
-				String component = (String) iterator.next();
-				getLog().info(">> component add: " + component + " -> " +  this.stack.getComponents());
-				// only add component if it is not registered yet.
-				if (!this.stack.getComponents().contains(component)) {
-					this.stack.getComponents().add(component);
+			if (this.stackModel == null) {
+				// LOCAL PLAN
+				this.stackName = this.stack.getName();
+				Policy p = Plan.getFirstPolicy(this.stack);
+				boolean wasEmpty = p.getComponentAllocationInfo().isEmpty();
+				for (Iterator<String> iterator = this.components.iterator(); iterator
+						.hasNext();) {
+					String component = (String) iterator.next();
+					getLog().info(
+							">> component add: " + component + " -> "
+									+ this.stack.getComponents());
+					// only add component if it is not registered yet.
+					if (!this.stack.getComponents().contains(component)) {
+						this.stack.getComponents().add(component);
+					}
+					if (wasEmpty) {
+						ComponentAllocationInfo c = Plan
+								.toComponentAllocation(component);
+						p.getComponentAllocationInfo().add(c);
+					} else {
+						// leave the allocations alone and not populate them
+					}
 				}
-				if (wasEmpty) {
-					ComponentAllocationInfo c = Plan
-							.toComponentAllocation(component);
-					p.getComponentAllocationInfo().add(c);
-				} else {
-					// leave the allocations alone and not populate them
+				getLog().info(this.stack.getPolicies().toString());
+			} else {
+				Policy p = Plan.getFirstPolicy(this.stack);
+				boolean wasEmpty = p.getComponentAllocationInfo().isEmpty();
+				for (Iterator<Component> iterator = this.stackModel.components.iterator(); iterator
+						.hasNext();) {
+					Component component = (Component) iterator.next();
+					getLog().info(
+							">> component from add: " + component + " -> "
+									+ this.stack.getComponents());
+					// only add component if it is not registered yet.
+					if (!this.stack.getComponents().contains(component)) {
+						this.stack.getComponents().add(component.getName());
+					}
+					if (wasEmpty) {
+						ComponentAllocationInfo c = Plan
+								.toComponentAllocation(component.getName());
+						p.getComponentAllocationInfo().add(c);
+					} else {
+						// leave the allocations alone and not populate them
+					}
 				}
+				getLog().info(this.stack.getPolicies().toString());
+
 			}
-			getLog().info(this.stack.getPolicies().toString());
 		}
 		final AbstractSilverFabricMojo THIS = this;
 		if (this.breakout) {
@@ -172,8 +202,9 @@ public abstract class AbstractSilverStacks extends Stacks {
 					"Unable to create stack, plan loading failed.");
 		}
 		mergeStackPlan();
-		if (this.stack.getComponents() == null
-				|| this.stack.getComponents().isEmpty()) {
+		if (getActions().contains("create")
+				&& (this.stack.getComponents() == null || this.stack
+						.getComponents().isEmpty())) {
 			throw new MojoExecutionException(
 					"The components parameters are required to create a stack");
 		}

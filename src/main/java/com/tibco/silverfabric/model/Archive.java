@@ -4,7 +4,7 @@
  * Use is subject to the terms of the TIBCO license terms accompanying the download of this code.
  * In most instances, the license terms are contained in a file named license.txt.
  */
-package com.tibco.silverfabric;
+package com.tibco.silverfabric.model;
 
 import java.io.File;
 

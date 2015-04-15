@@ -1,0 +1,654 @@
+{
+  "allocationConstraints":[
+    
+  ],
+  "componentType":"TIBCO BusinessEvents:2.5.0",
+  "defaultAllocationRuleSettings":null,
+  "defaultSettings":[
+    {
+      "name":"Default Max Engines",
+      "value":"1"
+    },
+    {
+      "name":"Default Min Engines",
+      "value":"1"
+    },
+    {
+      "name":"Default Priority",
+      "value":"3"
+    }
+  ],
+  "description":"${sf.application.name} Unit",
+  "enablerName":"TIBCO BusinessEvents container",
+  "enablerVersion":"2.5.0.1",
+  "features":[
+    {
+      "description":"Supports Logging feature.",
+      "infoDescription":"",
+      "name":"Application Logging Support",
+      "properties":[
+        {
+          "name":"Archive Application Logs",
+          "value":"true"
+        },
+        {
+          "name":"Checkpoint Frequency In Seconds",
+          "value":"300"
+        },
+        {
+          "name":"Log File Pattern",
+          "value":"/../domaindata/tra/${TIBCO_DOMAIN_NAME}/logs/*.log,/./tibco/tra/5.8/logs/*.log,/../domaindata/tra/${TIBCO_DOMAIN_NAME}/application/logs/.*.log"
+        }
+      ]
+    },
+    {
+      "description":"Supports deployment of file archives into the Container.",
+      "infoDescription":"This Feature adds support for deployment of Archive files.  You may upload archives on the <b>Add/Remove Archive Files</b> page.",
+      "name":"Archive Management Support",
+      "properties":[
+        {
+          "name":"Archive",
+          "value":"${sf.application.name}.ear"
+        },
+        {
+          "name":"Start Archives On Activation",
+          "value":"true"
+        }
+      ]
+    },
+    {
+      "description":"Support for HTTP routing",
+      "infoDescription":"",
+      "name":"HTTP Support",
+      "properties":[
+        {
+          "name":"HTTP Enabled",
+          "value":"true"
+        },
+        {
+          "name":"HTTPS Enabled",
+          "value":"false"
+        },
+        {
+          "name":"Relative Url",
+          "value":""
+        },
+        {
+          "name":"Route Directly To Endpoints",
+          "value":"false"
+        },
+        {
+          "name":"Routing Prefix",
+          "value":""
+        }
+      ]
+    }
+  ],
+  "lastModified":1428784295153,
+  "modified":true,
+  "modifiedBy":"sefsdev_operate",
+  "name":"${sf.component.name}",
+  "options":[
+    {
+      "name":"Activation Delay",
+      "value":"0"
+    },
+    {
+      "name":"Archive Scale Down Timeout",
+      "value":"120"
+    },
+    {
+      "name":"Archive Scale Up Timeout",
+      "value":"120"
+    },
+    {
+      "name":"Department",
+      "value":""
+    },
+    {
+      "name":"Engine Blacklisting",
+      "value":"false"
+    },
+    {
+      "name":"Engine Reservation Expiration",
+      "value":"300"
+    },
+    {
+      "name":"Failures Per Day Before Blacklist",
+      "value":"0"
+    },
+    {
+      "name":"Location",
+      "value":""
+    },
+    {
+      "name":"Maximum Activation Time",
+      "value":"900"
+    },
+    {
+      "name":"Maximum Capture Time",
+      "value":"180"
+    },
+    {
+      "name":"Maximum Deactivation Time",
+      "value":"900"
+    },
+    {
+      "name":"Maximum Instances Per Host",
+      "value":"0"
+    },
+    {
+      "name":"Middleware Versions",
+      "value":"TIBCO_BusinessEvents_distribution:5.1.4.0.0"
+    },
+    {
+      "name":"Minimum Instances Per Host",
+      "value":"0"
+    },
+    {
+      "name":"Partition",
+      "value":""
+    },
+    {
+      "name":"Plugin Mdlware Versions",
+      "value":"TIBCO_Fedex_BusinessEvents_Plugin_for_JMS_extension_distribution:1.0.0.0"
+    },
+    {
+      "name":"Separator Tags",
+      "value":""
+    },
+    {
+      "name":"Statistics Collection Frequency",
+      "value":"10"
+    }
+  ],
+  "patches":[
+    
+  ],
+  "runtimeContextVariables":[
+    {
+      "autoIncrementType":0,
+      "description":"HAWK AMI DAEMON for TIBCO Administrator",
+      "export":true,
+      "name":"AMI_HAWK_DAEMON",
+      "type":1,
+      "value":"tcp:7474"
+    },
+    {
+      "autoIncrementType":0,
+      "description":null,
+      "export":false,
+      "name":"AMI_HAWK_NETWORK",
+      "type":1,
+      "value":""
+    },
+    {
+      "autoIncrementType":0,
+      "description":"HAWK AMI SERVICE for TIBCO Administrator",
+      "export":true,
+      "name":"AMI_HAWK_SERVICE",
+      "type":1,
+      "value":"7474"
+    },
+    {
+      "autoIncrementType":0,
+      "description":"Polling period (in seconds) for BE running verification",
+      "export":false,
+      "name":"BE_POLLPERIOD",
+      "type":0,
+      "value":"30"
+    },
+    {
+      "autoIncrementType":0,
+      "description":"Delete contents of work directory when component stops",
+      "export":false,
+      "name":"DELETE_RUNTIME_DIR_ON_SHUTDOWN",
+      "type":1,
+      "value":"true"
+    },
+    {
+      "autoIncrementType":0,
+      "description":"Share drive where deployment configuration will be created",
+      "export":false,
+      "name":"DOMAINDATA_DIR",
+      "type":1,
+      "value":""
+    },
+    {
+      "autoIncrementType":0,
+      "description":null,
+      "export":false,
+      "name":"EXTERNAL_JAR_FILE",
+      "type":1,
+      "value":""
+    },
+    {
+      "autoIncrementType":0,
+      "description":"Polling period (in seconds) for TIBCO Hawk Agent running verification",
+      "export":false,
+      "name":"HAWK_POLLPERIOD",
+      "type":0,
+      "value":"30"
+    },
+    {
+      "autoIncrementType":0,
+      "description":"Consult the user documentation on automated HTTP port setting",
+      "export":false,
+      "name":"HTTP_PORT_BASE",
+      "type":1,
+      "value":"38200"
+    },
+    {
+      "autoIncrementType":0,
+      "description":"Consult the user documentation on automated HTTP port setting",
+      "export":false,
+      "name":"HTTP_PORT_INCREASE",
+      "type":1,
+      "value":"50"
+    },
+    {
+      "autoIncrementType":0,
+      "description":"Should Silver prepend .jars to CLASSPATH on deployment",
+      "export":true,
+      "name":"IS_PREPAND",
+      "type":1,
+      "value":"false"
+    },
+    {
+      "autoIncrementType":0,
+      "description":"JDBC Driver file",
+      "export":true,
+      "name":"JDBC_DRIVER_FILE",
+      "type":1,
+      "value":"jdbc/ojdbc6.jar"
+    },
+    {
+      "autoIncrementType":0,
+      "description":"Name of the TLM",
+      "export":true,
+      "name":"LOGICAL_MACHINE_NAME",
+      "type":1,
+      "value":"${sf.component.name}"
+    },
+    {
+      "autoIncrementType":0,
+      "description":"Number of times to restart BE before tearing down install",
+      "export":true,
+      "name":"NB_BE_RESTART_BEFORE_RESTART_ENGINE",
+      "type":1,
+      "value":"3"
+    },
+    {
+      "autoIncrementType":0,
+      "description":"Number of times to restart Hawk Agent before tearing down install",
+      "export":true,
+      "name":"NB_HAWK_RESTART_BEFORE_RESTART_ENGINE",
+      "type":1,
+      "value":"3"
+    },
+    {
+      "autoIncrementType":0,
+      "description":null,
+      "export":false,
+      "name":"PLUGIN_CONFIG_FILE",
+      "type":1,
+      "value":""
+    },
+    {
+      "autoIncrementType":0,
+      "description":"BE CDD file",
+      "export":false,
+      "name":"sefs_suShipment_CDD",
+      "type":0,
+      "value":"${CONTAINER_WORK_DIR}/apparchives/${sf.application.name}.zip_Files/${sf.application.name}.cdd"
+    },
+    {
+      "autoIncrementType":0,
+      "description":"BE Processing Unit (PU)",
+      "export":false,
+      "name":"sefs_suShipment_PUID",
+      "type":0,
+      "value":"ShipmentPU"
+    },
+    {
+      "autoIncrementType":0,
+      "description":"Used by sfs_component_script.py originally from Pattern Factory",
+      "export":false,
+      "name":"sfs_CLUSTEREVENTS_ENABLED",
+      "type":0,
+      "value":"false"
+    },
+    {
+      "autoIncrementType":0,
+      "description":"Used by sfs_component_script.py originally from Pattern Factory",
+      "export":false,
+      "name":"sfs_COLDSTART_ENABLED",
+      "type":0,
+      "value":"false"
+    },
+    {
+      "autoIncrementType":0,
+      "description":"Used by sfs_component_script.py originally from Pattern Factory",
+      "export":false,
+      "name":"sfs_DATACLEAN_ALLOWED",
+      "type":0,
+      "value":"true"
+    },
+    {
+      "autoIncrementType":0,
+      "description":"Used by sfs_component_script.py originally from Pattern Factory",
+      "export":false,
+      "name":"sfs_ENABLER_HASCOMPONENTSTARTED_ENABLED",
+      "type":0,
+      "value":"true"
+    },
+    {
+      "autoIncrementType":0,
+      "description":"Used by sfs_component_script.py originally from Pattern Factory",
+      "export":false,
+      "name":"sfs_ENABLER_HASCONTAINERSTARTED_ENABLED",
+      "type":0,
+      "value":"true"
+    },
+    {
+      "autoIncrementType":0,
+      "description":"Used by sfs_component_script.py originally from Pattern Factory",
+      "export":false,
+      "name":"sfs_ENABLER_ISCOMPONENTRUNNING_ENABLED",
+      "type":0,
+      "value":"true"
+    },
+    {
+      "autoIncrementType":0,
+      "description":"Used by sfs_component_script.py originally from Pattern Factory",
+      "export":false,
+      "name":"sfs_ENABLER_ISCONTAINERRUNNING_ENABLED",
+      "type":0,
+      "value":"true"
+    },
+    {
+      "autoIncrementType":0,
+      "description":"Used by sfs_component_script.py originally from Pattern Factory",
+      "export":false,
+      "name":"sfs_PERSISTENTDATA_DIR",
+      "type":0,
+      "value":"/opt/tibco/silver/persistentdata"
+    },
+    {
+      "autoIncrementType":0,
+      "description":"Used by sfs_component_script.py - FEDEX CUSTOMIZED - start of IP range to consider private for sfs_script_HOST_PRIVATE_IP discovery",
+      "export":false,
+      "name":"sfs_script_HOST_PRIVATE_IP_RANGESTART",
+      "type":0,
+      "value":"172"
+    },
+    {
+      "autoIncrementType":0,
+      "description":"Used by sfs_component_script.py - FEDEX CUSTOMIZED - start of IP range to consider public for sfs_script_HOST_PUBLIC_IP discovery",
+      "export":false,
+      "name":"sfs_script_HOST_PUBLIC_IP_RANGESTART",
+      "type":0,
+      "value":"10"
+    },
+    {
+      "autoIncrementType":0,
+      "description":"Used by sfs_component_script.py originally from Pattern Factory to run sfs_pauseresume_wrapper.sh if included as content file",
+      "export":false,
+      "name":"sfs_script_PAUSERESUME_BLOCKING_PROCESS",
+      "type":0,
+      "value":"false"
+    },
+    {
+      "autoIncrementType":0,
+      "description":"Directory containing the DSEngine directory on the Engine Hosts",
+      "export":false,
+      "name":"sfs_TIBCO_DIR",
+      "type":0,
+      "value":"/opt/tibco/silver"
+    },
+    {
+      "autoIncrementType":0,
+      "description":"May be needed if using sfs_utility_scripts.py from pattern factory",
+      "export":false,
+      "name":"sfs_UTILITY_SCRIPTS_DIR",
+      "type":0,
+      "value":"/opt/tibco/silver/scripts"
+    },
+    {
+      "autoIncrementType":0,
+      "description":"BE LOG4J delivered with application",
+      "export":false,
+      "name":"SILVERFABRIC_BE_LOG4J",
+      "type":0,
+      "value":"../../../fabric/apparchives/sefs_suShipment-1.0.0-SNAPSHOT.zip_Files/config/L1/log4j.xml"
+    },
+    {
+      "autoIncrementType":0,
+      "description":"On logical machine restart, all services are either started or stopped",
+      "export":false,
+      "name":"TIBCO_SERVICES_STATE_AFTER_TLM_MOVED",
+      "type":1,
+      "value":"Started"
+    },
+    {
+      "autoIncrementType":0,
+      "description":"be_unpack.py - directory relative to CONTAINER_WORK_DIR where to look for zip archives to extract",
+      "export":true,
+      "name":"BE_UNPACK_DIR",
+      "type":1,
+      "value":"apparchives"
+    },
+    {
+      "autoIncrementType":0,
+      "description":"Use Full Archive Name",
+      "export":false,
+      "name":"USE_FULL_ARCHIVE_NAME",
+      "type":1,
+      "value":"false"
+    },
+    {
+      "autoIncrementType":0,
+      "description":"External Jar files",
+      "export":false,
+      "name":"WITHOUT_TRA",
+      "type":1,
+      "value":"true"
+    }
+  ],
+  "supportedStatistics":[
+    {
+      "defolt":true,
+      "description":"The up time of the engine running this BE Archive instance",
+      "name":"BE Archive Engine Up Times",
+      "shared":false,
+      "units":"seconds"
+    },
+    {
+      "defolt":true,
+      "description":"The total number of events",
+      "name":"BE Archive Events Number",
+      "shared":false,
+      "units":"events"
+    },
+    {
+      "defolt":true,
+      "description":"The total number of instances",
+      "name":"BE Archive Instance Number",
+      "shared":false,
+      "units":"instances"
+    },
+    {
+      "defolt":true,
+      "description":"Max number of bytes that are currently in use ",
+      "name":"BE Archive Max number of Memory Used",
+      "shared":false,
+      "units":"MB"
+    },
+    {
+      "defolt":true,
+      "description":"Total number of bytes that are not currently in use",
+      "name":"BE Archive Memory Free Bytes",
+      "shared":false,
+      "units":"MB"
+    },
+    {
+      "defolt":true,
+      "description":"Total number of bytes that are currently in use",
+      "name":"BE Archive Memory Used",
+      "shared":false,
+      "units":"MB"
+    },
+    {
+      "defolt":true,
+      "description":"Percentage of Memory Used (Used/Allocated)",
+      "name":"BE Archive Percentage of Memory PercentUsed",
+      "shared":false,
+      "units":"%"
+    },
+    {
+      "defolt":true,
+      "description":"The total number of Rules fired",
+      "name":"BE Archive Total Rules Number",
+      "shared":false,
+      "units":"rules"
+    },
+    {
+      "defolt":true,
+      "description":"The up time of the engine running this BE instance",
+      "name":"BE Engine Up Times",
+      "shared":false,
+      "units":"seconds"
+    },
+    {
+      "defolt":true,
+      "description":"The total number of events",
+      "name":"BE Events Number",
+      "shared":false,
+      "units":"events"
+    },
+    {
+      "defolt":true,
+      "description":"The total number of instances",
+      "name":"BE Instance Number",
+      "shared":false,
+      "units":"instances"
+    },
+    {
+      "defolt":true,
+      "description":"Max number of bytes that are currently in use ",
+      "name":"BE Max number of Memory Used",
+      "shared":false,
+      "units":"MB"
+    },
+    {
+      "defolt":true,
+      "description":"Total number of bytes that are not currently in use",
+      "name":"BE Memory Free Bytes",
+      "shared":false,
+      "units":"MB"
+    },
+    {
+      "defolt":true,
+      "description":"Total number of bytes that are currently in use",
+      "name":"BE Memory Used",
+      "shared":false,
+      "units":"MB"
+    },
+    {
+      "defolt":true,
+      "description":"Percentage of Memory Used (Used/Allocated)",
+      "name":"BE Percentage of Memory PercentUsed",
+      "shared":false,
+      "units":"%"
+    },
+    {
+      "defolt":true,
+      "description":"The total number of Rules fired",
+      "name":"BE Total Rules Number",
+      "shared":false,
+      "units":"rules"
+    },
+    {
+      "defolt":true,
+      "description":"Nb in of Destinations of BE",
+      "name":"Nb in of BE Archive Destinations",
+      "shared":false,
+      "units":""
+    },
+    {
+      "defolt":true,
+      "description":"Nb in of Destinations of BE",
+      "name":"Nb in of BE Destinations",
+      "shared":false,
+      "units":""
+    },
+    {
+      "defolt":true,
+      "description":"Nb out of Destinations of BE",
+      "name":"Nb out of BE Archive Destinations",
+      "shared":false,
+      "units":""
+    },
+    {
+      "defolt":true,
+      "description":"Nb out of Destinations of BE",
+      "name":"Nb out of BE Destinations",
+      "shared":false,
+      "units":""
+    },
+    {
+      "defolt":true,
+      "description":"Rate in of Destinations of BE",
+      "name":"Rate in of BE Archive Destinations",
+      "shared":false,
+      "units":""
+    },
+    {
+      "defolt":true,
+      "description":"Rate in of Destinations of BE",
+      "name":"Rate in of BE Destinations",
+      "shared":false,
+      "units":""
+    },
+    {
+      "defolt":true,
+      "description":"Rate out of Destinations of BE",
+      "name":"Rate out of BE Archive Destinations",
+      "shared":false,
+      "units":""
+    },
+    {
+      "defolt":true,
+      "description":"Rate out of Destinations of BE",
+      "name":"Rate out of BE Destinations",
+      "shared":false,
+      "units":""
+    }
+  ],
+  "trackedStatistics":[
+    "BE Archive Engine Up Times",
+    "BE Archive Events Number",
+    "BE Archive Instance Number",
+    "BE Archive Max number of Memory Used",
+    "BE Archive Memory Free Bytes",
+    "BE Archive Memory Used",
+    "BE Archive Percentage of Memory PercentUsed",
+    "BE Archive Total Rules Number",
+    "BE Engine Up Times",
+    "BE Events Number",
+    "BE Instance Number",
+    "BE Max number of Memory Used",
+    "BE Memory Free Bytes",
+    "BE Memory Used",
+    "BE Percentage of Memory PercentUsed",
+    "BE Total Rules Number",
+    "Nb in of BE Archive Destinations",
+    "Nb in of BE Destinations",
+    "Nb out of BE Archive Destinations",
+    "Nb out of BE Destinations",
+    "Rate in of BE Archive Destinations",
+    "Rate in of BE Destinations",
+    "Rate out of BE Archive Destinations",
+    "Rate out of BE Destinations"
+  ]
+}

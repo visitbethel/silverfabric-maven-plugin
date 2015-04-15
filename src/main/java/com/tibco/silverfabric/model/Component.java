@@ -2,26 +2,36 @@ package com.tibco.silverfabric.model;
 
 import java.util.Properties;
 
-public class Component {
+import com.fedex.scm.Components;
 
-	public String name;
+public class Component extends Components {
+
 	public Properties properties;
 	
 	public Component() {
-		// TODO Auto-generated constructor stub
+		super();
 	}
 
 	public Component(String name) {
-		this.name = name;
+		super();
+		setName(name);
 	}
 
-	/* (non-Javadoc)
-	 * @see java.lang.Object#toString()
+	/**
+	 * @return the properties
 	 */
-	@Override
-	public String toString() {
-		return "Component [name=" + name + ", properties=" + properties + "]";
+	protected final Properties getProperties() {
+		return properties;
 	}
+
+	/**
+	 * @param properties the properties to set
+	 */
+	protected final void setProperties(Properties properties) {
+		this.properties = properties;
+	}
+
+
 
 
 }

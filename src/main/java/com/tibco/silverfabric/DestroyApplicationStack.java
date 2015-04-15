@@ -14,7 +14,6 @@ import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 
-import com.tibco.silverfabric.components.CreateComponentsJSON;
 import com.tibco.silverfabric.components.DeleteComponentsJSON;
 import com.tibco.silverfabric.model.Component;
 import com.tibco.silverfabric.model.Model;
@@ -22,7 +21,6 @@ import com.tibco.silverfabric.model.Plan;
 import com.tibco.silverfabric.model.PlanHelper;
 import com.tibco.silverfabric.model.PlanModel;
 import com.tibco.silverfabric.model.Stack;
-import com.tibco.silverfabric.stacks.CreateStacks;
 import com.tibco.silverfabric.stacks.DeleteStacks;
 
 /**
@@ -118,7 +116,7 @@ public class DestroyApplicationStack extends AbstractMojo {
 			Stack stack = iterator.next();
 			getLog().info("stack.properties: " + stack.properties);
 			DeleteStacks s = new DeleteStacks(brokerConfig, plan,
-					stack.name, stack.properties);
+					stack.getName(), stack.properties);
 			s.execute();
 
 			for (Iterator<Component> iter = stack.components.iterator(); iter
@@ -136,7 +134,7 @@ public class DestroyApplicationStack extends AbstractMojo {
 				filters.putAll(component.properties);
 				getLog().info("model.properties: " + filters);
 				DeleteComponentsJSON c = new DeleteComponentsJSON(brokerConfig,
-						plan, component.name, filters);
+						plan, component.getName(), filters);
 				c.execute();
 
 				// STACKS

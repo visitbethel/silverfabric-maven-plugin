@@ -16,7 +16,6 @@ import org.slf4j.LoggerFactory;
 
 import com.fedex.scm.ComponentAllocationInfo;
 import com.fedex.scm.Policy;
-import com.tibco.silverfabric.Archive;
 import com.tibco.silverfabric.components.CreateComponentsJSON;
 import com.tibco.silverfabric.stacks.CreateStacks;
 

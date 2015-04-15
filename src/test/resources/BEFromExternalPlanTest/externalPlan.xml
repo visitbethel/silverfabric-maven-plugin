@@ -1,0 +1,25 @@
+<planModel>
+  <model>
+    <id>L2</id>
+    <!-- Typical BE Configuration -->
+    <!-- Multiple Components with One Stack -->
+    <stack>
+      <name>ABCD_BE_L1_Stack</name>
+      <component>
+        <name>ABCD_BE_L1</name>
+        <properties>
+          <as.stack.hostname>urh00600</as.stack.hostname>
+        </properties>
+      </component>
+      <component>
+        <name>ABCD_Cache_BE_L1</name>
+        <properties>
+          <as.stack.hostname>urh00600</as.stack.hostname>
+        </properties>
+      </component>
+      <properties>
+        <sf.component.name>ABCD_BE_L1</sf.component.name>
+      </properties>
+    </stack>
+  </model>
+</planModel>

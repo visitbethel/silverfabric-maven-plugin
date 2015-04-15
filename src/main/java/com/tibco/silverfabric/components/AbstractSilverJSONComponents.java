@@ -38,9 +38,10 @@ import com.fedex.scm.Feature;
 import com.fedex.scm.Option;
 import com.fedex.scm.RuntimeContextVariable;
 import com.tibco.silverfabric.AbstractSilverFabricMojo;
-import com.tibco.silverfabric.Archive;
 import com.tibco.silverfabric.DefaultAllocationSetting;
 import com.tibco.silverfabric.SilverFabricConfig;
+import com.tibco.silverfabric.model.Archive;
+import com.tibco.silverfabric.model.Component;
 import com.tibco.silverfabric.model.Plan;
 
 /**
@@ -50,26 +51,6 @@ import com.tibco.silverfabric.model.Plan;
 public abstract class AbstractSilverJSONComponents extends
 		AbstractSilverFabricMojo {
 
-	public abstract static class InternalCallback {
-		public abstract void process(Object result);
-	}
-
-	/* input data */
-
-	/**
-	 * <pre>
-	 * <plan>
-	 * 		<componentTemplateURI>/templates/2.6.0.4/component.json</componentTemplateURI>
-	 * 		<stackTemplateURI>/templates/stack.json</stackTemplateURI>
-	 * </plan>
-	 * </pre>
-	 */
-	@Parameter
-	public Plan plan;
-	public Properties componentProperties = new Properties();
-
-	/* interface */
-
 	@Parameter(defaultValue = "names")
 	private String info;
 	@Parameter
@@ -78,6 +59,9 @@ public abstract class AbstractSilverJSONComponents extends
 	private long engineId;
 	@Parameter
 	private String instance;
+	
+	//
+	Component component;
 
 	@Parameter
 	private String componentType;
@@ -87,24 +71,24 @@ public abstract class AbstractSilverJSONComponents extends
 	private String enablerName;
 	@Parameter
 	private String enablerVersion;
-	@Parameter
-	private String description;
-	@Parameter
-	private List<String> trackedStatistics;
-	@Parameter
-	private LinkedList<Option> options;
-	@Parameter
-	private LinkedList<RuntimeContextVariable> runtimeContextVariables = new LinkedList<RuntimeContextVariable>();
-	@Parameter
-	private LinkedList<Feature> features = new LinkedList<Feature>();
+//	@Parameter
+//	private String description;
+//	@Parameter
+//	private List<String> trackedStatistics;
+//	@Parameter
+//	private LinkedList<Option> options;
+//	@Parameter
+//	private LinkedList<RuntimeContextVariable> runtimeContextVariables = new LinkedList<RuntimeContextVariable>();
+//	@Parameter
+//	private LinkedList<Feature> features = new LinkedList<Feature>();
 	@Parameter
 	private List<Archive> archives = new LinkedList<Archive>();
-	@Parameter
-	private List<DefaultAllocationSetting> defaultAllocationRuleSettings = new LinkedList<DefaultAllocationSetting>();
-	@Parameter
-	private List<DefaultSetting> defaultSettings = new LinkedList<DefaultSetting>();
-	@Parameter
-	private List<String> allocationConstraints = new LinkedList<String>();
+//	@Parameter
+//	private List<DefaultAllocationSetting> defaultAllocationRuleSettings = new LinkedList<DefaultAllocationSetting>();
+//	@Parameter
+//	private List<DefaultSetting> defaultSettings = new LinkedList<DefaultSetting>();
+//	@Parameter
+//	private List<String> allocationConstraints = new LinkedList<String>();
 	@Parameter
 	private String accountName;
 	@Parameter
@@ -131,59 +115,19 @@ public abstract class AbstractSilverJSONComponents extends
 	private boolean breakout = false;
 	private File outputDirectory = new File("target");
 	private boolean failOnError = true;
-	protected String componentPlanPath;
-
-	/**
-     * 
-     */
-	private com.fedex.scm.Components component;
-	private InternalCallback internalCallback;
 
 	/**
 	 * 
 	 * @throws MojoFailureException
 	 */
 	public void initialize() throws MojoFailureException {
-		if (this.plan != null) {
-			File outPlan = filterFile(this.outputDirectory,
-					plan.getComponentPlanPath(), componentProperties);
-			getLog().info(
-					"loading plan from " + outPlan + " for component "
-							+ this.componentName);
-
-			try {
-				component = SilverFabricConfig.loadingRESTPlan(this, outPlan,
-						com.fedex.scm.Components.class);
-			} catch (FileNotFoundException e) {
-				throw new MojoFailureException("Plan not found", e);
-			}
-		}
-		if (component != null) {
-			// only overwrite if a componentName was specified.
-			if (this.componentName != null) {
-				component.setName(this.componentName);
-			}
-		}
-		final AbstractSilverFabricMojo THIS = this;
-		if (this.breakout) {
-			getLog().warn(
-					"[[[[[[[[[[[ BREAK OUT IS ON MALFUNCTIONING EXPECTED ]]]]]]]]");
-
-			getRestTemplate().getInterceptors().add(
-					new ClientHttpRequestInterceptor() {
-
-						@Override
-						public ClientHttpResponse intercept(HttpRequest arg0,
-								byte[] arg1, ClientHttpRequestExecution arg2)
-								throws IOException {
-							// TODO Auto-generated method stub
-							THIS.getLog()
-									.info("message: \n\t"
-											+ new String(arg1, "UTF-8"));
-							return null;
-						}
-					});
-		}
+//			File outPlan = filterFile(this.outputDirectory,
+//					plan.getComponentPlanPath(), component.properties);
+//			getLog().info(
+//					"loading plan from " + outPlan + " for component "
+//							+ this.componentName);
+//
+//		}
 	}
 
 	@SuppressWarnings("unchecked")
@@ -213,7 +157,7 @@ public abstract class AbstractSilverJSONComponents extends
 			String result = "";
 			try {
 				if ("create".equals(action)) {
-					Map<Object, Object> mapCreate = setComponentRequest();
+					Map<Object, Object> mapCreate = setComponentRequest(component);
 					if (mapCreate == null)
 						throw new MojoFailureException(
 								"The following parameters are required to create a component: enablerName, enablerVersion, componentType");
@@ -236,7 +180,7 @@ public abstract class AbstractSilverJSONComponents extends
 							">>>>>>>>>> COMPONENT [" + componentName
 									+ "] unpublished!");
 				} else if ("update".equals(action)) {
-					Map<Object, Object> mapUpdate = setComponentRequest();
+					Map<Object, Object> mapUpdate = setComponentRequest(component);
 					if (mapUpdate == null)
 						throw new MojoFailureException(
 								"The following parameters are required to "
@@ -261,9 +205,6 @@ public abstract class AbstractSilverJSONComponents extends
 					getLog().info(
 							infoLinkedHashMap.get("result").get("value")
 									.toString());
-					if (internalCallback != null) {
-						internalCallback.process(infoLinkedHashMap);
-					}
 				} else if ("get archives".equals(action)) {
 					getLog().info(
 							restTemplate.getForObject(
@@ -581,40 +522,25 @@ public abstract class AbstractSilverJSONComponents extends
 	}
 
 	/**
-	 * @param internalCallback
-	 *            the internalCallback to set
-	 */
-	public final void setInternalCallback(InternalCallback internalCallback) {
-		this.internalCallback = internalCallback;
-	}
-
-	/**
 	 * 
 	 * @return
 	 */
-	protected HashMap<Object, Object> setComponentRequest() {
+	protected HashMap<Object, Object> setComponentRequest(Component component) {
 		HashMap<Object, Object> request = new LinkedHashMap<Object, Object>();
 
 		request.put("componentType", component.getComponentType());
 		request.put("name", component.getName());
 		request.put("enablerName", component.getEnablerName());
 		request.put("enablerVersion", component.getEnablerVersion());
-		valueOf(request, "description", description, null);
-		valueOf(request, "trackedStatistics", trackedStatistics, null);
-		valueOf(request, "options", component != null ? component.getOptions()
-				: null, options);
-		valueOf(request, "runtimeContextVariables",
-				component != null ? component.getRuntimeContextVariables()
-						: null, runtimeContextVariables);
-		valueOf(request, "features",
-				component != null ? component.getFeatures() : null, features);
-		valueOf(request, "defaultAllocationRuleSettings",
-				defaultAllocationRuleSettings, null);
-		valueOf(request, "defaultSettings", defaultSettings, null);
-		valueOf(request,
-				"allocationConstraints",
-				component != null ? component.getAllocationConstraints() : null,
-				allocationConstraints);
+		request.put("description", component.getDescription());
+		request.put("trackedStatistics", component.getTrackedStatistics());
+		request.put("options",  component.getOptions());
+		request.put("runtimeContextVariables", component.getRuntimeContextVariables());
+		request.put("features",component.getFeatures());
+		request.put("defaultAllocationRuleSettings",component.getDefaultAllocationRuleSettings());
+		request.put("defaultSettings", component.getDefaultSettings());
+		request.put(
+				"allocationConstraints",component.getAllocationConstraints() );
 		return request;
 	}
 

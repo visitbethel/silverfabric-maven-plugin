@@ -4,49 +4,67 @@
 package com.tibco.silverfabric;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Properties;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
+import java.util.regex.Pattern;
 
-import org.apache.maven.plugin.AbstractMojo;
+import org.apache.maven.model.Dependency;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
+import org.codehaus.plexus.util.FileUtils;
 
+import scm.tibco.plugins.AbstractTibcoMojo;
+import scm.tibco.plugins.events.ResolveDependenciesEventImpl;
+
+import com.tibco.silverfabric.components.CreateComponentRestCall;
 import com.tibco.silverfabric.components.CreateComponentsJSON;
+import com.tibco.silverfabric.model.Archive;
 import com.tibco.silverfabric.model.Component;
 import com.tibco.silverfabric.model.Model;
-import com.tibco.silverfabric.model.Plan;
 import com.tibco.silverfabric.model.PlanHelper;
 import com.tibco.silverfabric.model.PlanModel;
 import com.tibco.silverfabric.model.Stack;
-import com.tibco.silverfabric.stacks.CreateStacks;
 
 /**
  * @author akaan
  *
  */
 @Mojo(name = "deploy")
-public class DeployApplicationStack extends AbstractMojo {
+public class DeployApplicationStack extends AbstractTibcoMojo {
 
 	/* input data */
 
 	/**
 	 */
-	@Parameter
-	public Plan plan = new Plan();
-	@Parameter
+	@Parameter(defaultValue = "src/main/resources/plan.xml")
+	public File plan;
+	@Parameter(required = true)
 	public BrokerConfig brokerConfig;
-	@Parameter
-	public String planFile;
+	@Parameter(required = true)
+	public String id;
+	@Parameter(defaultValue = "${project.build.directory}/dependency")
+	private String dependencyWorkDirectory = "target/dependency";
+
+	private final static Pattern FILE_PATTERN = Pattern
+			.compile("^(\\w+[^\\-]).+\\.([A-Za-z]+)");
+
+	public DeployApplicationStack() {
+		super();
+	}
 
 	/**
 	 * 
 	 */
-	public DeployApplicationStack(BrokerConfig config, Plan plan) {
+	public DeployApplicationStack(BrokerConfig config) {
 		super();
-		this.plan = plan;
 		this.brokerConfig = config;
 	}
 
@@ -66,21 +84,137 @@ public class DeployApplicationStack extends AbstractMojo {
 		}
 
 		// short hand
-
-		if (planFile != null) {
-			File pf = new File(planFile);
-			if (!pf.exists()) {
-				throw new MojoExecutionException("Planfile "
-						+ pf.getAbsolutePath() + " does not exist.");
-			}
-			getLog().info("loading external plan from " + pf.getAbsolutePath());
-			executePlanFile(pf);
-		} else if (plan.components != null && !plan.components.isEmpty()) {
-			executeLocalPlan(plan.components);
-		} else {
-			throw new MojoExecutionException(
-					"planFile or localPlan must be specified");
+		if (!plan.exists()) {
+			throw new MojoExecutionException("Planfile "
+					+ plan.getAbsolutePath() + " does not exist.");
 		}
+
+		// STEP 1 - load plan and evaluate structure.
+		PlanHelper helper = new PlanHelper();
+		PlanModel planModel = helper.loadPlan(plan);
+
+		// STEP 2 - resolve the enabler dependency
+		initializeRepositorySystem();
+		resolveDependencies(planModel.dependencies);
+
+		// STEP 3 - load the stack and component templates
+		com.fedex.scm.Components templateComponent = helper
+				.loadComponentTemplate(this.dependencyWorkDirectory,
+						"component.json");
+		com.fedex.scm.Stacks templateStack = helper.loadStackTemplate(
+				this.dependencyWorkDirectory, "stack.json");
+
+		// STEP 4 - get work model
+		Model model = helper.getModel(planModel, id);
+		if (model == null) {
+			throw new MojoExecutionException("Model for id=" + id
+					+ " could not be found in the provided plan "
+					+ this.plan.getAbsolutePath() + ".");
+		}
+		// STEP 5 - overlay stacks
+		if (templateStack != null) {
+			helper.overlay(templateStack, model);
+		}
+		else {
+			getLog().warn("Taking the stack template as is, without plan overlay.");
+		}
+
+		// STEP 5 - overlay components
+		if (templateComponent != null) {
+			helper.overlay(templateComponent, model);
+		}
+		else {
+			getLog().warn("Taking the component template as is, without plan overlay.");
+		}
+
+		executePlanFile(model, planModel.archives);
+	}
+
+	/**
+	 * 
+	 * @throws MojoFailureException
+	 */
+	public void resolveDependencies(List<Dependency> dependencies)
+			throws MojoFailureException {
+		if (dependencies != null && dependencies.size() > 0) {
+			try {
+				if (system == null) {
+					throw new MojoFailureException(
+							"repo system was not initialized");
+				}
+				ResolveDependenciesEventImpl event = new ResolveDependenciesEventImpl(
+						this, getProject().getRemoteProjectRepositories(),
+						dependencies, system, true);
+				List<File> list = event.call();
+				List<File> outputFiles = new ArrayList<File>();
+				if (list.size() == 0) {
+					throw new FileNotFoundException(
+							"No Dependencies loaded although specified.");
+				}
+				for (File file : list) {
+					debug(
+							"copying dependency '" + file.getName() + "' to '"
+									+ this.outputDirectory);
+					String fileName = file.getName();
+					File outFile = new File(this.outputDirectory, fileName);
+					// FileUtils.copyFileToDirectory(file,
+					// this.outputDirectory);
+					FileUtils.copyFile(file, outFile);
+					// unpack in work area
+					unpackArchive(outFile, new File(dependencyWorkDirectory));
+				}
+			} catch (Exception e) {
+				getLog().error(e);
+				throw new MojoFailureException(e.getMessage(), e);
+			}
+		}
+	}
+
+	/**
+	 * 
+	 * @param arg0
+	 * @param extractDirectory
+	 * @return
+	 * @throws IOException
+	 */
+	public boolean unpackArchive(File arg0, File extractDirectory)
+			throws IOException {
+		if (!extractDirectory.exists() || !extractDirectory.isDirectory()) {
+			if (!extractDirectory.mkdirs()) {
+				throw new FileNotFoundException("Unable to create structure "
+						+ extractDirectory.getAbsolutePath() + ".");
+			}
+		}
+		JarFile jar = new JarFile(arg0);
+		Enumeration<JarEntry> enumEntries = jar.entries();
+		File barFile = null;
+		while (enumEntries.hasMoreElements()) {
+			java.util.jar.JarEntry file = (java.util.jar.JarEntry) enumEntries
+					.nextElement();
+			java.io.File f = new java.io.File(extractDirectory, file.getName());
+
+			// skip meta-inf directory
+			if (file.getName().startsWith("META-INF")) {
+				continue;
+			}
+
+			debug("  [dir=" + file.isDirectory() + "] " + file + ".");
+			
+			if (file.isDirectory()) { // if its a directory, create it
+				f.mkdir();
+				continue;
+			}
+			java.io.InputStream is = jar.getInputStream(file); // get the input
+																// stream
+			java.io.FileOutputStream fos = new java.io.FileOutputStream(f);
+			while (is.available() > 0) { // write contents of 'is' to 'fos'
+				fos.write(is.read());
+			}
+			fos.close();
+			is.close();
+			getLog().info(file + " extracted.");
+		}
+		return true;
 	}
 
 	/**
@@ -89,81 +223,33 @@ public class DeployApplicationStack extends AbstractMojo {
 	 * @throws MojoExecutionException
 	 * @throws MojoFailureException
 	 */
-	private void executePlanFile(File pf) throws MojoExecutionException,
+	private void executePlanFile(Model m, List<Archive> archives) throws MojoExecutionException,
 			MojoFailureException {
-		PlanHelper helper = new PlanHelper();
-		PlanModel model = helper.loadPlan(pf);
-		Model m = model.models.get(0);
 
-		getLog().info("found " + m.stacks.size() + " listed stacks.");
+		info("found " + m.stacks.size() + " listed stacks.");
 
 		int count = 1;
 		for (Iterator<Stack> iterator = m.stacks.iterator(); iterator.hasNext();) {
 			Stack stack = iterator.next();
-
-			for (Iterator<Component> iter = stack.components.iterator(); iter
-					.hasNext();) {
-				Component component = (Component) iter.next();
-				getLog().info(">> Deploying #" + count + ": " + component + ".");
-				Properties filters = new Properties();
-				if (stack.properties != null) {
-					filters.putAll(stack.properties);
-				}
-				if (component.properties != null ) {
-					filters.putAll(component.properties);
-				}
-				filters.putAll(component.properties);
-				getLog().info("component.properties: " + filters);
-				CreateComponentsJSON c = new CreateComponentsJSON(brokerConfig,
-						plan, component.name, filters);
-				try {
-					plan.merge(this, c);
-				} catch (Exception e) {
-					throw new MojoExecutionException(e.getMessage(), e);
-				}
+			info(">> processing stack '" + stack.getName() + "'.");
+			info(">>> components in stack " + stack.getComponents());
+			for (Iterator citer = stack.components.iterator(); citer.hasNext();) {
+				Component component = (Component) citer.next();
+				CreateComponentRestCall c = new CreateComponentRestCall(component);
 				c.execute();
-
-				// STACKS
 			}
-			getLog().info("stack.properties: " + stack.properties);
-
-			CreateStacks s = new CreateStacks(brokerConfig, plan.stackPlan,
-					stack.components, stack.properties);
-			s.execute();
-
-			count++;
 		}
 	}
-
-	/**
-	 * 
-	 * @param components
-	 * @throws MojoExecutionException
-	 * @throws MojoFailureException
-	 */
-	private void executeLocalPlan(List<String> components)
-			throws MojoExecutionException, MojoFailureException {
-		getLog().info("found " + components.size() + " listed components.");
-		int count = 1;
-		for (Iterator<String> iterator = components.iterator(); iterator
-				.hasNext();) {
-			String component = (String) iterator.next();
-			getLog().info(">> Deploying #" + count + ": " + component + ".");
-			CreateComponentsJSON c = new CreateComponentsJSON(brokerConfig,
-					plan, component, new Properties());
-			try {
-				plan.merge(this, c);
-			} catch (Exception e) {
-				throw new MojoExecutionException(e.getMessage(), e);
-			}
-			c.execute();
-			count++;
+	
+	private void debug(String message) {
+		if (this.debug) {
+			getLog().info(message);
 		}
-
-		getLog().info("Executing Stack Creation for Component ");
-
-		CreateStacks s = new CreateStacks(brokerConfig, plan);
-		s.execute();
+	}
+	private void info(String message) {
+		//if (this.debug) {
+			getLog().info(message);
+		//}
 	}
 
 }

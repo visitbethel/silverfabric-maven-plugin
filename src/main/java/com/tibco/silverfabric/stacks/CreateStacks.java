@@ -46,11 +46,7 @@ public class CreateStacks extends AbstractSilverStacks {
 		setBrokerConfig(brokerConfig);
 		this.plan.stackPlan = stackPlan;
 		this.stackProperties = properties;
-		for (Iterator<Component> iterator = components.iterator(); iterator
-				.hasNext();) {
-			Component component = (Component) iterator.next();
-			this.components.add(component.name);
-		}
+
 	}
 
 	/**

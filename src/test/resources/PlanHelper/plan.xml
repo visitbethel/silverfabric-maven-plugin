@@ -1,15 +1,37 @@
 <planModel>
+  <name>GSEFS_DDS</name>
+  <dependency>
+    <groupId>com.fedex.tibco.sf</groupId>
+    <artifactId>sf-tibco-as-stack</artifactId>
+    <version>2.1.4.2.0</version>
+    <type>jar</type>
+  </dependency>
+  <archive name="PlanModel.zip">
+    <path>/target/</path>
+    <relativePath>fabric</relativePath>
+  </archive>
   <model>
     <id>L1</id>
     <!-- Typical AS Configuration -->
     <!-- One Component with multiple stacks -->
+    <properties>
+      <sf.broker.url></sf.broker.url>
+    </properties>
 
     <stack>
-      <name>GSEFS_DDS_AS_L1_Stack#1</name>
       <component>
-        <name>GSEFS_DDS_AS_L1</name>
+        <description>GSEF DDS Metaspace for L1</description>
+        <defaultSetting name="Default Max Engines" value="1" />
+        <defaultSetting name="Default Min Engines" value="1" />
+        <defaultSetting name="Default Priority" value="3" />
+        <runtimeContextVariable name="AMI_HAWK_NETWORK" value="tcp:7474">
+          <export>true</export>
+          <type>1</type>
+          <description>Describe</description>
+          <autoIncrement>0</autoIncrement>
+        </runtimeContextVariable>
         <properties>
-          <as.stack.hostname>urh00609</as.stack.hostname>
+          <assigned.hostname>urh00609</assigned.hostname>
         </properties>
       </component>
     </stack>
@@ -38,6 +60,15 @@
           <as.stack.hostname>urh00600</as.stack.hostname>
         </properties>
       </component>
+      <policy>
+        <componentAllocationInfo>
+          <name></name>
+          <allocationRule>
+          </allocationRule>
+        </componentAllocationInfo>
+        <scheduleName>9To5</scheduleName>
+        <scheduled>true</scheduled>
+      </policy>
     </stack>
   </model>
   <model>

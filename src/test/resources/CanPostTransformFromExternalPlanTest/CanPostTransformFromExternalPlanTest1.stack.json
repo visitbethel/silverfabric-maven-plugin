@@ -1,0 +1,105 @@
+{
+  "archiveScalingRules":[
+    
+  ],
+  "capturedOn":0,
+  "components":[
+    "${sf.component.name}"
+  ],
+  "description":"BW ${sf.component.name}_Stack",
+  "displayName":"${sf.component.name}_Stack",
+  "exportedOn":0,
+  "extras":[
+    
+  ],
+  "icon":"/livecluster/admin/images/icons/stackIcons/defaults/1_Skyway_TIBCO_Generic_Default_Icon.png",
+  "lastModified":1428445455079,
+  "mode":"manual",
+  "modified":true,
+  "modifiedBy":"sefsdev_operate",
+  "name":"${sf.component.name}_Stack",
+  "owner":"",
+  "policies":[
+    {
+      "componentAllocationInfo":[
+        {
+          "allocationRules":[
+            {
+              "condition":null,
+              "description":"Startup dependency on Component \"${sf.admin.component.name}\"",
+              "properties":[
+                {
+                  "name":"component",
+                  "value":"${sf.admin.component.name}"
+                },
+                {
+                  "name":"orderedShutdown",
+                  "value":"false"
+                },
+                {
+                  "name":"packByProperty",
+                  "value":"false"
+                },
+                {
+                  "name":"restartForNewRules",
+                  "value":"false"
+                },
+                {
+                  "name":"shutdown",
+                  "value":"false"
+                }
+              ],
+              "ruleAction":null,
+              "type":"Component Dependency"
+            }
+          ],
+          "max":1,
+          "min":1,
+          "name":"${sf.component.name}",
+          "priority":4
+        }
+      ],
+      "scheduleName":"",
+      "scheduled":false
+    }
+  ],
+  "propertyOverrides":[
+    {
+      "datatype":"string",
+      "description":"The stack's name, as shown in Skyway",
+      "displayName":"Stack Name",
+      "name":"displayName",
+      "order":0,
+      "readonly":false,
+      "required":true,
+      "requiredForProvisioning":false,
+      "source":null,
+      "validations":{
+        "message":"Stack Name must be unique among all of your stacks",
+        "unique":"owner"
+      },
+      "value":"${sf.component.name}_Stack"
+    },
+    {
+      "datatype":"string",
+      "description":"The stack's description",
+      "displayName":"Stack Description",
+      "name":"description",
+      "order":1,
+      "readonly":false,
+      "required":false,
+      "requiredForProvisioning":false,
+      "source":null,
+      "validations":{
+        
+      },
+      "value":null
+    }
+  ],
+  "startOn":0,
+  "technology":"",
+  "templateLevel":"--",
+  "urls":[
+    
+  ]
+}

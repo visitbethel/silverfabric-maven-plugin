@@ -2,32 +2,19 @@ package com.tibco.silverfabric.model;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import java.util.Properties;
 
-import com.fedex.scm.Policy;
-import com.fedex.scm.PropertyOverride;
+import com.fedex.scm.Stacks;
 
-public class Stack {
+public class Stack extends Stacks {
 
 	public Properties properties = new Properties();
-	public String name;
-	public String mode = "--";
-	public String templateLevel;
-	public List<Policy> policies;
-	public String accountName;
-	public String runMode;
-	public List<PropertyOverride> propertyOverrides;
-	public String owner;
-	public String technology;
-	public String icon = "/livecluster/admin/images/icons/stackIcons/defaults/6_Skyway_Generic_Default_Icon.png";
-	public String description = "Default Template Description.";
-	public List<Map> urls;
 	public List<ComponentDependency> componentDependencies = new LinkedList<ComponentDependency>();
 	public List<Component> components = new LinkedList<Component>();
 
 	public Stack() {
-		// TODO Auto-generated constructor stub
+		setMode("--");
+		setIcon("/livecluster/admin/images/icons/stackIcons/defaults/6_Skyway_Generic_Default_Icon.png");
 	}
 
 	/*
@@ -37,14 +24,22 @@ public class Stack {
 	 */
 	@Override
 	public String toString() {
-		return "Stack [properties=" + properties + ", stackName=" + name
-				+ ", mode=" + mode + ", templateLevel=" + templateLevel
-				+ ", policies=" + policies + ", accountName=" + accountName
-				+ ", runMode=" + runMode + ", propertyOverrides="
-				+ propertyOverrides + ", owner=" + owner + ", technology="
-				+ technology + ", icon=" + icon + ", description="
-				+ description + ", urls=" + urls + ", componentDependencies="
-				+ componentDependencies + ", components=" + components + "]";
+		return "Stack [properties=" + properties + ", componentDependencies="
+				+ componentDependencies + ", components=" + components
+				+ ", getName()=" + getName() + ", getDisplayName()="
+				+ getDisplayName() + ", getOwner()=" + getOwner()
+				+ ", getLastModified()=" + getLastModified()
+				+ ", getDescription()=" + getDescription() + ", getIcon()="
+				+ getIcon() + ", getComponents()=" + getComponents()
+				+ ", getModified()=" + getModified() + ", getModifiedBy()="
+				+ getModifiedBy() + ", getPolicies()=" + getPolicies()
+				+ ", getMode()=" + getMode() + ", getStartOn()=" + getStartOn()
+				+ ", getCapturedOn()=" + getCapturedOn() + ", getExportedOn()="
+				+ getExportedOn() + ", getTechnology()=" + getTechnology()
+				+ ", getUrls()=" + getUrls() + ", getPropertyOverrides()="
+				+ getPropertyOverrides() + ", getTemplateLevel()="
+				+ getTemplateLevel() + ", getAdditionalProperties()="
+				+ getAdditionalProperties() + "]";
 	}
 
 }
