@@ -1,29 +1,58 @@
 <planModel>
+  <name>UNIT_TEST</name>
+  <dependency>
+    <groupId>com.fedex.tibco.sf</groupId>
+    <artifactId>sf-tibco-as-stack</artifactId>
+    <version>2.1.4.2.0</version>
+    <type>jar</type>
+  </dependency>
   <model>
     <id>L2</id>
-    <!-- Typical BE Configuration -->
+    <!-- Typical AS Configuration -->
     <!-- Multiple Components with One Stack -->
     <stack>
       <component>
-        <name>ABCD__BE_L1</name>
+        <name>ABCD__AS_L1</name>
         <properties>
           <as.stack.hostname>urh00600</as.stack.hostname>
         </properties>
       </component>
-      <properties>
-        <sf.component.name>ABCD__BE_L1</sf.component.name>
-      </properties>
+      <policy>
+        <componentAllocationInfo>
+          <name>ABCD__AS_L1</name>
+          <priority>4</priority>
+          <allocationRule>
+            <property name="affinityPos" value="0" />
+            <property name="operator" value="matches" />
+            <property name="propertyName" value="hostname" />
+            <property name="propertyValue" value="urh00602" />
+            <type>Resource Preference</type>
+          </allocationRule>
+        </componentAllocationInfo>
+        <scheduled>true</scheduled>
+      </policy>
     </stack>
     <stack>
       <component>
-        <name>ABCD_Cache_BE_L1</name>
+        <name>ABCD_Cache_AS_L1</name>
         <properties>
           <as.stack.hostname>urh00600</as.stack.hostname>
         </properties>
       </component>
-      <properties>
-        <sf.component.name>ABCD_Cache_BE_L1</sf.component.name>
-      </properties>
+      <policy>
+        <componentAllocationInfo>
+          <name>ABCD_Cache_AS_L1</name>
+          <priority>4</priority>
+          <allocationRule>
+            <property name="affinityPos" value="0" />
+            <property name="operator" value="matches" />
+            <property name="propertyName" value="hostname" />
+            <property name="propertyValue" value="urh00601" />
+            <type>Resource Preference</type>
+          </allocationRule>
+        </componentAllocationInfo>
+        <scheduled>true</scheduled>
+      </policy>
     </stack>
   </model>
 </planModel>

@@ -21,7 +21,7 @@ import com.tibco.silverfabric.model.Stack;
  *
  */
 @Mojo(name = "create-stacks")
-public class CreateStacks extends AbstractSilverStacks {
+public class CreateStackRestCall extends AbstractSilverStacks {
 
 	/**
 	 * Local Plan Loading
@@ -29,24 +29,10 @@ public class CreateStacks extends AbstractSilverStacks {
 	 * @param config
 	 * @param plan
 	 */
-	public CreateStacks(BrokerConfig config, Plan plan) {
-		this(config, plan.stackPlan, CreateStacks.toComponentList(plan.components), new Properties());
-	}
-
-	/**
-	 * External Plan loading
-	 * 
-	 * @param brokerConfig
-	 * @param components
-	 * @param properties
-	 */
-	public CreateStacks(BrokerConfig brokerConfig, String stackPlan, List<Component> components,
-			Properties properties) {
+	public CreateStackRestCall(BrokerConfig config, Stack stack) {
 		super();
-		setBrokerConfig(brokerConfig);
-		this.plan.stackPlan = stackPlan;
-		this.stackProperties = properties;
-
+		setBrokerConfig(config);
+		this.stack = stack;
 	}
 
 	/**

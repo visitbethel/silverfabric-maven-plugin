@@ -8,8 +8,11 @@ import java.io.File;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.fedex.scm.AllocationRule;
+import com.fedex.scm.ComponentAllocationInfo;
 import com.fedex.scm.Components;
 import com.fedex.scm.Policy;
+import com.fedex.scm.Properties;
 import com.fedex.scm.Stacks;
 
 public class PlanHelperTest {
@@ -100,7 +103,21 @@ public class PlanHelperTest {
 		assertEquals("GSEFS_StopGateway_BW_L1_Stack", stackXML.getName());
 		assertEquals("9To5", stackXML.getPolicies().get(0).getScheduleName());
 		
+		// components in stack
 		assertEquals("GSEFS_StopGateway_BW_L1", stackXML.getComponents().get(0));
+
+		Policy pp = stackXML.getPolicies().get(0);
+		assertEquals(1, pp.getComponentAllocationInfo().size());
+		ComponentAllocationInfo info = pp.getComponentAllocationInfo().get(0);
+		assertEquals("GSEFS_StopGateway_BW_L1", info.getName());
+		assertEquals(1, info.getAllocationRules().size());
+		AllocationRule rule = info.getAllocationRules().get(0);
+		assertEquals(4, rule.getProperties().size());
+		Properties prp = (Properties) rule.getProperties().get(2);
+		assertEquals("urh00601", prp.getValue());
+		
+		
+		
 
 	}
 	
@@ -129,6 +146,7 @@ public class PlanHelperTest {
 		assertEquals(s.getName(), "${sf.component.name}_Stack");
 		assertEquals("GSEFS_DDS_L1_Stack#01", fromXML.getName());
 		assertEquals("", fromXML.getPolicies().get(0).getScheduleName());
+		
 		
 		assertEquals("GSEFS_DDS_L1_1", fromXML.getComponents().get(0));
 

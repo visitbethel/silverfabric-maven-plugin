@@ -16,8 +16,8 @@ import org.slf4j.LoggerFactory;
 
 import com.fedex.scm.ComponentAllocationInfo;
 import com.fedex.scm.Policy;
-import com.tibco.silverfabric.components.CreateComponentsJSON;
-import com.tibco.silverfabric.stacks.CreateStacks;
+import com.tibco.silverfabric.components.CreateComponentRestCall;
+import com.tibco.silverfabric.stacks.CreateStackRestCall;
 
 /**
  * @author akaan
@@ -68,11 +68,11 @@ public class Plan {
 
 	/**
 	 * 
-	 * @param c
+	 * @param component
 	 */
-	public void merge(AbstractMojo log, CreateComponentsJSON c)
+	public void merge(AbstractMojo log, CreateComponentRestCall component)
 			throws Exception {
-		if (c == null) {
+		if (component == null) {
 			return;
 		}
 		if (this.workDirectory != null && !this.workDirectory.exists()) {
@@ -85,9 +85,9 @@ public class Plan {
 			File af = new File(this.workDirectory.getAbsolutePath()
 					+ File.separator + scriptFile);
 			if (af.exists()) {
-				c.setScriptFile(new Archive(af));
-				c.setScriptLang(this.scriptLanguage);
-				c.setScriptLangVersion(this.scriptLanguageVersion);
+				component.setScriptFile(new Archive(af));
+				component.setScriptLang(this.scriptLanguage);
+				component.setScriptLangVersion(this.scriptLanguageVersion);
 			} else {
 				log.getLog().warn(
 						"script files were not found at "
@@ -99,9 +99,9 @@ public class Plan {
 		log.getLog().info("reading content-files from " + contentPath);
 		File content = new File(contentPath);
 		if (content.exists()) {
-			recurseAdd(log, c.getContentFiles(), content, "");
+			recurseAdd(log, component.getContentFiles(), content, "");
 			log.getLog().info(
-					"registered " + c.getContentFiles().size()
+					"registered " + component.getContentFiles().size()
 							+ " files for content-files.");
 		} else {
 			log.getLog().error(
@@ -111,7 +111,7 @@ public class Plan {
 				+ File.separator + this.configFile;
 		File configFile = new File(configFilePath);
 		if (configFile.exists()) {
-			c.setConfigFile(new Archive(configFile, ""));
+			component.setConfigFile(new Archive(configFile, ""));
 			log.getLog().info(
 					"registered " + configFile + " as configuration file.");
 		} else {
@@ -122,10 +122,10 @@ public class Plan {
 			for (Iterator<Archive> iterator = archives.iterator(); iterator
 					.hasNext();) {
 				Archive archive = (Archive) iterator.next();
-				c.getArchives().add(archive);
+				component.getArchives().add(archive);
 			}
 			log.getLog().info(
-					"registered " + c.getArchives().size()
+					"registered " + component.getArchives().size()
 							+ " file(s) as archives.");
 		} else {
 			log.getLog().warn("No archives included in this plan.");
@@ -137,7 +137,7 @@ public class Plan {
 	 * 
 	 * @param c
 	 */
-	public void merge(AbstractMojo log, CreateStacks c) throws Exception {
+	public void merge(AbstractMojo log, CreateStackRestCall c) throws Exception {
 		if (c == null) {
 			return;
 		}

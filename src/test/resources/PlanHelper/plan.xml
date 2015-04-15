@@ -62,12 +62,18 @@
       </component>
       <policy>
         <componentAllocationInfo>
-          <name></name>
+          <name>GSEFS_StopGateway_BW_L1</name>
+          <priority>4</priority>
           <allocationRule>
+            <property name="affinityPos" value="0" />
+            <property name="operator" value="matches" />
+            <property name="propertyName" value="urh00601" />
+            <property name="affinityPos" value="0" />
+            <type>Resource Preference</type>
           </allocationRule>
         </componentAllocationInfo>
-        <scheduleName>9To5</scheduleName>
         <scheduled>true</scheduled>
+        <scheduleName>9To5</scheduleName>
       </policy>
     </stack>
   </model>

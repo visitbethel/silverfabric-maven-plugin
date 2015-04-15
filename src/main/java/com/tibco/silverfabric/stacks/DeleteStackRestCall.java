@@ -4,39 +4,34 @@
 package com.tibco.silverfabric.stacks;
 
 import java.util.LinkedList;
-import java.util.Properties;
 
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.Mojo;
 
 import com.tibco.silverfabric.BrokerConfig;
-import com.tibco.silverfabric.model.Plan;
+import com.tibco.silverfabric.model.Stack;
 
 /**
  * @author akaan
  *
  */
-@Mojo( name = "delete-stacks")
-public class DeleteStacks extends AbstractSilverStacks {
+@Mojo(name = "delete-stacks")
+public class DeleteStackRestCall extends AbstractSilverStacks {
 
 	/**
 	 * 
 	 */
-	public DeleteStacks() {
+	public DeleteStackRestCall() {
 		super();
 	}
-	public DeleteStacks(BrokerConfig config, Plan stackplan, String name) {
-		this(config,stackplan,name, new Properties());
-	}
-	
-	public DeleteStacks(BrokerConfig brokerConfig, Plan plan, String name,
-			Properties properties) {
+
+	public DeleteStackRestCall(BrokerConfig brokerConfig, Stack stack) {
 		super();
 		setBrokerConfig(brokerConfig);
-		this.plan = plan;
-		this.stackName = name;
-		this.stackProperties = properties;
+		this.stack = stack;
+		
 	}
+
 	public void initialize() throws MojoFailureException {
 		super.initialize();
 		if (getActions() == null) {

@@ -173,6 +173,48 @@ public class PlanHelper {
 		}
 	}
 
+	/**
+	 * 
+	 * @author akaan
+	 *
+	 */
+	public static class AllocationRuleConverter implements Converter {
+		public boolean canConvert(@SuppressWarnings("rawtypes") Class clazz) {
+			return AllocationRule.class.isAssignableFrom(clazz);
+		}
+
+		public void marshal(Object value, HierarchicalStreamWriter writer,
+				MarshallingContext context) {
+			// RuntimeContextVariable map = (RuntimeContextVariable) value;
+			// writer.startNode(map.getName());
+			// writer.setValue(map.getValue());
+			// writer.endNode();
+		}
+
+		public Object unmarshal(HierarchicalStreamReader reader,
+				UnmarshallingContext context) {
+			AllocationRule map = new AllocationRule();
+			// assign defaults
+			while (reader.hasMoreChildren()) {
+				reader.moveDown();
+				if ("property".equals(reader.getNodeName())) {
+					com.fedex.scm.Properties prps = new com.fedex.scm.Properties();
+					prps.setValue(reader.getAttribute("value"));
+					prps.setName(reader.getAttribute("name"));
+					map.getProperties().add(prps);
+				} else if ("type".equals(reader.getNodeName())) {
+					map.setType(reader.getValue());
+				} else if ("condition".equals(reader.getNodeName())) {
+					map.setCondition(reader.getValue());
+				} else if ("description".equals(reader.getNodeName())) {
+					map.setDescription(reader.getValue());
+				}
+				reader.moveUp();
+			}
+			return map;
+		}
+	}
+
 	public PlanHelper() {
 
 	}
@@ -196,9 +238,10 @@ public class PlanHelper {
 		xs.alias("component", Component.class);
 		xs.alias("stack", Stack.class);
 		xs.alias("defaultSetting", DefaultSetting.class);
-		// xs.alias("allocationRule", AllocationRule.class);
-		// xs.alias("componentAllocationInfo", ComponentAllocationInfo.class);
+		xs.alias("allocationRule", AllocationRule.class);
+		xs.alias("componentAllocationInfo", ComponentAllocationInfo.class);
 		xs.registerConverter(new PropertiesConverter());
+		xs.registerConverter(new AllocationRuleConverter());
 		xs.registerConverter(new DefaultSettingConverter());
 		xs.registerConverter(new RuntimeContextVariableConverter());
 		xs.addImplicitCollection(PlanModel.class, "dependencies", "dependency",
@@ -249,11 +292,11 @@ public class PlanHelper {
 			for (Iterator miter = model.stacks.iterator(); miter.hasNext();) {
 				Stack stack = (Stack) miter.next();
 				if (stack.getName() == null) {
-					stack.setName(String.format("%s_%s_Stack#%02d",
+					stack.setName(String.format("%s_%s_Stack%02d",
 							planmodel.name, model.id, count));
 				}
 				if (stack.getDescription() == null) {
-					stack.setDescription(String.format("%s Stack#%02d for %s",
+					stack.setDescription(String.format("%s Stack%02d for %s",
 							planmodel.name, count, model.id));
 				}
 				int ccount = 1;
@@ -261,11 +304,11 @@ public class PlanHelper {
 						.hasNext();) {
 					Component component = (Component) citer.next();
 					if (component.getName() == null) {
-						component.setName(String.format("%s_%s_%d",
+						component.setName(String.format("%s_%s_%02d",
 								planmodel.name, model.id, ccount));
 					}
 					if (component.getDescription() == null) {
-						component.setDescription(String.format("%s_%s_%d",
+						component.setDescription(String.format("%s_%s_%02d",
 								planmodel.name, model.id, ccount));
 					}
 					ccount++;
@@ -387,13 +430,13 @@ public class PlanHelper {
 	 * @param fileName
 	 * @return
 	 */
-	public Components loadComponentTemplate(
-			String dependencyWorkDirectory, String fileName) {
+	public Component loadComponentTemplate(String dependencyWorkDirectory,
+			String fileName) {
 		ObjectMapper m = new ObjectMapper();
-		Components c;
+		Component c;
 		try {
 			c = m.readValue(new File(dependencyWorkDirectory, fileName),
-					Components.class);
+					Component.class);
 		} catch (Exception e) {
 			LOGGER.error("No component plan loaded: " + e.getMessage());
 			return null;
@@ -407,13 +450,13 @@ public class PlanHelper {
 	 * @param fileName
 	 * @return
 	 */
-	public Stacks loadStackTemplate(
-			String dependencyWorkDirectory, String fileName) {
+	public Stack loadStackTemplate(String dependencyWorkDirectory,
+			String fileName) {
 		ObjectMapper m = new ObjectMapper();
-		Stacks s;
+		Stack s;
 		try {
 			s = m.readValue(new File(dependencyWorkDirectory, fileName),
-					Stacks.class);
+					Stack.class);
 		} catch (Exception e) {
 			LOGGER.error("No stack plan loaded: " + e.getMessage());
 			return null;

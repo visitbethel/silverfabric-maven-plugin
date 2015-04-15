@@ -48,9 +48,12 @@ import com.tibco.silverfabric.model.Plan;
  * Actions related to components.
  *
  */
-public abstract class AbstractSilverJSONComponents extends
+public abstract class AbstractSilverComponentsRestCall extends
 		AbstractSilverFabricMojo {
 
+	
+	@Parameter(defaultValue = "${project.build.directory}/work")
+	public File workDirectory = new File("target/work");
 	@Parameter(defaultValue = "names")
 	private String info;
 	@Parameter
@@ -63,14 +66,14 @@ public abstract class AbstractSilverJSONComponents extends
 	//
 	Component component;
 
-	@Parameter
-	private String componentType;
-	@Parameter
-	public String componentName;
-	@Parameter
-	private String enablerName;
-	@Parameter
-	private String enablerVersion;
+//	@Parameter
+//	private String componentType;
+//	@Parameter
+//	public String componentName;
+//	@Parameter
+//	private String enablerName;
+//	@Parameter
+//	private String enablerVersion;
 //	@Parameter
 //	private String description;
 //	@Parameter
@@ -145,6 +148,7 @@ public abstract class AbstractSilverJSONComponents extends
 		String url = getBrokerConfig().getBrokerURL().toString()
 				+ "/livecluster/rest/v1/sf/components";
 		getLog().debug(url);
+		String componentName = component.getName();
 
 		for (String action : actionList) {
 			if (!action.equals("clean") && !action.equals("get")
@@ -473,8 +477,8 @@ public abstract class AbstractSilverJSONComponents extends
 									.equals("componentNames")) {
 						ArrayList<String> componentNameList = (ArrayList<String>) ((LinkedHashMap<Object, Object>) (response
 								.get("result"))).get("value");
-						for (String componentName : componentNameList) {
-							getLog().info(componentName);
+						for (String _componentName : componentNameList) {
+							getLog().info(_componentName);
 						}
 					} else {
 						getLog().warn("Status = " + status);
@@ -491,12 +495,12 @@ public abstract class AbstractSilverJSONComponents extends
 									.equals("componentNames")) {
 						ArrayList<String> componentNameList = (ArrayList<String>) ((LinkedHashMap<Object, Object>) (getResponse
 								.get("result"))).get("value");
-						for (String componentName : componentNameList) {
+						for (String _componentName : componentNameList) {
 							restTemplate.put(url
 									+ "/{componentName}/published/false", null,
-									componentName);
+									_componentName);
 							restTemplate.delete(url + "/" + "{componentName}",
-									componentName);
+									_componentName);
 							getLog().info(componentName + "removed!");
 						}
 					} else {
@@ -542,66 +546,6 @@ public abstract class AbstractSilverJSONComponents extends
 		request.put(
 				"allocationConstraints",component.getAllocationConstraints() );
 		return request;
-	}
-
-	/**
-	 * @return the componentType
-	 */
-	public final String getComponentType() {
-		return componentType;
-	}
-
-	/**
-	 * @param componentType
-	 *            the componentType to set
-	 */
-	public final void setComponentType(String componentType) {
-		this.componentType = componentType;
-	}
-
-	/**
-	 * @return the componentName
-	 */
-	public final String getComponentName() {
-		return componentName;
-	}
-
-	/**
-	 * @param componentName
-	 *            the componentName to set
-	 */
-	public final void setComponentName(String componentName) {
-		this.componentName = componentName;
-	}
-
-	/**
-	 * @return the enablerName
-	 */
-	public final String getEnablerName() {
-		return enablerName;
-	}
-
-	/**
-	 * @param enablerName
-	 *            the enablerName to set
-	 */
-	public final void setEnablerName(String enablerName) {
-		this.enablerName = enablerName;
-	}
-
-	/**
-	 * @return the enablerVersion
-	 */
-	public final String getEnablerVersion() {
-		return enablerVersion;
-	}
-
-	/**
-	 * @param enablerVersion
-	 *            the enablerVersion to set
-	 */
-	public final void setEnablerVersion(String enablerVersion) {
-		this.enablerVersion = enablerVersion;
 	}
 
 	/**
@@ -714,6 +658,20 @@ public abstract class AbstractSilverJSONComponents extends
 	 */
 	public final void setScriptFileRegex(String scriptFileRegex) {
 		this.scriptFileRegex = scriptFileRegex;
+	}
+
+	/**
+	 * @return the component
+	 */
+	public final Component getComponent() {
+		return component;
+	}
+
+	/**
+	 * @param component the component to set
+	 */
+	public final void setComponent(Component component) {
+		this.component = component;
 	}
 
 }

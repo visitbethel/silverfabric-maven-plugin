@@ -12,7 +12,7 @@ import com.tibco.silverfabric.AbstractSilverJSONTest;
 import com.tibco.silverfabric.Utils;
 import com.tibco.silverfabric.components.CreateComponentsJSON;
 import com.tibco.silverfabric.model.Plan;
-import com.tibco.silverfabric.stacks.CreateStacks;
+import com.tibco.silverfabric.stacks.CreateStackRestCall;
 
 public class GSEFSAdminSetupTest extends AbstractSilverJSONTest {
 
@@ -37,7 +37,7 @@ public class GSEFSAdminSetupTest extends AbstractSilverJSONTest {
 				"stack.json").getAbsolutePath();
 
 		CreateComponentsJSON c = new CreateComponentsJSON(getConfig(), plan);
-		CreateStacks s = new CreateStacks(this.config, plan);
+		CreateStackRestCall s = new CreateStackRestCall(this.config, plan);
 
 
 		executeCreateComponent(plan, c);

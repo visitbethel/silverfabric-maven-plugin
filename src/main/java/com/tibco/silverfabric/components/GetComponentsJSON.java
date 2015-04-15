@@ -30,7 +30,7 @@ import com.tibco.silverfabric.BrokerConfig;
  *       info=blacklisted_names)
  */
 @Mojo(name = "get-components-json")
-public class GetComponentsJSON extends AbstractSilverJSONComponents {
+public class GetComponentsJSON extends AbstractSilverComponentsRestCall {
 
 	private boolean exists;
 

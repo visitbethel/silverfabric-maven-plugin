@@ -4,7 +4,6 @@
   ],
   "capturedOn":0,
   "components":[
-    "${sf.component.name}"
   ],
   "description":"${sf.component.name} Stack",
   "displayName":"${sf.component.name}_Stack",

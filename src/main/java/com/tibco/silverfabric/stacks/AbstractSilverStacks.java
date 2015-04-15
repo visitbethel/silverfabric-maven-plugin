@@ -7,13 +7,9 @@
 package com.tibco.silverfabric.stacks;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -24,20 +20,10 @@ import org.apache.maven.plugins.annotations.Parameter;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpRequest;
 import org.springframework.http.MediaType;
-import org.springframework.http.client.ClientHttpRequestExecution;
-import org.springframework.http.client.ClientHttpRequestInterceptor;
-import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.web.client.HttpClientErrorException;
 
-import com.fedex.scm.ComponentAllocationInfo;
-import com.fedex.scm.Policy;
-import com.fedex.scm.PropertyOverride;
-import com.tibco.silverfabric.AbstractSilverFabricMojo;
-import com.tibco.silverfabric.SilverFabricConfig;
 import com.tibco.silverfabric.Stacks;
-import com.tibco.silverfabric.model.Component;
 import com.tibco.silverfabric.model.Plan;
 import com.tibco.silverfabric.model.Stack;
 
@@ -56,137 +42,47 @@ public abstract class AbstractSilverStacks extends Stacks {
 	protected Plan plan = new Plan();
 	public Properties stackProperties = new Properties();
 
-	@Parameter
-	protected List<String> components = new LinkedList<String>();
-	@Parameter
-	protected String stackName;
-	@Parameter
-	protected String mode;
-	@Parameter(defaultValue = "--")
-	protected String templateLevel;
-	@Parameter
-	protected List<Policy> policies;
-	@Parameter
-	protected String accountName;
-	@Parameter
-	protected String runMode;
-	@Parameter
-	protected List<PropertyOverride> propertyOverrides;
-	@Parameter
-	protected String owner;
-	@Parameter
-	protected String technology;
-	@Parameter(defaultValue = "/livecluster/admin/images/icons/stackIcons/defaults/6_Skyway_Generic_Default_Icon.png")
-	protected String icon;
-	@Parameter(defaultValue = "Default Template Description.")
-	protected String description;
-	@SuppressWarnings("rawtypes")
-	@Parameter
-	protected List<Map> urls;
+	// @Parameter
+	// protected List<String> components = new LinkedList<String>();
+	// @Parameter
+	// protected String stackName;
+	// @Parameter
+	// protected String mode;
+	// @Parameter(defaultValue = "--")
+	// protected String templateLevel;
+	// @Parameter
+	// protected List<Policy> policies;
+	// @Parameter
+	// protected String accountName;
+	// @Parameter
+	// protected String runMode;
+	// @Parameter
+	// protected List<PropertyOverride> propertyOverrides;
+	// @Parameter
+	// protected String owner;
+	// @Parameter
+	// protected String technology;
+	// @Parameter(defaultValue =
+	// "/livecluster/admin/images/icons/stackIcons/defaults/6_Skyway_Generic_Default_Icon.png")
+	// protected String icon;
+	// @Parameter(defaultValue = "Default Template Description.")
+	// protected String description;
+	// @SuppressWarnings("rawtypes")
+	// @Parameter
+	// protected List<Map> urls;
 	private File outputDirectory = new File("target");
 	private boolean breakout = false;
 
 	/**
      * 
      */
-	private com.fedex.scm.Stacks stack;
-	protected Stack stackModel;
+	protected Stack stack;
 
 	/**
 	 * 
 	 * @throws MojoFailureException
 	 */
 	public void initialize() throws MojoFailureException {
-
-		if (this.plan != null) {
-			getLog().info(
-					"attempting load plan from " + plan.getStackPlanPath()
-							+ " from " + this.outputDirectory);
-			File outPlan = filterFile(this.outputDirectory,
-					plan.getStackPlanPath(), this.stackProperties);
-			getLog().info("loading plan from " + outPlan);
-			// LOADING THE STACK TEMPLATE
-			try {
-				this.stack = SilverFabricConfig.loadingRESTPlan(this,
-						outPlan.getAbsolutePath(), com.fedex.scm.Stacks.class);
-			} catch (FileNotFoundException e) {
-				throw new MojoFailureException("Plan not found", e);
-			}
-		}
-
-		//
-		// HERE THE LOCATION FOR ANY EXTERNAL STACK CHANGES
-		//
-		getLog().info("initialize " + this.components.toString() + ".");
-		if (this.stack != null) {
-			if (this.stackModel == null) {
-				// LOCAL PLAN
-				this.stackName = this.stack.getName();
-				Policy p = Plan.getFirstPolicy(this.stack);
-				boolean wasEmpty = p.getComponentAllocationInfo().isEmpty();
-				for (Iterator<String> iterator = this.components.iterator(); iterator
-						.hasNext();) {
-					String component = (String) iterator.next();
-					getLog().info(
-							">> component add: " + component + " -> "
-									+ this.stack.getComponents());
-					// only add component if it is not registered yet.
-					if (!this.stack.getComponents().contains(component)) {
-						this.stack.getComponents().add(component);
-					}
-					if (wasEmpty) {
-						ComponentAllocationInfo c = Plan
-								.toComponentAllocation(component);
-						p.getComponentAllocationInfo().add(c);
-					} else {
-						// leave the allocations alone and not populate them
-					}
-				}
-				getLog().info(this.stack.getPolicies().toString());
-			} else {
-				Policy p = Plan.getFirstPolicy(this.stack);
-				boolean wasEmpty = p.getComponentAllocationInfo().isEmpty();
-				for (Iterator<Component> iterator = this.stackModel.components.iterator(); iterator
-						.hasNext();) {
-					Component component = (Component) iterator.next();
-					getLog().info(
-							">> component from add: " + component + " -> "
-									+ this.stack.getComponents());
-					// only add component if it is not registered yet.
-					if (!this.stack.getComponents().contains(component)) {
-						this.stack.getComponents().add(component.getName());
-					}
-					if (wasEmpty) {
-						ComponentAllocationInfo c = Plan
-								.toComponentAllocation(component.getName());
-						p.getComponentAllocationInfo().add(c);
-					} else {
-						// leave the allocations alone and not populate them
-					}
-				}
-				getLog().info(this.stack.getPolicies().toString());
-
-			}
-		}
-		final AbstractSilverFabricMojo THIS = this;
-		if (this.breakout) {
-			getLog().warn(
-					"[[[[[[[[[[[ BREAK OUT IS ON MALFUNCTIONING EXPECTED ]]]]]]]]");
-			getRestTemplate().getInterceptors().add(
-					new ClientHttpRequestInterceptor() {
-
-						@Override
-						public ClientHttpResponse intercept(HttpRequest arg0,
-								byte[] arg1, ClientHttpRequestExecution arg2)
-								throws IOException {
-							// TODO Auto-generated method stub
-							THIS.getLog()
-									.info("message: \n\t"
-											+ new String(arg1, "UTF-8"));
-							return null;
-						}
-					});
-		}
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
@@ -201,18 +97,14 @@ public abstract class AbstractSilverStacks extends Stacks {
 			throw new MojoExecutionException(
 					"Unable to create stack, plan loading failed.");
 		}
-		mergeStackPlan();
 		if (getActions().contains("create")
 				&& (this.stack.getComponents() == null || this.stack
 						.getComponents().isEmpty())) {
 			throw new MojoExecutionException(
 					"The components parameters are required to create a stack");
 		}
-		if (this.stack.getPolicies() == null
-				|| this.stack.getPolicies().isEmpty()) {
-			throw new MojoExecutionException(
-					"The policies parameters are required to create a stack");
-		}
+
+		String stackName = stack.getName();
 
 		List<String> actionList = getActions() != null ? getActions()
 				: new ArrayList<String>();
@@ -232,7 +124,7 @@ public abstract class AbstractSilverStacks extends Stacks {
 								+ action);
 			try {
 				if ("create".equals(action)) {
-					Map<Object, Object> mapCreate = setStackRequest();
+					Map<Object, Object> mapCreate = setStackRequest(stack);
 					if (mapCreate == null)
 						throw new MojoFailureException(
 								"The policies and components parameters are required to create a stack");
@@ -250,7 +142,7 @@ public abstract class AbstractSilverStacks extends Stacks {
 					getLog().info(
 							">>>>>>>>>> STACK [" + stackName + "] unpublished!");
 				} else if ("update".equals(action)) {
-					Map<Object, Object> mapUpdate = setStackRequest();
+					Map<Object, Object> mapUpdate = setStackRequest(stack);
 					if (mapUpdate == null)
 						throw new MojoFailureException(
 								"The following parameters are required to "
@@ -274,7 +166,7 @@ public abstract class AbstractSilverStacks extends Stacks {
 				} else if ("assign to non cloud".equals(action)) {
 					Map<String, String> accountNameMap = new HashMap();
 					accountNameMap.put("name", "name");
-					accountNameMap.put("value", accountName);
+					accountNameMap.put("value", stack.getOwner());
 					getLog().info(
 							restTemplate.postForObject(
 									url + "/{stackName}/assign-to-non-cloud",
@@ -293,8 +185,8 @@ public abstract class AbstractSilverStacks extends Stacks {
 									String.class, stackName).toString());
 				} else if ("set run mode".equals(action)) {
 					restTemplate.put(url + "/{stackName}/mode/{run-mode}",
-							null, stackName, runMode);
-					getLog().info("run mode set to " + runMode + " !");
+							null, stackName, stack.getMode());
+					getLog().info("run mode set to " + stack.getMode() + " !");
 				} else if ("auto-detect http-urls".equals(action)) {
 
 					restTemplate.postForObject(url
@@ -361,257 +253,26 @@ public abstract class AbstractSilverStacks extends Stacks {
 		}
 	}
 
-	private void mergeStackPlan() {
-		if (this.getComponents() == null || this.getComponents().isEmpty()) {
-			this.setComponents(this.stack.getComponents());
-		}
-		if (this.getPolicies() == null || this.getPolicies().isEmpty()) {
-			this.setPolicies(this.stack.getPolicies());
-		}
-		if (this.getStackName() == null) {
-			this.setStackName(this.stack.getName());
-		}
-		if (this.getPropertyOverrides() == null
-				|| this.getPropertyOverrides().isEmpty()) {
-			this.setPropertyOverrides(this.stack.getPropertyOverrides());
-		}
-		if (this.mode == null && this.stack.getMode() != null) {
-			this.mode = this.stack.getMode();
-		}
-		if (this.templateLevel == null && this.stack.getTemplateLevel() != null) {
-			this.templateLevel = this.stack.getTemplateLevel();
-		}
-		if (this.technology == null && this.stack.getTechnology() != null) {
-			this.technology = this.stack.getTechnology();
-		}
-		if (this.urls == null && this.stack.getUrls() != null) {
-			// this.urls = this.stack.getUrls();
-		}
-	}
-
 	/**
 	 * 
 	 * @return
 	 */
-	private HashMap<Object, Object> setStackRequest() {
+	private HashMap<Object, Object> setStackRequest(Stack _stack) {
 
 		HashMap<Object, Object> request = new LinkedHashMap<Object, Object>();
-		request.put("name", stackName);
-		request.put("policies", this.stack.getPolicies());
-		request.put("components", this.stack.getComponents());
-		request.put("icon", this.stack.getIcon() == null ? this.icon
-				: this.stack.getIcon());
-		request.put("description",
-				this.stack.getDescription() == null ? this.description
-						: this.stack.getDescription());
-
-		valueOf(request, "owner", this.stack.getOwner(), this.owner);
-		valueOf(request, "mode", this.stack.getMode(), this.mode);
-		valueOf(request, "templateLevel", this.stack.getTemplateLevel(),
-				this.templateLevel);
-		valueOf(request, "propertyOverrides",
-				this.stack.getPropertyOverrides(), this.propertyOverrides);
-		valueOf(request, "technology", this.stack.getTechnology(),
-				this.technology);
-		valueOf(request, "urls", this.stack.getUrls(), this.urls);
+		request.put("name", _stack.getName());
+		request.put("policies", _stack.getPolicies());
+		request.put("components", _stack.getComponents());
+		request.put("icon", _stack.getIcon());
+		request.put("description", _stack.getDescription());
+		request.put("owner", _stack.getOwner());
+		request.put("mode", _stack.getMode());
+		request.put("templateLevel", _stack.getTemplateLevel());
+		request.put("propertyOverrides", _stack.getPropertyOverrides());
+		request.put("technology", _stack.getTechnology());
+		request.put("urls", _stack.getUrls());
 
 		return request;
-	}
-
-	/**
-	 * @return the components
-	 */
-	public final List<String> getComponents() {
-		return components;
-	}
-
-	/**
-	 * @param components
-	 *            the components to set
-	 */
-	public final void setComponents(List<String> components) {
-		this.components = components;
-	}
-
-	/**
-	 * @return the stackName
-	 */
-	public final String getStackName() {
-		return stackName;
-	}
-
-	/**
-	 * @param stackName
-	 *            the stackName to set
-	 */
-	public final void setStackName(String stackName) {
-		this.stackName = stackName;
-	}
-
-	/**
-	 * @return the mode
-	 */
-	public final String getMode() {
-		return mode;
-	}
-
-	/**
-	 * @param mode
-	 *            the mode to set
-	 */
-	public final void setMode(String mode) {
-		this.mode = mode;
-	}
-
-	/**
-	 * @return the templateLevel
-	 */
-	public final String getTemplateLevel() {
-		return templateLevel;
-	}
-
-	/**
-	 * @param templateLevel
-	 *            the templateLevel to set
-	 */
-	public final void setTemplateLevel(String templateLevel) {
-		this.templateLevel = templateLevel;
-	}
-
-	/**
-	 * @return the policies
-	 */
-	public final List<Policy> getPolicies() {
-		return policies;
-	}
-
-	/**
-	 * @param policies
-	 *            the policies to set
-	 */
-	public final void setPolicies(List<Policy> policies) {
-		this.policies = policies;
-	}
-
-	/**
-	 * @return the accountName
-	 */
-	public final String getAccountName() {
-		return accountName;
-	}
-
-	/**
-	 * @param accountName
-	 *            the accountName to set
-	 */
-	public final void setAccountName(String accountName) {
-		this.accountName = accountName;
-	}
-
-	/**
-	 * @return the runMode
-	 */
-	public final String getRunMode() {
-		return runMode;
-	}
-
-	/**
-	 * @param runMode
-	 *            the runMode to set
-	 */
-	public final void setRunMode(String runMode) {
-		this.runMode = runMode;
-	}
-
-	/**
-	 * @return the propertyOverrides
-	 */
-	public final List<PropertyOverride> getPropertyOverrides() {
-		return propertyOverrides;
-	}
-
-	/**
-	 * @param propertyOverrides
-	 *            the propertyOverrides to set
-	 */
-	public final void setPropertyOverrides(
-			List<PropertyOverride> propertyOverrides) {
-		this.propertyOverrides = propertyOverrides;
-	}
-
-	/**
-	 * @return the owner
-	 */
-	public final String getOwner() {
-		return owner;
-	}
-
-	/**
-	 * @param owner
-	 *            the owner to set
-	 */
-	public final void setOwner(String owner) {
-		this.owner = owner;
-	}
-
-	/**
-	 * @return the technology
-	 */
-	public final String getTechnology() {
-		return technology;
-	}
-
-	/**
-	 * @param technology
-	 *            the technology to set
-	 */
-	public final void setTechnology(String technology) {
-		this.technology = technology;
-	}
-
-	/**
-	 * @return the icon
-	 */
-	public final String getIcon() {
-		return icon;
-	}
-
-	/**
-	 * @param icon
-	 *            the icon to set
-	 */
-	public final void setIcon(String icon) {
-		this.icon = icon;
-	}
-
-	/**
-	 * @return the description
-	 */
-	public final String getDescription() {
-		return description;
-	}
-
-	/**
-	 * @param description
-	 *            the description to set
-	 */
-	public final void setDescription(String description) {
-		this.description = description;
-	}
-
-	/**
-	 * @return the urls
-	 */
-	public final List<Map> getUrls() {
-		return urls;
-	}
-
-	/**
-	 * @param urls
-	 *            the urls to set
-	 */
-	public final void setUrls(List<Map> urls) {
-		this.urls = urls;
 	}
 
 	/**
@@ -629,11 +290,5 @@ public abstract class AbstractSilverStacks extends Stacks {
 		this.breakout = breakout;
 	}
 
-	/**
-	 * @return the stack
-	 */
-	public final com.fedex.scm.Stacks getStack() {
-		return stack;
-	}
 
 }

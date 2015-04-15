@@ -13,7 +13,7 @@ import org.junit.Test;
 import com.tibco.silverfabric.AbstractSilverJSONTest;
 import com.tibco.silverfabric.Utils;
 import com.tibco.silverfabric.components.CreateComponentsJSON;
-import com.tibco.silverfabric.components.CreateComponentsJSONTest;
+import com.tibco.silverfabric.components.CreateComponentRestCallTest;
 import com.tibco.silverfabric.model.Plan;
 
 public class CreateStacksTest extends AbstractSilverJSONTest {
@@ -29,14 +29,14 @@ public class CreateStacksTest extends AbstractSilverJSONTest {
 
 		stackplan = new Plan();
 		stackplan.componentPlan = Utils.getTestFile(
-				CreateComponentsJSONTest.class, 1, "json").getAbsolutePath();
+				CreateComponentRestCallTest.class, 1, "json").getAbsolutePath();
 		stackplan.stackPlan = Utils.getTestFile(CreateStacksTest.class,
 				1, "json").getAbsolutePath();
 
 		CreateComponentsJSON c = new CreateComponentsJSON(getConfig(), stackplan);
 		executeCreateComponent(stackplan, c);
 
-		CreateStacks s = new CreateStacks(config, stackplan);
+		CreateStackRestCall s = new CreateStackRestCall(config, stackplan);
 		s.setStackName(PREFIX + "-" + this.getClass());
 		s.setComponents(Arrays.asList(new String[] { c.getComponentName() }));
 		s.initialize();
@@ -64,14 +64,14 @@ public class CreateStacksTest extends AbstractSilverJSONTest {
 	
 		stackplan = new Plan();
 		stackplan.componentPlan = Utils.getTestFile(
-				CreateComponentsJSONTest.class, 1, "json").getAbsolutePath();
+				CreateComponentRestCallTest.class, 1, "json").getAbsolutePath();
 		stackplan.stackPlan = Utils.getTestFile(CreateStacksTest.class,
 				1, "json").getAbsolutePath();
 	
 		CreateComponentsJSON c = new CreateComponentsJSON(getConfig(), stackplan);
 		executeCreateComponent(stackplan, c);
 	
-		CreateStacks s = new CreateStacks(config, stackplan);
+		CreateStackRestCall s = new CreateStackRestCall(config, stackplan);
 		s.setStackName(PREFIX + "-" + this.getClass());
 		s.setComponents(Arrays.asList(new String[] { c.getComponentName() }));
 		s.initialize();

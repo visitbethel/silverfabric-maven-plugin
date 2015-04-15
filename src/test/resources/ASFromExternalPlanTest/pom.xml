@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <artifactId>test-plan</artifactId>
+  <groupId>scm.plugins.test</groupId>
+
+  <parent>
+    <groupId>com.fedex.ground.sf</groupId>
+    <artifactId>sf-parent</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+  </parent>
+
+
+
+
+  <packaging>maven-plugin</packaging>
+
+  <name>Silver Fabric Maven Plugin</name>
+  <description>Maven Plugin for creating Silver Fabric Components and Stacks.</description>
+
+  <properties>
+    <spring.version>3.2.1.RELEASE</spring.version>
+    <maven.plugin.version>3.3</maven.plugin.version>
+    <maven.api.version>3.2.5</maven.api.version>
+  </properties>
+
+  <build>
+    <plugins>
+      <plugin>
+        <artifactId>scm-sf-plugin</artifactId>
+        <groupId>scm.plugins</groupId>
+        <version>0.0.1-SNAPSHOT</version>
+        <configuration>
+          <id>L2</id>
+          <brokerConfig>
+            <brokerURL>${sf.broker.url}</brokerURL>
+            <username>${sf.broker.user}</username>
+            <password>${sf.broker.password}</password>
+          </brokerConfig>
+          <executionPlan>./externalPlan.xml</executionPlan>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
+  <distributionManagement>
+    <repository>
+      <id>${scm.id}</id>
+      <name>Maven Repository</name>
+      <url>${scm.deploy.url}</url>
+    </repository>
+    <site>
+      <id>mvnown</id>
+      <url>scpexe://maven.ground.fedex.com/var/fedex/scm/mvn/httproot/site/${project.artifactId}/${project.version}</url>
+    </site>
+  </distributionManagement>
+
+  <profiles>
+    <profile>
+      <id>L2</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <properties>
+        <sf.broker.url>http://urh00172.ute.fedex.com:8080</sf.broker.url>
+        <sf.broker.user>sefsdev_operate</sf.broker.user>
+        <sf.broker.password>lkmM2jIt67RH</sf.broker.password>
+      </properties>
+    </profile>
+  </profiles>
+</project>
